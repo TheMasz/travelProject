@@ -7,9 +7,12 @@
   <title>Homepage</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
 </head>
 
-<body>
+<body style="background-color: #F7F8FC;">
+  <x-navbar />
   @if ($mypreferences)
   <div class="modal">
     <div class="modal_content">

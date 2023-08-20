@@ -33,6 +33,14 @@ class AuthController extends Controller
             return false;
         }
     }
+    function checkPermission($email){
+        $member = Members::where('email', $email)->first();
+        if($member['status']=='admin'){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     function login(Request $req)
     {
@@ -46,6 +54,10 @@ class AuthController extends Controller
             $db_password = $member['password'];
             $db_memberId = $member['member_id'];
             if (Hash::check($password, $db_password)) {
+                if($this->checkPermission($email)){
+                    $req->session()->put('member_id', $db_memberId);
+                    return redirect("/admin/dashboard");
+                }
                 $req->session()->put('member_id', $db_memberId);
                 return redirect("/");
             } else {
@@ -72,6 +84,7 @@ class AuthController extends Controller
             $member = new Members();
             $member->email = $email;
             $member->password = $hashedPassword;
+            $member->status = "user";
             $member->save();
 
             $member = Members::where('email', $email)->first();

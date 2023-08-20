@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PrefController;
@@ -27,6 +28,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::get("/logout", [AuthController::class, 'logout']);
 
 Route::post('addPref', [PrefController::class, 'addPref']);
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 
 Route::get('/testdatabase', function () {
     $result = DB::table('members')->get();

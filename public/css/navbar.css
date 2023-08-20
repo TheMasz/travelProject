@@ -1,0 +1,19 @@
+.nav-list {
+    list-style: none;
+    display: flex;
+}
+.navbar{
+    background-color: white;
+    box-shadow: 0 0 7px 0 lightgray;
+    padding: 10px 0;
+    margin-bottom: 30px;
+}
+.navbar .nav{
+    justify-content: space-between;
+}
+.navbar .nav, .nav .nav-list{
+    align-items: center;
+}
+.navbar li{
+    margin-right: 15px;
+}
