@@ -11,71 +11,61 @@
   <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
 </head>
 
-<body style="background-color: #F7F8FC;">
+<body>
   <x-navbar />
   @if ($mypreferences)
-  <div class="modal">
-    <div class="modal_content">
-      <div class="content_wrap">
-        <form action="addPref" method="post">
-          @csrf
-          <div class="top">
-            <h3>โปรดบอกเราว่าคุณชอบอะไร</h3>
-          </div>
-          <div class="center">
-            <ul>
-              @foreach($preferences as $preference)
-              <li>
-                <p>{{$preference->preference_name}}</p>
-                <div class="row py-02">
-                  <label class="preference-label">
-                    <input type="radio" name="preference_{{$preference->preference_id}}" value="1" class="hidden-checkbox">
-                    <span class="material-icons icon worst">
-                      sentiment_very_dissatisfied
-                    </span>
-                  </label>
-                  <label class="preference-label">
-                    <input type="radio" name="preference_{{$preference->preference_id}}" value="2" class="hidden-checkbox">
-                    <span class="material-icons icon bad">
-                      sentiment_dissatisfied
-                    </span>
-                  </label>
-                  <label class="preference-label">
-                    <input type="radio" name="preference_{{$preference->preference_id}}" value="3" class="hidden-checkbox">
-                    <span class="material-icons icon avg">
-                      sentiment_neutral
-                    </span>
-                  </label>
-                  <label class="preference-label">
-                    <input type="radio" name="preference_{{$preference->preference_id}}" value="4" class="hidden-checkbox">
-                    <span class="material-icons icon good">
-                      sentiment_satisfied
-                    </span>
-                  </label>
-                  <label class="preference-label">
-                    <input type="radio" name="preference_{{$preference->preference_id}}" value="5" class="hidden-checkbox">
-                    <span class="material-icons icon best">
-                      sentiment_very_satisfied
-                    </span>
-                  </label>
-                </div>
-              </li>
-              @endforeach
-            </ul>
-          </div>
-          <div class="bottom">
-            <button class="btn-primary">เสร็จสิ้น</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <x-firstPref :preferences="$preferences" />
   @endif
   <div class="container">
-    <p class='mb-4'>Member ID: {{session('member_id')}}</p>
-    <a class='btn-primary' href="/logout">logout</a>
-  </div>
+    <div class="mt-2 wug-wrap">
+      <div class="row flex-between py-02">
+        <div class="row">
+          <span class="material-icons">
+            public
+          </span>
+          <h3>ไปไหนดี...</h3>
+        </div>
+        <div class="dropdown-toggle">
+          <span class="material-icons" id="dropdown-icon">
+            arrow_drop_down
+          </span>
+        </div>
+      </div>
+      <div class="dropdown-menu">
+        @foreach(app('getZoneswithProvince')() as $zone)
+        <div class="zone-group">
+          <div style="font-weight: bold;">{{$zone->zone_name}}</div>
+          <div class="row flex-wrap">
+            @foreach($zone->provinces as $province)
+            <a href='/province/{{ app('findProvinceId')($province) }}'>{{ $province }}</a>
+            @endforeach
+          </div>
 
+        </div>
+        @endforeach
+      </div>
+
+    </div>
+  </div>
+  <script src="{{ asset('js/app.js') }}"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      const wrap = document.querySelector('.wug-wrap');
+
+      const toggle = wrap.querySelector('.dropdown-toggle');
+      toggle.addEventListener('click', function(event) {
+        event.preventDefault();
+        const dropdownMenu = wrap.querySelector('.dropdown-menu');
+        const dropdownIcon = document.getElementById('dropdown-icon');
+        dropdownMenu.classList.toggle('open');
+        if (dropdownMenu.classList.contains('open')) {
+          dropdownIcon.textContent = 'arrow_drop_up'; 
+        } else {
+          dropdownIcon.textContent = 'arrow_drop_down';
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

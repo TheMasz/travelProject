@@ -24,6 +24,8 @@
     background-color: white;
     border-radius: 20px;
     padding: 20px; 
+    max-height: 90vh;
+    overflow-y: scroll;
   }
   .modal > .modal_content > .content_wrap > form > .top{
     border-bottom: 1px solid #cdcdcd;

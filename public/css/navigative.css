@@ -1,0 +1,42 @@
+.main-navigative {
+    display: flex;
+    flex-direction: row;
+    height: 85vh;;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 lightgray;
+}
+.main-navigative > .basket-wrap {
+    flex: 0 0 30%;
+    width: 30%;
+    background-color: white;
+    height: 100%;
+}
+.main-navigative > .basket-wrap > .basket{
+    height: 100%;
+    overflow-y: scroll;
+}
+.main-navigative > .navigative{
+    position: relative;
+    flex: 0 0 70%;
+    width: 70%;
+    height: 100%;
+}
+.main-navigative > .navigative > #map {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100% !important;
+}
+.main-navigative > .navigative > #result {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 80%;
+    margin: auto;
+    border: 4px solid #dddddd;
+    background: #ffffff;
+    overflow: auto;
+    z-index: 2;
+}

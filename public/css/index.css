@@ -1,163 +1,258 @@
 * {
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  font-family: "Arial";
-  outline: none;
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: "Arial";
+    outline: none;
+}
+body {
+    background-color: #f7f8fc;
 }
 a {
-  color: inherit ;
-  text-decoration: none ;
+    color: inherit;
+    text-decoration: none;
 }
 .container {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 @media screen and (min-width: 576px) {
-  .container {
-    max-width: 100%;
-  }
+    .container {
+        max-width: 100%;
+    }
 }
 @media screen and (min-width: 768px) {
-  .container {
-    max-width: 100%;
-  }
+    .container {
+        max-width: 100%;
+    }
 }
 @media screen and (min-width: 992px) {
-  .container {
-    max-width: 100%;
-  }
+    .container {
+        max-width: 100%;
+    }
 }
 @media screen and (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-  }
+    .container {
+        max-width: 1140px;
+    }
 }
 @media screen and (min-width: 1400px) {
-  .container {
-    max-width: 1320px;
-  }
+    .container {
+        max-width: 1320px;
+    }
 }
-.min-h-100{
-  min-height: 100vh;
+.min-h-100 {
+    min-height: 100vh;
 }
-.bg-gray{
-  background-color: #f7f8fc;
+.bg-gray {
+    background-color: #f7f8fc;
 }
-.py-02{
-  padding: 2px 0;
+.py-02 {
+    padding: 2px 0;
 }
-.px-5{
-  padding: 0 50px;
+.px-5 {
+    padding: 0 50px;
 }
-.px-1{
-  padding: 0 10px;
+.px-1 {
+    padding: 0 10px;
 }
-.mb-2{
-  margin-bottom: 20px;
+.mb-05 {
+    margin-bottom: 5px;
 }
-.mb-4{
-  margin-bottom: 40px;
+.mb-2 {
+    margin-bottom: 20px;
 }
-.w-50{
-  width: 50%;
-  flex: 0 0 50%;
+.mb-4 {
+    margin-bottom: 40px;
 }
-.h-100{
-  height: 100%;
+.mt-2 {
+    margin-top: 20px;
 }
-.row{
-  display: flex;
-  flex-direction: row;
+.w-50 {
+    width: 50%;
+    flex: 0 0 50%;
 }
-.align-center{
-  align-items: center;
+.h-100 {
+    height: 100%;
 }
-.input-wrap{
-  border-bottom: 1px solid #B8B8B8;
-  padding: 5px 0;
-  align-items: center;
-  color: #B8B8B8;
+.row {
+    display: flex;
+    flex-direction: row;
 }
-.input-wrap > input{
-  width: 100%;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  padding: 10px;
+.flex-between {
+    justify-content: space-between;
 }
-.btn-primary{
-  background-color: #66A5DC;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border: none;
-  border-radius: 10px;
+.align-center {
+    align-items: center;
 }
-.btn-primary:hover{
-  background-color: #609dd3;
+.flex-wrap {
+    flex-wrap: wrap;
 }
-.b-400{
-  font-weight: 400;
+.input-wrap {
+    border-bottom: 1px solid #b8b8b8;
+    padding: 5px 0;
+    align-items: center;
+    color: #b8b8b8;
 }
-.b-800{
-  font-weight: 800;
+.input-wrap > input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 10px;
 }
-.c-pri{
-  color: #66A5DC;
+.btn-primary {
+    background-color: #66a5dc;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
 }
-.c-pri:hover{
-  text-decoration: underline;
+.btn-primary:hover {
+    background-color: #609dd3;
 }
-.message{
-  padding: 10px;
-  border-radius: 10px;
+.b-400 {
+    font-weight: 400;
 }
-.message-warning{
-  background-color: #fff3cd;
-  color: #a56404;
+.b-800 {
+    font-weight: 800;
 }
-.message-error{
-  background-color: #f8d7da;
-  color: #721c24;
+.c-pri {
+    color: #66a5dc;
 }
-.message-info{
-  background-color: #cce5ff;
-  color: #004085;
+.c-pri:hover {
+    text-decoration: underline;
+}
+.message {
+    padding: 10px;
+    border-radius: 10px;
+}
+.message-warning {
+    background-color: #fff3cd;
+    color: #a56404;
+}
+.message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.message-info {
+    background-color: #cce5ff;
+    color: #004085;
 }
 
 .hidden-checkbox {
-  position: absolute;
-  opacity: 0;
+    position: absolute;
+    opacity: 0;
 }
 .preference-label {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .icon {
-  display: inline-block;
-  width: 30px;
-  text-align: center;
-  margin-right: 10px;
-  color: #333; 
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+    color: #333;
 }
 
 .hidden-checkbox:checked + .worst {
-  color: #d71e25; 
+    color: #d71e25;
 }
 .hidden-checkbox:checked + .bad {
-  color: #f37521; 
+    color: #f37521;
 }
 .hidden-checkbox:checked + .avg {
-  color: #fda218; 
+    color: #fda218;
 }
 .hidden-checkbox:checked + .good {
-  color: #abb837; 
+    color: #abb837;
 }
 .hidden-checkbox:checked + .best {
-  color: #4aa548; 
+    color: #4aa548;
+}
+.card {
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 10px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
+}
+.card > .btn {
+    flex: 0 0 10%;
+    width: 10%;
+}
+.card > .img {
+    flex: 0 0 20%;
+    width: 20%;
+}
+.card > .img >img{
+    width: 100%;
+}
+.card > .txt {
+    flex: 0 0 60%;
+    width: 60%;
+    padding: 0 10px;
+}
+.card > .btn_del {
+    position: relative;
+    flex: 0 0 10%;
+    width: 10%;
+}
+.card > .btn_del>button{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: red;
+    transition: color 0.25s;
+}
+.card > .btn_del>button:hover{
+    color: #721c24;
+}
+.wug-wrap {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 7px 0 lightgray;
+}
+.wug-wrap .dropdown-toggle {
+    cursor: pointer;
+}
+.wug-wrap .dropdown-menu {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.25s;
+}
+.wug-wrap .open {
+    height: 400px;
 }
 
+.wug-wrap .zone-group {
+    padding: 10px 0;
+    border-bottom: 1px solid lightgray;
+}
+
+.wug-wrap .zone-group a {
+    border-radius: 15px;
+    background-color: #171d34;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    margin: 5px 5px 5px 0;
+    transition: all 0.25s;
+}
+
+.wug-wrap .zone-group a:hover {
+    background-color: rgba(13, 16, 30, 0.937);
+    text-decoration: underline;
+}

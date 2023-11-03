@@ -1,0 +1,31 @@
+.main-basket {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.main-basket > .content-basket {
+    flex: 0 0 70%;
+    width: 70%;
+
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 lightgray;
+    padding: 0 10px;
+}
+.main-basket > .tooltips-basket {
+    flex: 0 0 30%;
+    width: 30%;
+
+    padding: 10px ;
+}
+.main-basket > .content-basket > .locations {
+    position: relative;
+}
+.back-home{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+}

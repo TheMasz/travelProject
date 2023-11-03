@@ -11,16 +11,10 @@ class AuthController extends Controller
 {
     function signin()
     {
-        if(session()->has('member_id')){
-            return redirect("/");
-        }
         return view("auth.sign_in");
     }
     function signup()
     {
-        if(session()->has('member_id')){
-            return redirect("/");
-        }
         return view("auth.sign_up");
     }
 
@@ -33,11 +27,12 @@ class AuthController extends Controller
             return false;
         }
     }
-    function checkPermission($email){
+    function checkPermission($email)
+    {
         $member = Members::where('email', $email)->first();
-        if($member['status']=='admin'){
+        if ($member['status'] == 'admin') {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -54,7 +49,7 @@ class AuthController extends Controller
             $db_password = $member['password'];
             $db_memberId = $member['member_id'];
             if (Hash::check($password, $db_password)) {
-                if($this->checkPermission($email)){
+                if ($this->checkPermission($email)) {
                     $req->session()->put('member_id', $db_memberId);
                     return redirect("/admin/dashboard");
                 }
@@ -75,16 +70,19 @@ class AuthController extends Controller
         $password = $data['password'];
         $cf_password = $data['cf_password'];
 
-        if($password != $cf_password){
-            return redirect()->back()->with(['warning' => 'รหัสผ่านไม่เหมือนกัน'  ])->withInput();
-        }else if ($this->checkEmailExists($email)) {
-            return redirect()->back()->with(['warning' => 'มีบัญชีนี้ในระบบแล้ว'  ])->withInput();
-        }else{
+        if ($password != $cf_password) {
+            return redirect()->back()->with(['warning' => 'รหัสผ่านไม่เหมือนกัน'])->withInput();
+        } else if ($this->checkEmailExists($email)) {
+            return redirect()->back()->with(['warning' => 'มีบัญชีนี้ในระบบแล้ว'])->withInput();
+        } else {
+            $emailParts = explode('@', $email);
+            $username = $emailParts[0];
             $hashedPassword = Hash::make($password);
             $member = new Members();
             $member->email = $email;
             $member->password = $hashedPassword;
             $member->status = "user";
+            $member->username = $username;
             $member->save();
 
             $member = Members::where('email', $email)->first();
@@ -92,8 +90,6 @@ class AuthController extends Controller
             $req->session()->put('member_id', $db_memberId);
             return redirect("/");
         }
-
-    
     }
 
     function logout()
