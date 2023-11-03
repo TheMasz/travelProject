@@ -1,4 +1,4 @@
-how to run: **run in the root directory**
+**how to run (run in the root directory)**
 1. [run]: composer install
 2. [run]: cp .env.example .env
 3. [change]: env file<br>
