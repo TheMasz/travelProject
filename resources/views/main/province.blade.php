@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
     <x-navbar />
     <div class="container">
         <div class="banner-wrap">
@@ -48,7 +49,7 @@
                             </a>
                         </h3>
                         <p>{{ app('maxLength')($location->detail) }}...</p>
-                        <button class="btn-primary" onclick="addPlan({{$location->location_id}})">add</button>
+                        <button class="btn-secondary" onclick="addPlan({{$location->location_id}})">เพิ่มลงทริป</button>
                     </div>
                 </div>
 
@@ -56,10 +57,37 @@
             </div>
             <div class="suggest-plans">
                 <div class="plans-container">
-                    <div>plan</div>
-                    <div>plan</div>
-                    <div>plan</div>
-                    <div>plan</div>
+                    <h4>แผนท่องเที่ยวที่แนะนำ</h4>
+                    @foreach( app('getPlansByPref')(session('member_id')) as $plan)
+                    @php
+                    $locationIdsString = $plan['locations_id'];
+                    $locationIdsArray = explode(',', $locationIdsString);
+                    $locationIdsArray = array_map('intval', $locationIdsArray);
+                    @endphp
+                    <div class="plan">
+                        <div class="image">
+                            <img src="" alt="img">
+                        </div>
+                        <div class="details">
+                            <div class="row flex-between">
+                                <div class="head">
+                                    <h5>{{$plan['plan_name']}}</h5>
+                                    <p>โดย {{ app('getUsername')($plan['member_id']) }}</p>
+                                </div>
+                                <button onclick='usePlan("{{ str_replace(' ', '', $locationIdsString) }}", ".plans-container h4")'>ใช้แผนนี้</button>
+                            </div>
+                            <div>
+
+                                <ul>
+                                    @foreach(app('getLocations')($locationIdsArray) as $location)
+                                    <li> <a href="/province/{{$location->province_id}}/{{$location->location_id}}">{{$location->location_name}}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+
                 </div>
             </div>
         </div>

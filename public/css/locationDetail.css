@@ -1,0 +1,140 @@
+.images-wrap {
+    padding: 10px 0;
+}
+.details-wrap > .title {
+    justify-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.details-wrap > .title > .txt > .row {
+    color: #8e8e8e;
+    font-weight: bold;
+    text-align: justify;
+}
+.details-wrap > .title > .button-wrap {
+    display: flex;
+    align-items: center;
+}
+.details-wrap > .title > .button-wrap > button {
+    cursor: pointer;
+}
+.details-wrap .categories > p {
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    margin-right: 5px;
+}
+.details-wrap > .desc-wrap > .detail {
+    flex: 0 0 70%;
+    width: 70%;
+}
+.details-wrap > .desc-wrap > .map {
+    flex: 0 0 30%;
+    min-height: 250px;
+    width: 30%;
+    padding: 0 10px;
+}
+.images-wrap {
+}
+
+.images-wrap > .image-box {
+    display: flex;
+    flex-direction: row;
+}
+.images-wrap > .main-image {
+    position: relative;
+    width: 100%;
+    min-height: 422px;
+    height: 422px;
+    border-radius: 10px;
+    background-color: #292929;
+    margin-bottom: 20px;
+}
+.images-wrap > .main-image>.credit{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+    font-size: 12px;
+    color: lightgray;
+    background-color: #000;
+    border-radius: 0 0 20px 0;
+}
+.images-wrap > .main-image > .image {
+    width: 100%;
+    height: 100%;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+}
+.images-wrap > .image-box > .image {
+    min-height: 150px;
+    min-width: 150px;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+.images-wrap > .image-box > .image:hover {
+    box-shadow: 0 0 7px lightgray;
+    transform: scale(1.1); 
+}
+.comments-wrap {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+.comments-wrap > button {
+    align-self: flex-end;
+    cursor: pointer;
+    margin: 10px 0;
+}
+.comments-wrap > .comments {
+    border: 1px solid #000;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 10px;
+}
+.comments-wrap > .comments > .comment {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+.comments-wrap > .comments > .comment > .user {
+    flex: 0 0 15%;
+    width: 15%;
+}
+.comments-wrap > .comments > .comment > .user > .date {
+    color: #8e8e8e;
+}
+.comments-wrap > .comments > .comment > .user > .star {
+    color: red;
+}
+.comments-wrap > .comments > .comment > .txt {
+    flex: 0 0 75%;
+    width: 75%;
+    text-align: justify;
+}
+
+.comments-wrap > .comments > .comment > .like {
+    flex: 0 0 10%;
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.comments-wrap > .comments > .comment > .like button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}

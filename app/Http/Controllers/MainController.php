@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\LocationImages;
 use App\Models\Locations;
 use App\Models\PersonalPreference;
+use App\Models\PlansTrip;
 use App\Models\Preferences;
 use App\Models\Provinces;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -36,36 +39,21 @@ class MainController extends Controller
     {
         return view('main.navigative');
     }
-    function locationDetail($province_id,$location_id)
+    function locationDetail($province_id, $location_id)
     {
-        $location = Locations::select(
-            'locations.location_id',
-            'locations.location_name',
-            'locations.address',
-            'locations.detail',
-            'locations.s_time',
-            'locations.latitude',
-            'locations.longitude',
-            Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
-            Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
-            LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
-            'location_images.credit'
-        )
-            ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
-            ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
-            ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
-            ->where('locations.location_id', $location_id)
-            ->groupBy(
-                'locations.location_id',
-                'locations.location_name',
-                'locations.address',
-                'locations.detail',
-                'locations.s_time',
-                'locations.latitude',
-                'locations.longitude',
-                'location_images.credit'
-            )
-            ->first();
+        $locationFunction = App::make('getLocation');
+        $location = $locationFunction($location_id);
         return view('main.locationDetail')->with(['location_detail' => $location]);
+    }
+    function myplans()
+    {
+        $member_id = session('member_id');
+        $myplans = PlansTrip::select('plan_name')
+            ->selectRaw('GROUP_CONCAT(location_id SEPARATOR ", ") AS locations_id')
+            ->where('member_id', $member_id)
+            ->groupBy('plan_name')
+            ->get();
+
+        return view('main.myplans')->with(['myplans' => $myplans]);
     }
 }

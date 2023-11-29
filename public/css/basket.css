@@ -6,7 +6,6 @@
 .main-basket > .content-basket {
     flex: 0 0 70%;
     width: 70%;
-
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 7px 0 lightgray;
@@ -15,7 +14,6 @@
 .main-basket > .tooltips-basket {
     flex: 0 0 30%;
     width: 30%;
-
     padding: 10px ;
 }
 .main-basket > .content-basket > .locations {
@@ -28,4 +26,7 @@
     justify-content: center;
     width: 100%;
     padding: 10px;
+}
+.card > .txt a:hover{
+    text-decoration: underline;
 }

@@ -71,8 +71,22 @@
 .navbar .dropdown-item:hover {
     background-color: #f5f5f5;
 }
-
-
+.icon-cart{
+    position: relative;
+}
+#cartLength{
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 15px;
+    height: 15px;
+    padding: 2px;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #DC6666;
+    color: #fff;
+}
 
 
 

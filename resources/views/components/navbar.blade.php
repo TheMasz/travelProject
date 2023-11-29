@@ -21,6 +21,7 @@
                         <div class="dropdown-menu">
                             <!-- Add dropdown items here -->
                             <a class="dropdown-item" href="/profile">โปรไฟล์</a>
+                            <a class="dropdown-item" href="/myplans">แผนการท่องเที่ยว</a>
                             <a class="dropdown-item" href="/settings">การตั้งค่า</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout">ออกจากระบบ</a>
@@ -28,12 +29,13 @@
                     </li>
                     <li>
                         <a href="/basket">
-                            <span class="material-icons">
+                            <span class="material-icons icon-cart">
                                 luggage
+                                <span id="cartLength">
+                                    0
+                                </span>
                             </span>
-                            <span id="cartLength">
-                                0
-                            </span>
+
                         </a>
                     </li>
                 </ul>

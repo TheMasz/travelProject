@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basket</title>
+    <title>จัดการแผนการท่องเที่ยว</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
@@ -20,7 +20,6 @@
         <div class="main-basket">
             <div class="content-basket">
                 <div class="location-mark">
-
                     <h3>ทริปของคุณ</h3>
                     <div>
                         <p>ตำแหน่งปัจจุบัน</p>
@@ -30,7 +29,7 @@
                 </div>
                 <div class="locations" id="locations">
                     <!-- return location -->
-       
+
                 </div>
             </div>
             <div class="tooltips-basket">
@@ -40,44 +39,20 @@
                 <button onclick="calcDistance()">เรียงลำดับตามระยะทาง</button>
                 <br>
                 <button onclick="navigative()">หาเส้นทาง</button>
+                <form method="post" action="/api/addPlan" id="planForm">
+                    @csrf
+                    <input type="text" name="plan_name" placeholder="ชื่อแผนการท้องเที่ยว" required>
+                    <input type="hidden" name="member_id" value="{{ session('member_id') }}">
+                    <input type="hidden" name="location_id" id="location_id">
+                    <button type="submit">บันทึก</button>
+                </form>
             </div>
         </div>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
-
+    <script src="{{ asset('js/basket.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let basket = JSON.parse(localStorage.getItem("basket")) || [];
-            if (basket.length == 0) {
-                const locations = document.querySelector("#locations");
-                locations.innerHTML = ``;
-                let html = `
-                <div class='back-home'>
-                    <span class="material-icons" style='color:lightgray; font-size:64px; margin-bottom:5px'>
-                        luggage
-                    </span>
-                    <p class='mb-05' style='color:lightgray; text-align:center; width:75%'>ยังไม่มีสถานที่ท่องเที่ยวในการเดินของคุณ 
-                    กรุณาเริ่มด้วยการเลือกสถานที่ที่คุณต้องการเพิ่มเข้าในแผนการท่องเที่ยวของคุณ คุณสามารถเริ่มการค้นหาและเพิ่มสถานที่ท่องเที่ยวได้ที่หน้าหลักของเรา</p>
-                    <a href='/' class='btn-primary'>ไปยังหน้าแรก</a>
-                </div>
-            `;
-                locations.insertAdjacentHTML("beforeend", html);
-            } else {
-                axios
-                    .post("/api/getLocations", basket)
-                    .then((res) => {
-                        if (res.data) {
-                            displayBasket(res, "button");
-                        }
-                    })
-                    .catch((err) => {
-                        throw err;
-                    });
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -50,6 +50,9 @@ a {
 .py-02 {
     padding: 2px 0;
 }
+.py-1{
+    padding: 10px 0;
+}
 .px-5 {
     padding: 0 50px;
 }
@@ -108,9 +111,22 @@ a {
     cursor: pointer;
     border: none;
     border-radius: 10px;
+    font-weight: bold;
 }
 .btn-primary:hover {
     background-color: #609dd3;
+}
+.btn-secondary {
+    background-color: #DC6666;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.btn-secondary:hover {
+    background-color: #dd5656;
 }
 .b-400 {
     font-weight: 400;
@@ -125,8 +141,10 @@ a {
     text-decoration: underline;
 }
 .message {
+    margin: 5px 0;
     padding: 10px;
     border-radius: 10px;
+    transition: all 0.25s ease-in-out;
 }
 .message-warning {
     background-color: #fff3cd;
@@ -176,7 +194,6 @@ a {
     color: #4aa548;
 }
 .card {
-    border-bottom: 1px solid #d9d9d9;
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;

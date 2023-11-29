@@ -14,4 +14,5 @@ class AdminController extends Controller
     function Test(){
         return view('admin.test');
     }
+
 }

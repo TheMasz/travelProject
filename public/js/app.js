@@ -11,7 +11,7 @@ function addPlan(location_id) {
         updateCartLength();
     }
 }
-function removePlan(location_id) {
+function removePlanInBasket(location_id) {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     let index = basket.indexOf(location_id);
 
@@ -23,7 +23,24 @@ function removePlan(location_id) {
             .post("/api/getLocations", basket)
             .then((res) => {
                 if (res.data) {
-                    displayBasket(res, "button");
+                    if (getBasketLength() == 0 || null) {
+                        const locations = document.querySelector("#locations");
+                        locations.innerHTML = ``;
+                        let html = `
+                            <div class='back-home'>
+                                <span class="material-icons" style='color:lightgray; font-size:64px; margin-bottom:5px'>
+                                    luggage
+                                </span>
+                                <p class='mb-2' style='color:lightgray; text-align:center; width:75%'>ยังไม่มีสถานที่ท่องเที่ยวในการเดินของคุณ 
+                                กรุณาเริ่มด้วยการเลือกสถานที่ที่คุณต้องการเพิ่มเข้าในแผนการท่องเที่ยวของคุณ คุณสามารถเริ่มการค้นหาและเพิ่มสถานที่ท่องเที่ยวได้ที่หน้าหลักของเรา</p>
+                                <a href='/' class='btn-primary mb-05'>ไปยังหน้าแรก</a>
+                                <a href='/myplans' class='btn-primary'>ไปยังแผนท่องเที่ยวของฉัน</a>
+                            </div>
+                        `;
+                        locations.insertAdjacentHTML("beforeend", html);
+                    } else {
+                        displayBasket(res, "button");
+                    }
                 }
             })
             .catch((err) => {
@@ -70,6 +87,7 @@ function nextPlan(location_id) {
             .catch((err) => {
                 throw err;
             });
+        document.getElementById("location_id").value = getLocationsId();
     }
 }
 
@@ -99,7 +117,64 @@ function prevPlan(location_id) {
             .catch((err) => {
                 throw err;
             });
+        document.getElementById("location_id").value = getLocationsId();
     }
+}
+
+function usePlan(locationIds, obj_class) {
+    let basket = JSON.parse(localStorage.getItem("basket")) || [];
+
+    if (basket === null) {
+        basket = [];
+    }
+
+    if (basket.length === 0) {
+        console.log("Basket is empty");
+
+        let locationIdsArray = locationIds.split(",").map(Number);
+
+        basket = basket.concat(locationIdsArray);
+
+        localStorage.setItem("basket", JSON.stringify(basket));
+        updateCartLength();
+        window.location.href = "/basket";
+    } else {
+        const obj = document.querySelector(obj_class);
+        showAlert("warning", "กระเป๋าเดินทางไม่ว่าง โปรดเคลียร์แล้วลองใหม่อีกครั้ง!", obj);
+    }
+}
+
+function showAlert(type, message, object) {
+    if (object != null && object) {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `message message-${type}`;
+        alertDiv.textContent = message;
+        object.insertAdjacentElement('beforebegin',alertDiv);
+
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 5000);
+    }else{
+        console.error("Element with class not found.");
+    }
+}
+
+function removePlan(planName) {
+    const data = {
+        plan_name: planName,
+    };
+
+    axios
+        .delete("/api/removePlan", { data })
+        .then((response) => {
+            console.log("Request successful:", response.data);
+            if (response.data.success) {
+                location.reload();
+            }
+        })
+        .catch((error) => {
+            console.error("Error removing plan:", error);
+        });
 }
 
 function setBasketDistance(basket) {
@@ -114,6 +189,13 @@ function getBasketLength() {
 function updateCartLength() {
     let cartLengthElement = document.getElementById("cartLength");
     cartLengthElement.textContent = getBasketLength();
+}
+
+function getLocationsId() {
+    let basket = JSON.parse(localStorage.getItem("basket")) || [];
+    if (basket) {
+        return basket;
+    }
 }
 
 let current = {};
@@ -250,10 +332,18 @@ function displayBasket(res, btn) {
             html = `
             <div class="card">
                 <div class="img"  style="flex: 0 0 30%; width: 30%">
-                    <img src="/storage/images/${images[0]}" alt="${data.location_name}">
+                    <img src="/storage/images/${images[0]}" alt="${
+                data.location_name
+            }">
                 </div>
                 <div class="txt" style="flex: 0 0 70%; width: 70%">
-                    <h3>${data.location_name}</h3>
+                    <h3>
+                        <a href="/province/${data.province_id}/${
+                data.location_id
+            }">
+                            ${data.location_name}
+                        </a>
+                    </h3>
                     <p>${maxLength(data.detail, 100)}</p>
                 </div>
             </div>
@@ -270,14 +360,20 @@ function displayBasket(res, btn) {
                     })'>เลื่อนลง</button>
                 </div>
                 <div class="img">
-                    <img src="/storage/images/${images[0]}" alt="${data.location_name}">
+                    <img src="/storage/images/${images[0]}" alt="${
+                data.location_name
+            }">
                 </div>
                 <div class="txt">
-                    <h3>${data.location_name}</h3>
+                <h3>
+                <a href="/province/${data.province_id}/${data.location_id}">
+                    ${data.location_name}
+                </a>
+            </h3>
                     <p>${maxLength(data.detail, 100)}</p>
                 </div>
                 <div class='btn_del'>
-                    <button onClick='removePlan(${data.location_id})'>
+                    <button onClick='removePlanInBasket(${data.location_id})'>
                         <span class="material-icons">
                             delete
                         </span>

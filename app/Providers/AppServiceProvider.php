@@ -7,6 +7,7 @@ use App\Models\Locations;
 use App\Models\Members;
 use App\Models\LocationTypes;
 use App\Models\PersonalPreference;
+use App\Models\PlansTrip;
 use App\Models\Provinces;
 use App\Models\Preferences;
 use App\Models\Zones;
@@ -20,12 +21,171 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        app()->singleton('getUsername', function ($app) {
-            return function ($memberId) {
-                $member = Members::where('member_id', $memberId)->first();
-                return $member['username'];
+
+        app()->singleton('getLocation', function ($app) {
+            return function ($location_id) {
+                $location = Locations::select(
+                    'locations.location_id',
+                    'locations.location_name',
+                    'locations.address',
+                    'locations.detail',
+                    'locations.province_id',
+                    'locations.s_time',
+                    'locations.e_time',
+                    'locations.latitude',
+                    'locations.longitude',
+                    Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
+                    Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
+                    LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
+                    'location_images.credit'
+                )
+                    ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
+                    ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
+                    ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+                    ->where('locations.location_id', $location_id)
+                    ->groupBy(
+                        'locations.location_id',
+                        'locations.location_name',
+                        'locations.address',
+                        'locations.detail',
+                        'locations.province_id',
+                        'locations.s_time',
+                        'locations.e_time',
+                        'locations.latitude',
+                        'locations.longitude',
+                        'location_images.credit'
+                    )
+                    ->first();
+                return $location;
             };
         });
+
+        app()->singleton('getLocations', function ($app) {
+            return function ($arr) {
+                $locations = [];
+                foreach ($arr as $location_id) {
+                    $location = Locations::select(
+                        'locations.location_id',
+                        'locations.location_name',
+                        'locations.address',
+                        'locations.detail',
+                        'locations.province_id',
+                        'locations.s_time',
+                        'locations.e_time',
+                        'locations.latitude',
+                        'locations.longitude',
+                        Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
+                        Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
+                        LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
+                        'location_images.credit'
+                    )
+                        ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
+                        ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
+                        ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+                        ->where('locations.location_id', $location_id)
+                        ->groupBy(
+                            'locations.location_id',
+                            'locations.location_name',
+                            'locations.address',
+                            'locations.detail',
+                            'locations.province_id',
+                            'locations.s_time',
+                            'locations.e_time',
+                            'locations.latitude',
+                            'locations.longitude',
+                            'location_images.credit'
+                        )
+                        ->first();
+                    if ($location) {
+                        $locations[] = $location;
+                    }
+                }
+                return $locations;
+            };
+        });
+
+        app()->singleton('getPlansByPref', function ($app) {
+            $getPersonPref = $app->make('getPersonPref');
+            return function ($member_id) use ($getPersonPref) {
+                $myPref = $getPersonPref($member_id);
+                $personPref = PersonalPreference::select('member_id', PersonalPreference::raw('GROUP_CONCAT(score) as scores'))
+                    ->where('member_id', '!=', session('member_id'))
+                    ->groupBy('member_id')
+                    ->get();
+
+                $num_of_pref = Preferences::all()->count();
+
+                $userMatrix = [];
+                $anotherMatrix = [];
+
+                foreach ($myPref as $user) {
+                    $userMatrix[] = $user['score'];
+                }
+
+                foreach ($personPref as $user) {
+                    $member_id = $user->member_id;
+                    $scores = explode(',', $user->scores);
+                    $scores = array_map('intval', $scores);
+
+
+                    while (count($scores) < $num_of_pref) {
+                        $scores[] = 0;
+                    }
+
+                    $anotherMatrix[] = [$member_id, $scores];
+                }
+
+                $formattedAnotherMatrix = extractScores($anotherMatrix);
+
+                $similarities = [];
+                foreach ($anotherMatrix as $index => $data) {
+                    $user = $data[0];
+                    $similarity = cosineSimilarity($userMatrix, $formattedAnotherMatrix[$index]);
+                    $similarities[] = ['member_id' => $user, 'similarity' => $similarity];
+                }
+                $similarities = collect($similarities);
+                $similarities = $similarities->sortByDesc('similarity')->values()->all();
+
+                //find plans
+                $plans = [];
+                $maxPlans = 5;
+                foreach ($similarities as $user) {
+                    $userPlans = PlansTrip::select('plan_name')
+                        ->selectRaw('GROUP_CONCAT(location_id SEPARATOR ", ") AS locations_id')
+                        ->where('member_id', $user['member_id'])
+                        ->groupBy('plan_name')
+                        ->get();
+                    if ($userPlans->isNotEmpty() && count($plans) < $maxPlans) {
+                        foreach ($userPlans as $plan) {
+                            $plans[] = [
+                                'member_id' => $user['member_id'],
+                                'plan_name' => $plan->plan_name,
+                                'locations_id' => $plan->locations_id,
+                            ];
+                        }
+                    }
+
+                    if (count($plans) >= $maxPlans) {
+                        break;
+                    }
+                }
+                return $plans;
+            };
+        });
+
+        function extractScores($matrix)
+        {
+            $formattedScores = [];
+
+            foreach ($matrix as $data) {
+                $scores = $data[1];
+
+                $formattedScores[] = $scores;
+            }
+
+            return $formattedScores;
+        }
+
 
         app()->singleton('getLocationsByPref', function ($app) {
             $getPersonPref = $app->make('getPersonPref');
@@ -87,6 +247,7 @@ class AppServiceProvider extends ServiceProvider
                 $similarities = [];
 
                 foreach ($locationMatrix as $locationId => $location) {
+                    // dd($location,$userMatrix);
                     $similarity = cosineSimilarity($location, $userMatrix);
                     $similarityObject = new stdClass();
                     $similarityObject->location_id = $locationId;
@@ -193,6 +354,13 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 return $resultArray;
+            };
+        });
+
+        app()->singleton('getUsername', function ($app) {
+            return function ($member_id) {
+                $member = Members::where('member_id', $member_id)->first();
+                return $member['username'];
             };
         });
 
