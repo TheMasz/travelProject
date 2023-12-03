@@ -12,6 +12,7 @@
 </head>
 
 <body>
+  <x-loading />
   <x-navbar />
   @if ($mypreferences)
   <x-firstPref :preferences="$preferences" />
@@ -59,7 +60,7 @@
         const dropdownIcon = document.getElementById('dropdown-icon');
         dropdownMenu.classList.toggle('open');
         if (dropdownMenu.classList.contains('open')) {
-          dropdownIcon.textContent = 'arrow_drop_up'; 
+          dropdownIcon.textContent = 'arrow_drop_up';
         } else {
           dropdownIcon.textContent = 'arrow_drop_down';
         }

@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <x-loading />
     <x-navbar />
     <div class="container">
         <div class="plans-wrap">

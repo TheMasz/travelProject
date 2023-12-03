@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+    <x-loading />
     <x-navbar />
     <!-- <div id="map"></div> -->
     <div class="container">

@@ -83,6 +83,7 @@
 </head>
 
 <body onload="init()">
+    <x-loading />
     <x-navbar />
     <div class="container">
         <div class="main-navigative">

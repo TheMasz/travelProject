@@ -39,6 +39,7 @@
 </head>
 
 <body onload="init();">
+    <x-loading />
     <x-navbar />
     <div class="container">
         <div class="images-wrap">
@@ -64,7 +65,7 @@
                         <span class="material-icons">
                             place
                         </span>
-                        <p >{{$location_detail->address}}</p>
+                        <p>{{$location_detail->address}}</p>
                     </div>
                 </div>
                 <div class="button-wrap">
@@ -118,7 +119,7 @@
 
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/locationDetail.js') }}"></script>   
+    <script src="{{ asset('js/locationDetail.js') }}"></script>
 </body>
 
 </html>

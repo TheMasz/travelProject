@@ -1,4 +1,15 @@
 window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(function () {
+        document.getElementById("loading-screen").style.display = "none";
+    }, 1500);
+    let percent = 0;
+    const interval = setInterval(function () {
+        percent += Math.floor(Math.random() * 20);
+        document.getElementById("progress-bar").style.width = percent + "%";
+        if (percent >= 100) {
+            clearInterval(interval);
+        }
+    }, 200);
     updateCartLength();
 });
 
@@ -140,7 +151,11 @@ function usePlan(locationIds, obj_class) {
         window.location.href = "/basket";
     } else {
         const obj = document.querySelector(obj_class);
-        showAlert("warning", "กระเป๋าเดินทางไม่ว่าง โปรดเคลียร์แล้วลองใหม่อีกครั้ง!", obj);
+        showAlert(
+            "warning",
+            "กระเป๋าเดินทางไม่ว่าง โปรดเคลียร์แล้วลองใหม่อีกครั้ง!",
+            obj
+        );
     }
 }
 
@@ -149,12 +164,12 @@ function showAlert(type, message, object) {
         const alertDiv = document.createElement("div");
         alertDiv.className = `message message-${type}`;
         alertDiv.textContent = message;
-        object.insertAdjacentElement('beforebegin',alertDiv);
+        object.insertAdjacentElement("beforebegin", alertDiv);
 
         setTimeout(() => {
             alertDiv.remove();
         }, 5000);
-    }else{
+    } else {
         console.error("Element with class not found.");
     }
 }
