@@ -59,6 +59,9 @@ a {
 .px-1 {
     padding: 0 10px;
 }
+.mr-05{
+    margin-right: 5px;
+}
 .mb-05 {
     margin-bottom: 5px;
 }
@@ -87,6 +90,9 @@ a {
 }
 .align-center {
     align-items: center;
+}
+.flex-center {
+    justify-content: center;
 }
 .flex-wrap {
     flex-wrap: wrap;
@@ -202,9 +208,9 @@ a {
     transition: transform 0.3s ease-in-out;
     transform: translateX(0);
 }
-.card > .btn {
-    flex: 0 0 10%;
-    width: 10%;
+.card > .btns {
+    flex: 0 0 5%;
+    width: 5%;
 }
 .card > .img {
     flex: 0 0 20%;
@@ -214,8 +220,8 @@ a {
     width: 100%;
 }
 .card > .txt {
-    flex: 0 0 60%;
-    width: 60%;
+    flex: 0 0 65%;
+    width: 65%;
     padding: 0 10px;
 }
 .card > .btn_del {
@@ -318,4 +324,28 @@ a {
     100% {
         transform: translateX(calc(100vw + 120px));
     }
+}
+
+@keyframes clickAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.clicked {
+    animation: clickAnimation 0.3s ease;
+}
+
+.opening-status{
+    padding: 3px 6px;
+    border-radius: 20px;
+    color: #fff;
+    font-weight: bold;
+    flex-shrink: 0; 
 }

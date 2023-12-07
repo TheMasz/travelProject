@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/locationDetail.css') }}">
     <script src="https://api.longdo.com/map/?key=7de1ec7f25b9980ac90ec2457c427a3e"></script>
-    <title>{{$location_detail->location_name}}</title>
+    <title>{{ $location_detail->location_name }}</title>
     <script>
         var map, latitude, longitude;
 
@@ -45,48 +45,61 @@
         <div class="images-wrap">
             <div class="main-image">
                 <div class="image"></div>
-                <div class="credit">credit: {{$location_detail->credit}}</div>
+                <div class="credit">credit: {{ $location_detail->credit }}</div>
             </div>
             <div class="image-box">
                 @php
-                $images = explode(', ', $location_detail->Images);
+                    $images = explode(', ', $location_detail->Images);
                 @endphp
-                @foreach($images as $img)
-                <div class="image" style="background: url({{ asset('storage/images/'.$img) }});" data-img="{{$img}}">
-                </div>
+                @foreach ($images as $img)
+                    <div class="image" style="background: url({{ asset('storage/images/' . $img) }});"
+                        data-img="{{ $img }}">
+                    </div>
                 @endforeach
             </div>
         </div>
         <div class="details-wrap">
             <div class="title row">
                 <div class="txt">
-                    <h1>{{$location_detail->location_name}}</h1>
+                    <h1>{{ $location_detail->location_name }}</h1>
                     <div class="row">
                         <span class="material-icons">
                             place
                         </span>
-                        <p>{{$location_detail->address}}</p>
+                        <p>{{ $location_detail->address }}</p>
                     </div>
                 </div>
                 <div class="button-wrap">
-                    <button class="btn-secondary" onclick="addPlan({{$location_detail->location_id}})">เพิ่มลงทริป</button>
+                    <button class="btn-secondary row align-center"
+                        onclick="addPlan({{ $location_detail->location_id }},event)">
+                        <span class="material-icons mr-05">
+                            luggage
+                        </span>
+                        เพิ่มลงทริป
+                    </button>
                 </div>
             </div>
             <div class="row desc-wrap">
                 <div class="detail">
-                    <p style="text-align: justify;">{{$location_detail->detail}}</p>
+                    <p style="text-align: justify;">{{ $location_detail->detail }}</p>
                     <div class="categories row py-1">
-                        @foreach(explode(',', $location_detail->Preferences) as $pref)
-                        <p>{{$pref}}</p>
+                        @foreach (explode(',', $location_detail->Preferences) as $pref)
+                            <p>{{ $pref }}</p>
                         @endforeach
                     </div>
                 </div>
-                <div class="map" id="map" data-latitude="{{ $location_detail->latitude }}" data-longitude="{{ $location_detail->longitude }}">
+                <div class="map" id="map" data-latitude="{{ $location_detail->latitude }}"
+                    data-longitude="{{ $location_detail->longitude }}">
                 </div>
             </div>
         </div>
         <div class="comments-wrap">
-            <button class="btn-secondary">เขียนรีวิว</button>
+            <button class="btn-secondary row align-center">
+                <span class="material-icons mr-05">
+                    insert_comment
+                </span>
+                เขียนรีวิว
+            </button>
             <div class="comments">
                 <div class="comment">
                     <div class="user">
@@ -101,7 +114,9 @@
                         <p class="date">2023-05-03 13:15</p>
                     </div>
                     <div class="txt">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit omnis perferendis vel quia iusto porro itaque enim, odio accusamus, veritatis ipsam molestias aspernatur commodi? Obcaecati delectus nostrum nobis? Dolore, distinctio.
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit omnis perferendis vel quia
+                        iusto porro itaque enim, odio accusamus, veritatis ipsam molestias aspernatur commodi? Obcaecati
+                        delectus nostrum nobis? Dolore, distinctio.
                     </div>
                     <div class="like">
                         <button>

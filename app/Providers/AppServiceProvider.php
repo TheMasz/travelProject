@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+     
         app()->singleton('getLocation', function ($app) {
             return function ($location_id) {
                 $location = Locations::select(
@@ -197,6 +197,7 @@ class AppServiceProvider extends ServiceProvider
                     'locations.address',
                     'locations.detail',
                     'locations.s_time',
+                    'locations.e_time',
                     'locations.latitude',
                     'locations.longitude',
                     Preferences::raw('GROUP_CONCAT(preferences.preference_id SEPARATOR ",") AS PrefId'),
@@ -214,6 +215,7 @@ class AppServiceProvider extends ServiceProvider
                         'locations.address',
                         'locations.detail',
                         'locations.s_time',
+                        'locations.e_time',
                         'locations.latitude',
                         'locations.longitude',
                         'location_images.credit'

@@ -29,14 +29,13 @@ Route::group(['middleware' => 'member.auth'], function () {
     Route::get('/plans/navigative', [MainController::class, 'navigative']);
     Route::get('/myplans', [MainController::class, 'myplans']);
 
-    
-    Route::post('/api/addPref', [PrefController::class, 'addPref']);
 
+    Route::post('/api/addPref', [PrefController::class, 'addPref']);
     Route::post('/api/getLocations', [LocationsController::class, 'getLocations']);
+    Route::get('/api/checkOpening/{location_id}', [LocationsController::class, 'checkOpening']);
 
     Route::post('/api/addPlan', [PlanController::class, 'addPlan']);
     Route::delete('/api/removePlan', [PlanController::class, 'removePlan']);
-
 });
 
 Route::group(['middleware' => 'admin.auth'], function () {
@@ -49,7 +48,6 @@ Route::group(['middleware' => 'login.auth'], function () {
     Route::get('/signup', [AuthController::class, 'signup']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-  
 });
 Route::get("/logout", [AuthController::class, 'logout']);
 

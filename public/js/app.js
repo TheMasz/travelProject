@@ -13,7 +13,17 @@ window.addEventListener("DOMContentLoaded", () => {
     updateCartLength();
 });
 
-function addPlan(location_id) {
+function buttonAnimate(btn) {
+    btn.classList.add("clicked");
+    setTimeout(() => {
+        btn.classList.remove("clicked");
+    }, 300);
+}
+
+function addPlan(location_id, e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
 
     if (!basket.includes(location_id)) {
@@ -22,6 +32,29 @@ function addPlan(location_id) {
         updateCartLength();
     }
 }
+
+function clearAllPlanInBasket(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
+    localStorage.removeItem("basket");
+    const locations = document.querySelector("#locations");
+    locations.innerHTML = ``;
+    let html = `
+        <div class='back-home'>
+            <span class="material-icons" style='color:lightgray; font-size:64px; margin-bottom:5px'>
+                luggage
+            </span>
+            <p class='mb-2' style='color:lightgray; text-align:center; width:75%'>ยังไม่มีสถานที่ท่องเที่ยวในการเดินของคุณ 
+            กรุณาเริ่มด้วยการเลือกสถานที่ที่คุณต้องการเพิ่มเข้าในแผนการท่องเที่ยวของคุณ คุณสามารถเริ่มการค้นหาและเพิ่มสถานที่ท่องเที่ยวได้ที่หน้าหลักของเรา</p>
+            <a href='/' class='btn-primary mb-05'>ไปยังหน้าแรก</a>
+            <a href='/myplans' class='btn-primary'>ไปยังแผนท่องเที่ยวของฉัน</a>
+        </div>
+    `;
+    locations.insertAdjacentHTML("beforeend", html);
+    updateCartLength();
+}
+
 function removePlanInBasket(location_id) {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     let index = basket.indexOf(location_id);
@@ -215,7 +248,10 @@ function getLocationsId() {
 
 let current = {};
 
-function getCurrectGeo() {
+function getCurrectGeo(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -254,7 +290,10 @@ function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
 
-function calcDistance() {
+function calcDistance(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     if (current && current.lat != undefined && current.lon != undefined) {
         if (getBasketLength() == 0) {
             const wrap = document.querySelector(".location-mark");
@@ -369,10 +408,18 @@ function displayBasket(res, btn) {
                 <div class="btns">
                     <button onClick='prevPlan(${
                         data.location_id
-                    })'>เลื่อนขึ้น</button>
+                    })' class='btn_prev' >
+                    <span class="material-icons">
+                    arrow_drop_up
+                    </span>
+                    </button>
                     <button onClick='nextPlan(${
                         data.location_id
-                    })'>เลื่อนลง</button>
+                    })' class='btn_next' >
+                    <span class="material-icons">
+                    arrow_drop_down
+                    </span>
+                    </button>
                 </div>
                 <div class="img">
                     <img src="/storage/images/${images[0]}" alt="${
@@ -409,7 +456,10 @@ function maxLength(inputString, maxLength) {
     }
 }
 
-function navigative() {
+function navigative(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     let length = getBasketLength();
     if (current && current.lat != undefined && current.lon != undefined) {
         if (length == 0) {
@@ -435,5 +485,18 @@ function navigative() {
         setTimeout(function () {
             wrap.removeChild(div);
         }, 2000);
+    }
+}
+
+function checkTime(s_time, e_time) {
+    const currentTime = new Date();
+    const openingTime = new Date(s_time);
+    const closingTime = new Date(e_time);
+    console.log(openingTime, closingTime);
+
+    if (currentTime >= openingTime && currentTime < closingTime) {
+        return "opened";
+    } else {
+        return "closed";
     }
 }

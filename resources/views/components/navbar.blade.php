@@ -20,11 +20,31 @@
                         </a>
                         <div class="dropdown-menu">
                             <!-- Add dropdown items here -->
-                            <a class="dropdown-item" href="/profile">โปรไฟล์</a>
-                            <a class="dropdown-item" href="/myplans">แผนการท่องเที่ยว</a>
-                            <a class="dropdown-item" href="/settings">การตั้งค่า</a>
+                            <a class="dropdown-item" href="/profile">
+                                <span class="material-icons">
+                                    person
+                                </span>
+                                โปรไฟล์
+                            </a>
+                            <a class="dropdown-item" href="/myplans">
+                                <span class="material-icons">
+                                    luggage
+                                </span>
+                                แผนการท่องเที่ยว
+                            </a>
+                            <a class="dropdown-item" href="/settings">
+                                <span class="material-icons">
+                                    settings
+                                </span>
+                                การตั้งค่า
+                            </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/logout">ออกจากระบบ</a>
+                            <a class="dropdown-item" href="/logout">
+                                <span class="material-icons">
+                                    logout
+                                </span>
+                                ออกจากระบบ
+                            </a>
                         </div>
                     </li>
                     <li>
