@@ -32,6 +32,7 @@ Route::group(['middleware' => 'member.auth'], function () {
 
     Route::post('/api/addPref', [PrefController::class, 'addPref']);
     Route::post('/api/getLocations', [LocationsController::class, 'getLocations']);
+    Route::post('/api/getNearLocations', [LocationsController::class, 'getNearLocations']);
     Route::get('/api/checkOpening/{location_id}', [LocationsController::class, 'checkOpening']);
 
     Route::post('/api/addPlan', [PlanController::class, 'addPlan']);

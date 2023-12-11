@@ -27,7 +27,7 @@
         </div>
         <div class="main-wrap">
             <div class="locations-wrap">
-                @foreach (app('getLocationsByPref')($province_id, $member_id) as $location)
+                @foreach ($paginatedLocations as $location)
                     <div class="card">
                         @php
                             $images = explode(', ', $location->Images);
@@ -56,7 +56,6 @@
                                         fetch(`/api/checkOpening/${location_id}`)
                                             .then(response => response.json())
                                             .then(data => {
-                                                console.log(data);
                                                 const statusElement = document.getElementById(`opening-status-${location_id}`);
                                                 if (data.status == 'opend') {
                                                     statusElement.textContent = 'เปิดทำการ';
@@ -69,10 +68,13 @@
                                             .catch(error => console.error('Error:', error));
                                     }
 
-                                    checkOpeningStatus({{ $location->location_id }});
-                                    setInterval(() => {
+                                    window.addEventListener('DOMContentLoaded', (e) => {
+                                        e.preventDefault();
                                         checkOpeningStatus({{ $location->location_id }});
-                                    }, 60000);
+                                        setInterval(() => {
+                                            checkOpeningStatus({{ $location->location_id }});
+                                        }, 60000);
+                                    });
                                 </script>
                             </div>
                             <p>{{ app('maxLength')($location->detail) }}...</p>
@@ -130,6 +132,38 @@
                 </div>
             </div>
         </div>
+        <div class="pagination-wrap">
+            <div class="pagination">
+                @if ($page > 1)
+                    <a href="?page={{ $page - 1 }}" class="pn_btn">
+                        <span class="material-icons">
+                            arrow_back_ios
+                        </span>
+                    </a>
+                @endif
+
+                @for ($i = 1; $i <= ceil($countLocations / $perPage); $i++)
+                    @if ($i == 1 || $i == $page || $i == ceil($countLocations / $perPage))
+                        <a href="?page={{ $i }}"
+                            @if ($i == $page) class="active" @endif>{{ $i }}</a>
+                    @elseif(abs($i - $page) < 3)
+                        <a href="?page={{ $i }}">{{ $i }}</a>
+                    @elseif(abs($i - $page) == 3)
+                        <span>...</span>
+                    @endif
+                @endfor
+
+                @if ($page < ceil($countLocations / $perPage))
+                    <a href="?page={{ $page + 1 }}" class="pn_btn">
+                        <span class="material-icons">
+                            arrow_forward_ios
+                        </span>
+                    </a>
+                @endif
+            </div>
+        </div>
+
+
 
     </div>
 </body>

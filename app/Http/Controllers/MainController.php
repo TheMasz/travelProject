@@ -26,9 +26,26 @@ class MainController extends Controller
     }
     function province($province_id)
     {
+        $province_id = (int)$province_id;
         $member_id = session('member_id');
         $province_name = Provinces::where('province_id', $province_id)->first();
-        return view('main.province')->with(['province_id' => $province_id, 'province_name' => $province_name['province_name'], 'member_id' => $member_id]);
+        $getLocationsByPref = App::make('getLocationsByPref');;
+        $locations = $getLocationsByPref($province_id, $member_id);
+        $countLocations = count($locations);
+        
+        $perPage = 8;
+        $page = request()->has('page') ? request()->query('page') : 1;
+        $paginatedLocations = array_slice($locations, ($page - 1) * $perPage, $perPage);
+        return view('main.province')->with(
+            [
+                'province_id' => $province_id,
+                'province_name' => $province_name['province_name'],
+                'paginatedLocations' => $paginatedLocations,
+                'member_id' => $member_id, 'page' => $page,
+                'perPage' => $perPage,
+                'countLocations' => $countLocations
+            ]
+        );
     }
     function basket()
     {

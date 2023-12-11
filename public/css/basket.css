@@ -10,6 +10,7 @@
     border-radius: 10px;
     box-shadow: 0 0 7px 0 lightgray;
     padding: 0 10px;
+    
 }
 .main-basket > .tooltips-basket {
     flex: 0 0 30%;

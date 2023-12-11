@@ -59,7 +59,7 @@ a {
 .px-1 {
     padding: 0 10px;
 }
-.mr-05{
+.mr-05 {
     margin-right: 5px;
 }
 .mb-05 {
@@ -342,10 +342,41 @@ a {
     animation: clickAnimation 0.3s ease;
 }
 
-.opening-status{
+.opening-status {
     padding: 3px 6px;
     border-radius: 20px;
     color: #fff;
     font-weight: bold;
-    flex-shrink: 0; 
+    flex-shrink: 0;
+}
+
+.pagination-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 7px 0 lightgray;
+}
+.pagination > a {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #555;
+    margin: 0 10px;
+    transition: all 0.25s;
+}
+.pagination > a:hover {
+    background-color: #dc6666;
+    color: #fff;
+}
+.pagination > a.active {
+    background-color: #dc6666;
+    color: #fff;
 }

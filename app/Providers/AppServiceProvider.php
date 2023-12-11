@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-     
+
         app()->singleton('getLocation', function ($app) {
             return function ($location_id) {
                 $location = Locations::select(
@@ -190,7 +190,6 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('getLocationsByPref', function ($app) {
             $getPersonPref = $app->make('getPersonPref');
             return function ($province_id, $member_id) use ($getPersonPref) {
-
                 $locations = Locations::select(
                     'locations.location_id',
                     'locations.location_name',
@@ -276,7 +275,6 @@ class AppServiceProvider extends ServiceProvider
                         $sortedLocations[] = $locations[$index];
                     }
                 }
-
                 return $sortedLocations;
             };
         });

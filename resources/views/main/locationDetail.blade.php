@@ -59,6 +59,30 @@
             </div>
         </div>
         <div class="details-wrap">
+            <div class="opening-status" id="opening-status-{{ $location_detail->location_id }}"></div>
+            <script>
+                function checkOpeningStatus(location_id) {
+                    fetch(`/api/checkOpening/${location_id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            const statusElement = document.getElementById(`opening-status-${location_id}`);
+                            if (data.status == 'opend') {
+                                statusElement.textContent = 'เปิดทำการ';
+                                statusElement.style.backgroundColor = '#28A745';
+                            } else {
+                                statusElement.textContent = 'ปิดทำการ';
+                                statusElement.style.backgroundColor = '#DC3545';
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
+                checkOpeningStatus({{ $location_detail->location_id }});
+                setInterval(() => {
+                    checkOpeningStatus({{ $location_detail->location_id }});
+                }, 60000);
+            </script>
             <div class="title row">
                 <div class="txt">
                     <h1>{{ $location_detail->location_name }}</h1>
@@ -82,6 +106,10 @@
             <div class="row desc-wrap">
                 <div class="detail">
                     <p style="text-align: justify;">{{ $location_detail->detail }}</p>
+                    <div class="time">
+                        <p>ช่วงเวลาเปิด-ปิด</p>
+                        <p>{{ $location_detail->s_time }} - {{ $location_detail->e_time }} น.</p>
+                    </div>
                     <div class="categories row py-1">
                         @foreach (explode(',', $location_detail->Preferences) as $pref)
                             <p>{{ $pref }}</p>
