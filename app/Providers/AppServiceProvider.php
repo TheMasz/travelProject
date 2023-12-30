@@ -10,7 +10,9 @@ use App\Models\PersonalPreference;
 use App\Models\PlansTrip;
 use App\Models\Provinces;
 use App\Models\Preferences;
+use App\Models\Reviews;
 use App\Models\Zones;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use stdClass;
 
@@ -371,6 +373,35 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     return $string;
                 }
+            };
+        });
+
+        app()->singleton('getReviews', function ($app) {
+            return function ($location_id) {
+                $member_id = session('member_id');
+
+                $reviews = DB::table('reviews as r')
+                    ->leftJoin('reviews_like as rl', function ($join) use ($member_id) {
+                        $join->on('rl.review_id', '=', 'r.review_id')
+                            ->where('rl.member_id', '=', $member_id);
+                    })
+                    ->join('members as m', 'm.member_id', '=', 'r.member_id')
+                    ->select(
+                        'r.review_id',
+                        'r.member_id',
+                        'r.review',
+                        'r.rating',
+                        'r.created_at',
+                        'm.username',
+                        DB::raw('COUNT(rl.review_id) AS like_count'),
+                        DB::raw('IF(COUNT(rl.review_id) > 0, true, false) AS liked_by_current_member')
+                    )
+                    ->where('r.location_id', $location_id)
+                    ->groupBy('r.review_id', 'r.review', 'r.rating', 'r.created_at', 'r.member_id', 'm.username')
+                    ->orderByRaw("CASE WHEN r.member_id = ? THEN r.created_at ELSE COUNT(rl.review_id) END DESC", [$member_id])
+                    ->get();
+
+                return $reviews;
             };
         });
     }

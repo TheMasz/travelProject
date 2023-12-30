@@ -52,22 +52,6 @@
                                 </h3>
                                 <div class="opening-status" id="opening-status-{{ $location->location_id }}"></div>
                                 <script>
-                                    function checkOpeningStatus(location_id) {
-                                        fetch(`/api/checkOpening/${location_id}`)
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                const statusElement = document.getElementById(`opening-status-${location_id}`);
-                                                if (data.status == 'opend') {
-                                                    statusElement.textContent = 'เปิดทำการ';
-                                                    statusElement.style.backgroundColor = '#28A745';
-                                                } else {
-                                                    statusElement.textContent = 'ปิดทำการ';
-                                                    statusElement.style.backgroundColor = '#DC3545';
-                                                }
-                                            })
-                                            .catch(error => console.error('Error:', error));
-                                    }
-
                                     window.addEventListener('DOMContentLoaded', (e) => {
                                         e.preventDefault();
                                         checkOpeningStatus({{ $location->location_id }});

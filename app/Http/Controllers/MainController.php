@@ -32,7 +32,7 @@ class MainController extends Controller
         $getLocationsByPref = App::make('getLocationsByPref');;
         $locations = $getLocationsByPref($province_id, $member_id);
         $countLocations = count($locations);
-        
+
         $perPage = 8;
         $page = request()->has('page') ? request()->query('page') : 1;
         $paginatedLocations = array_slice($locations, ($page - 1) * $perPage, $perPage);
@@ -49,7 +49,6 @@ class MainController extends Controller
     }
     function basket()
     {
-
         return view('main.basket');
     }
     function navigative()
@@ -60,7 +59,12 @@ class MainController extends Controller
     {
         $locationFunction = App::make('getLocation');
         $location = $locationFunction($location_id);
-        return view('main.locationDetail')->with(['location_detail' => $location]);
+        $reviewsFunction = App::make('getReviews');
+        $reviews = $reviewsFunction($location_id)->take(3);
+        return view('main.locationDetail')->with([
+            'location_detail' => $location,
+            'reviews' => $reviews
+        ]);
     }
     function myplans()
     {

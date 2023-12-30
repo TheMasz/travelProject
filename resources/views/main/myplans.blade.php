@@ -74,7 +74,6 @@
     <x-confirm />
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/myplans.js') }}"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 

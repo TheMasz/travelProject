@@ -6,6 +6,9 @@
     justify-content: space-between;
     padding: 10px 0;
 }
+.details-wrap > .title > .txt > .row > h1 {
+    color: #555;
+}
 .details-wrap > .title > .txt > .row {
     color: #8e8e8e;
     font-weight: bold;
@@ -17,24 +20,35 @@
 }
 .details-wrap > .title > .button-wrap > button {
     cursor: pointer;
+    flex-shrink: 0;
 }
-.details-wrap .categories > p {
+.details-wrap .categories > a {
     padding: 10px;
     border: 1px solid #000;
     border-radius: 20px;
     margin-right: 5px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.details-wrap .categories > a:hover {
+    color: #fff;
+    font-weight: bold;
+    background-color: #dc6666;
+    border: none;
 }
 .details-wrap > .desc-wrap > .detail {
     flex: 0 0 70%;
     width: 70%;
 }
+.details-wrap > .desc-wrap > .detail > .time {
+    padding: 10px 0;
+}
+
 .details-wrap > .desc-wrap > .map {
     flex: 0 0 30%;
     min-height: 250px;
     width: 30%;
     padding: 0 10px;
-}
-.images-wrap {
 }
 
 .images-wrap > .image-box {
@@ -50,7 +64,7 @@
     background-color: #292929;
     margin-bottom: 20px;
 }
-.images-wrap > .main-image>.credit{
+.images-wrap > .main-image > .credit {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -82,59 +96,99 @@
 }
 .images-wrap > .image-box > .image:hover {
     box-shadow: 0 0 7px lightgray;
-    transform: scale(1.1); 
+    transform: scale(1.1);
 }
-.comments-wrap {
+.reviews-wrap {
     padding: 20px 0;
     display: flex;
     flex-direction: column;
 }
-.comments-wrap > button {
+.reviews-wrap > button {
     align-self: flex-end;
     cursor: pointer;
     margin: 10px 0;
 }
-.comments-wrap > .comments {
+.reviews-wrap > .reviews {
     border: 1px solid #000;
     background-color: #fff;
     border-radius: 20px;
     padding: 10px;
 }
-.comments-wrap > .comments > .comment {
+.reviews-wrap > .reviews > .review {
     display: flex;
     flex-direction: row;
     width: 100%;
     border-bottom: 1px solid #eee;
     padding: 10px 0;
 }
-.comments-wrap > .comments > .comment > .user {
+.reviews-wrap > .reviews > .review > .user {
     flex: 0 0 15%;
     width: 15%;
 }
-.comments-wrap > .comments > .comment > .user > .date {
+.reviews-wrap > .reviews > .review > .user > .date {
     color: #8e8e8e;
 }
-.comments-wrap > .comments > .comment > .user > .star {
+.reviews-wrap > .reviews > .review > .user > .star {
     color: red;
 }
-.comments-wrap > .comments > .comment > .txt {
-    flex: 0 0 75%;
-    width: 75%;
+.reviews-wrap > .reviews > .review > .txt {
+    flex: 0 0 70%;
+    width: 70%;
     text-align: justify;
 }
 
-.comments-wrap > .comments > .comment > .like {
+.reviews-wrap > .reviews > .review > .more {
+    flex: 0 0 5%;
+    width: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.reviews-wrap > .reviews > .review > .more > .del-review {
+    color: red;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.25s;
+}
+.reviews-wrap > .reviews > .review > .more > .del-review:hover {
+    color: white;
+    background-color: red;
+}
+.reviews-wrap > .reviews > .review > .like_section {
     flex: 0 0 10%;
     width: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.comments-wrap > .comments > .comment > .like button {
+.reviews-wrap > .reviews > .review > .like_section button {
     display: flex;
     flex-direction: row;
     align-items: center;
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+.reviews-wrap > .reviews > .no-reviews {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+}
+#loadMoreButton {
+    align-self: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 7px 0 lightgray;
+    background-color: #dc6666;
+    color: #fff;
+}
+.disable {
+    opacity: 0.6;
+    cursor: not-allowed !important;
 }

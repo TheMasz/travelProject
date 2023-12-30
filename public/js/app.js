@@ -30,6 +30,9 @@ function addPlan(location_id, e) {
         basket.push(location_id);
         localStorage.setItem("basket", JSON.stringify(basket));
         updateCartLength();
+        if (window.location.pathname === "/plans/navigative") {
+            location.reload();
+        }
     }
 }
 
@@ -92,6 +95,7 @@ function removePlanInBasket(location_id) {
             });
     }
 }
+
 function findIndexById(location_id, basket) {
     let index;
     for (let i = 0; i < basket.length; i++) {
@@ -207,28 +211,12 @@ function showAlert(type, message, object) {
     }
 }
 
-function removePlan(planName) {
-    const data = {
-        plan_name: planName,
-    };
-
-    axios
-        .delete("/api/removePlan", { data })
-        .then((response) => {
-            console.log("Request successful:", response.data);
-            if (response.data.success) {
-                location.reload();
-            }
-        })
-        .catch((error) => {
-            console.error("Error removing plan:", error);
-        });
-}
 
 function setBasketDistance(basket) {
     localStorage.setItem("basket", JSON.stringify(basket));
     updateCartLength();
 }
+
 function getBasketLength() {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     return basket.length;
@@ -255,8 +243,8 @@ function getCurrectGeo(e) {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
                 // Use the location from the browser's geolocation API
                 current = {
                     lat: lat,
@@ -402,6 +390,30 @@ function displayBasket(res, btn) {
                 </div>
             </div>
             `;
+        } else if (btn == "navigative") {
+            html = `
+            <div class="card">
+       
+                <div class='order' style='flex: 0 0 10%'; width:10%;'>
+                    ${i + 1}
+                </div>
+                <div class="img" style='flex: 0 0 25%'; width: 25%;>
+                    <img src="/storage/images/${images[0]}" alt="${
+                data.location_name
+            }">
+                </div>
+                <div class="txt" style='flex: 0 0 60%'; width:60%;>
+                    <h3 style="font-size:14px;">
+                        <a href="/province/${data.province_id}/${
+                data.location_id
+            }">
+                            ${data.location_name}
+                        </a>
+                    </h3>
+                </div>
+            </div>
+            <hr/>
+            `;
         } else {
             html = `
             <div class="card">
@@ -488,15 +500,20 @@ function navigative(e) {
     }
 }
 
-function checkTime(s_time, e_time) {
-    const currentTime = new Date();
-    const openingTime = new Date(s_time);
-    const closingTime = new Date(e_time);
-    console.log(openingTime, closingTime);
-
-    if (currentTime >= openingTime && currentTime < closingTime) {
-        return "opened";
-    } else {
-        return "closed";
-    }
+function checkOpeningStatus(location_id) {
+    fetch(`/api/checkOpening/${location_id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const statusElement = document.getElementById(
+                `opening-status-${location_id}`
+            );
+            if (data.status == "opend") {
+                statusElement.textContent = "เปิดทำการ";
+                statusElement.style.backgroundColor = "#28A745";
+            } else {
+                statusElement.textContent = "ปิดทำการ";
+                statusElement.style.backgroundColor = "#DC3545";
+            }
+        })
+        .catch((error) => console.error("Error:", error));
 }

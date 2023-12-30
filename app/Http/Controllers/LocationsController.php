@@ -24,53 +24,72 @@ class LocationsController extends Controller
         $receivedArray = $request->all();
         $getLocations = App::make('getLocations');
         $locations = $getLocations($receivedArray);
+        $excludeLocationIds = array_column($locations, 'location_id');
 
-        //ผิดตรงนี้ต้องดึงข้อมูลสถานที่ทั้งหมดของ provicne_id 
         $province_ids = array_unique(array_column($locations, 'province_id'));
         $locationsByProvince = [];
-        foreach ($province_ids as $province_id) {
-            $locationsByProvince[$province_id] = array_filter($locations, function ($location) use ($province_id) {
-                return $location['province_id'] == $province_id;
-            });
+        $locationsProvince = Locations::select(
+            'locations.location_id',
+            'locations.location_name',
+            'locations.latitude',
+            'locations.longitude',
+            'locations.province_id',
+            'locations.address',
+            LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images')
+        )
+            ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+            ->whereIn('locations.province_id', $province_ids)
+            ->groupBy(
+                'locations.location_id',
+                'locations.location_name',
+                'locations.latitude',
+                'locations.longitude',
+                'locations.province_id',
+                'locations.address'
+            )
+            ->get();
+
+        foreach ($locationsProvince as $location) {
+            if (!in_array($location->location_id, $excludeLocationIds)) {
+                $locationsByProvince[$location->province_id][] = [
+                    'location_id' => $location->location_id,
+                    'location_name' => $location->location_name,
+                    'latitude' => $location->latitude,
+                    'longitude' => $location->longitude,
+                    'Images' => $location->Images,
+                    'address' => $location->address
+                ];
+            }
         }
-        dd($locationsByProvince);
 
         $locationsNearest = [];
-
-        return $locationsByProvince;
+        $addedLocationIds = [];
 
         foreach ($locations as $location1) {
-            $nearestDistance = INF;
-            $nearestLocation = null;;
             foreach ($locationsByProvince[$location1['province_id']] as $location2) {
-                if ($location1['location_id'] !== $location2['location_id']) { // Skip if comparing with itself
+                if ((int)$location1['location_id'] != (int)$location2['location_id']) {
                     $distance = calculateDistance(
                         $location1['latitude'],
                         $location1['longitude'],
                         $location2['latitude'],
                         $location2['longitude']
                     );
-
-                    if ($distance < $nearestDistance) {
-                        $nearestDistance = $distance;
-                        $nearestLocation = $location2;
+                    if ($distance < 5 && !in_array($location2['location_id'], $addedLocationIds)) {
+                        $locationsNearest[] = $location2;
+                        $addedLocationIds[] = $location2['location_id'];
                     }
                 }
             }
-
-            if ($nearestLocation !== null && $nearestDistance <= 5) {
-                $locationsNearest[] = $nearestLocation;
-            }
         }
 
-        return $locationsByProvince;
+        return $locationsNearest;
     }
 
 
     public function checkOpening($location_id)
     {
-        config(['app.timezone' => 'Asia/Bangkok']);
-        date_default_timezone_set(config('app.timezone'));
+        // config(['app.timezone' => 'Asia/Bangkok']);
+        // date_default_timezone_set(config('app.timezone'));
         $location = Locations::select('location_id', 's_time', 'e_time')
             ->where('location_id', $location_id)
             ->first();

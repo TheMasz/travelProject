@@ -6,6 +6,10 @@
     font-family: "Arial";
     outline: none;
 }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
 body {
     background-color: #f7f8fc;
 }
@@ -59,6 +63,9 @@ a {
 .px-1 {
     padding: 0 10px;
 }
+.ml-1 {
+    margin-left: 10px;
+}
 .mr-05 {
     margin-right: 5px;
 }
@@ -70,6 +77,12 @@ a {
 }
 .mb-4 {
     margin-bottom: 40px;
+}
+.mx-1{
+    margin: 0 10px;
+}
+.mt-1 {
+    margin-top: 10px;
 }
 .mt-2 {
     margin-top: 20px;
@@ -164,6 +177,10 @@ a {
     background-color: #cce5ff;
     color: #004085;
 }
+.message-success {
+    background-color: #EDF7ED;
+    color: #446646;
+}
 
 .hidden-checkbox {
     position: absolute;
@@ -203,6 +220,7 @@ a {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 100%;
     padding: 10px;
     transition: transform 0.3s ease-in-out;
@@ -211,6 +229,18 @@ a {
 .card > .btns {
     flex: 0 0 5%;
     width: 5%;
+}
+.card > .order {
+    flex: 0 0 5%;
+    width: 5%;
+    border-radius: 50%;
+    padding: 5px;
+    flex-shrink: 0;
+    background-color: #dd5656;
+    margin: 0 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 7px 0 lightgray;
 }
 .card > .img {
     flex: 0 0 20%;

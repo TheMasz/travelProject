@@ -27,7 +27,6 @@ confirmBtn.addEventListener("click", (e) => {
             data,
         })
         .then((response) => {
-            console.log("Request successful:", response.data);
             if (response.data.success) {
                 location.reload();
             }
