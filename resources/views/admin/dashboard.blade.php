@@ -7,7 +7,7 @@
     <script src="https://kit.fontawesome.com/da55352c9a.js" crossorigin="anonymous"></script>
     <title>Dashboard</title>
 </head>
-<body>
+<body style="background-color: #F5F5F5">
 
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
         <a class="navbar-brand" href="#">ADMIN</a>

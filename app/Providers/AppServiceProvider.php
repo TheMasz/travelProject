@@ -12,6 +12,7 @@ use App\Models\Provinces;
 use App\Models\Preferences;
 use App\Models\Zones;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use stdClass;
 
 class AppServiceProvider extends ServiceProvider
@@ -380,6 +381,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrapFive();
     }
 }

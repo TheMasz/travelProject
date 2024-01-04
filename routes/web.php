@@ -41,7 +41,32 @@ Route::group(['middleware' => 'member.auth'], function () {
 
 Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/locations', [AdminController::class, 'locations']);
+    Route::get('/admin/users', [AdminController::class, 'users']);
+    Route::get('/admin/reviews', [AdminController::class, 'reviews']);
+    Route::get('/admin/preferences', [AdminController::class, 'preferences']);
     Route::get('/admin/test', [AdminController::class, 'test']);
+    Route::get('admin/deletelocation{id}', [AdminController::class, 'deletelocation'])->name('deletelocation');
+    Route::get('admin/searchlocation', [AdminController::class, 'searchlocation'])->name('search.location');
+    Route::get('admin/deleteusers{member_id}', [AdminController::class, 'deleteusers'])->name('deleteusers');
+    Route::get('admin/searchusers', [AdminController::class, 'searchusers'])->name('search.users');
+    Route::post('admin/insertlocations', [AdminController::class, 'store'])->name('insertlocations');
+    Route::post('admin/insertpreference', [AdminController::class, 'insertpreference'])->name('insertpreference');
+    Route::get('admin/delpreferences{preference_id}', [AdminController::class, 'delpreferences'])->name('delpreferences');
+    Route::get('admin/searchpre', [AdminController::class, 'searchpre'])->name('search.pre');
+    Route::get('admin/searchreviews', [AdminController::class, 'searchreviews'])->name('search.reviews');
+    Route::get('admin/delreviews{comment_id}', [AdminController::class, 'delreviews'])->name('delreviews');
+    // Route::get('admin/editpreferences{preference_id}', [AdminController::class, 'edit'])->name('edit-preference');
+    Route::put('admin/updatepreferences/{preference_id}', [AdminController::class, 'updatepreference'])->name('update-preference');
+    Route::put('admin/updateusers/{member_id}', [AdminController::class, 'updateusers'])->name('update-users');
+    Route::get('admin/locations/{location_id}', [AdminController::class, 'locationsMore'])->name('locations'); 
+    Route::get('admin/reviews/{location_id}/{comment_id}', [AdminController::class, 'reviews_more'])->name('reviews'); 
+    // Route::post('admin/updatephoto/{img_id}', [AdminController::class, 'updatephoto'])->name('updatephoto');
+    Route::put('admin/updatephoto/{img_id}', [AdminController::class, 'updatephoto'])->name('updatephoto');
+    Route::put('admin/updateLocation/{location_id}', [AdminController::class, 'updateLocation'])->name('updateLocation');
+
+
+
 });
 
 Route::group(['middleware' => 'login.auth'], function () {

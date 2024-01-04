@@ -1,16 +1,34 @@
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            alert('{{ session('success') }}');
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            alert('{{ session('error') }}');
+        });
+    </script>
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/da55352c9a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 
     <title>Admin Locations</title>
 </head>
 
-<body style="background-color: #ddd">
+<body style="background-color: #F5F5F5">
 
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
         <a class="navbar-brand" href="#">ADMIN</a>
@@ -67,15 +85,15 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <h5><span><i class="fa-solid fa-map-pin"></i></span> Locations <button class="btn btn-success"
-                                title="เพิ่มข้อมูล" type="submit"><span><i style="color: white"
-                                        class="fa-solid fa-plus"></i></span>
+                                title="เพิ่มข้อมูล" type="button" data-toggle="modal" data-target="#myModal"><span><i
+                                        style="color: white" class="fa-solid fa-plus"></i></a></span>
                             </button> </h5>
                     </div>
                     <div class="col-sm-4">
-                        <form action="" name="from1" id="from1">
+                        <form action="{{ route('search.location') }}" method="GET">
                             <div class="input-group" style="text-align: right">
-                                <input type="search" placeholder="ค้นหาสถานที่ท่องเที่ยว" name="search"
-                                    id="search" value="" class="form-control" style="width: 220px;" />
+                                <input type="search" placeholder="ค้นหาสถานที่ท่องเที่ยว" name="search" id="search"
+                                    value="" class="form-control" style="width: 220px;" />
                                 <button class="btn btn-warning" title="ค้นหา" type="submit"><span><i
                                             style="color: white;" class="fa-solid fa-magnifying-glass"></i></span>
                                 </button>
@@ -83,43 +101,211 @@
                         </form>
                     </div>
                 </div>
-                
+
             </div>
-            
+
+
+            {{-- Modal Insert --}}
+            <div class="container">
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                เพิ่มข้อมูล
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <form method="post" action="{{ route('insertlocations') }}"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="location_name"
+                                                placeholder="ชื่อสถานที่ท่องเที่ยว"
+                                                onKeyPress="return KeyCode1(location_name)" required>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" name="address"
+                                                placeholder="ที่อยู่สถานที่ท่องเที่ยว" required>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <textarea name="detail" class="form-control" placeholder="รายละเอียดสถานที่ท่องเที่ยว" required></textarea>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 20px;">
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">เวลาเปิด</div>
+                                                </div>
+                                                <input type="time" class="form-control" name="s_time" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">เวลาปิด</div>
+                                                </div>
+                                                <input type="time" class="form-control" name="e_time" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <select class="custom-select mr-sm-2" name="province_id">
+                                                <option selected>จังหวัด...</option>
+                                                <?php
+                                                $provinces = DB::table('provinces')->get();
+                                                ?>
+                                                @foreach ($provinces as $item)
+                                                    <option value="{{ $item->province_id }}">{{ $item->province_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <input type="number" step="0.0000000001" class="form-control"
+                                                name="latitude" placeholder="Latitude" required>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <input type="number" step="0.0000000001" class="form-control"
+                                                name="longitude" placeholder="Longitude" required>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+
+                                            <input type="file" name="img_path[]" class="form-control"
+                                                multiple="multiple" accept="image/jpeg, image/png" required>
+                                        </div>
+
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <input type="text" class="form-control" name="credit"
+                                                placeholder="Credit:Photo" required>
+                                        </div>
+                                        <?php
+                                        $preference = DB::table('preferences')->get();
+                                        ?>
+                                        <div class="col-sm-12" style="margin-top: 10px;">
+                                            <span style="font-size: 16px;">ประเภทสถานที่ท่องเที่ยว</span><br>
+                                            @foreach ($preference as $item)
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                    <label class="btn btn-outline-primary" style="margin: 10px;">
+                                                        <input type="checkbox" name="preferences_id[]"
+                                                            value="{{ $item->preference_id }}">{{ $item->preference_name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                    </div>
+
+                                    <input type="hidden" name="location_id" value="">
+                                    <input type="hidden" name="img_id" value="">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-success" value="Save Changes" name="save">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> {{-- Close Modal Insert --}}
+
+
             <div class="card-body">
                 <div class="row">
                     @foreach ($locations as $item)
-                    <div class="col-sm-4" style="margin-top: 5px;">
-                        <div class="card">
-                            
-                            <img class="card-img-top rounded mx-auto d-block" style="height: 200px; padding: 10px;"
-                                src="{{ url('storage/'.$item->img_names) }}" alt="Card image cap">
-                            <div class="card-body">
-                                    <h5 class="card-title">{{Str::limit($item->location_name,30)}}</h5>
-                                    <p class="card-text">{{Str::limit($item->detail,110)}}</p>
-                                    <p class="card-text"><small class="text-muted">Opening and Closing Times: {{$item->s_time}} - {{$item->e_time}}</small></p>
+                        <div class="col-sm-4" style="margin-top: 5px;">
+                            <div class="card">
+
+                                <img class="card-img-top rounded mx-auto d-block"
+                                    style="height: 200px; padding: 10px;"
+                                    src="{{ asset('storage/images/' . $item->img_names) }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ Str::limit($item->location_name, 30) }}</h5>
+                                    <p class="card-text">{{ Str::limit($item->detail, 110) }}</p>
+                                    <p class="card-text"><small class="text-muted">Opening and Closing Times:
+                                            {{ $item->s_time }} - {{ $item->e_time }}</small></p>
                                 </div>
                                 <div class="card-footer" style="text-align: right">
-                                    <button class="btn btn-secondary" title="เพิ่มเติม" type="submit"><span><i
-                                                class="fa-solid fa-bars"></i></span>
-                                    </button>
-                                    <button class="btn btn-warning" title="แก้ไขข้อมูลสถานที่ท่องเที่ยว" type="submit"><span><i
-                                                style="color: white;" class="fa-solid fa-pen"></i></span>
-                                    </button>
-                                    <button class="btn btn-danger" title="ลบข้อมูล" type="submit"><span><i
-                                                class="fa-solid fa-trash"></i></span>
-                                    </button>
+
+                                    <a href="{{ route('locations', ['location_id' => $item->location_id]) }}">
+                                        <button type='button' class='btn btn-secondary' data-toggle="tooltip"
+                                            title="เพิ่มเติม">
+                                            <i class="fa-solid fa-bars"></i>
+                                        </button>
+                                    </a>
+
+                                    <a href='#delete{{ $item->location_id }}' data-toggle='modal'><button
+                                            class="btn btn-danger" title="ลบข้อมูล" type="submit"><span><i
+                                                    class="fa-solid fa-trash"></i></span>
+                                        </button></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </div> {{-- row --}}
                 <br>
-                {{$locations->links()}}
+                {{ $locations->links() }}
             </div> {{-- card body --}}
         </div>
     </div>
 
+    @foreach ($locations as $item)
+        <div class="container">
+            <div class="modal fade" id="delete{{ $item->location_id }}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #d9534f; color: white;">
+                            ลบข้อมูล
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <span style="color: #000; font-size: 16px;">คุณต้องการลบข้อมูลสถานที่: <span style="color: #d9534f; font-size: 18px;">{{ $item->location_name }}</span> 
+                                ใช่หรือไม่ !!</span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="{{ route('deletelocation', $item->location_id) }}"> <button
+                                    class="btn btn-danger" title="ลบข้อมูล" type="submit">Delete
+                                </button></a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+
+    <script type="text/javascript">
+        function KeyCode(objId) {
+            if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 97 && event.keyCode <= 122 || event
+                .keyCode >= 65 && event.keyCode <= 90) //48-57(ตัวเลข) ,65-90(Eng ตัวพิมพ์ใหญ่ ) ,97-122(Eng ตัวพิมพ์เล็ก)
+            {
+                return true;
+            } else {
+                alert("กรอกได้เฉพาะ a-z หรือ A-Z และ 0-9");
+                return false;
+            }
+        }
+
+        function KeyCode1(objId) {
+            if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 161 && event.keyCode <= 255 || event
+                .keyCode >= 3585 && event.keyCode <= 3675 || event
+                .keyCode >= 97 && event.keyCode <= 122 || event.keyCode >= 65 && event.keyCode <= 90
+            ) //48-57(ตัวเลข) ,65-90(Eng ตัวพิมพ์ใหญ่ ) ,97-122(Eng ตัวพิมพ์เล็ก)
+            {
+                return true;
+            } else {
+                alert("กรอกได้เฉพาะ ก-ฮ และ a-z และ A-Z หรือ 0-9");
+                return false;
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <!-- Popper JS -->
