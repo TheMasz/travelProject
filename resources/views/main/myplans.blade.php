@@ -31,7 +31,7 @@
                     @php
                     $images = explode(',',$location->Images);
                     @endphp
-                    <img src="{{ asset('storage/images/' . $images[0]) }}" alt="{{$location->location_name}}" />
+                    <img src="{{ asset('storage/images/locations/' . $images[0]) }}" alt="{{$location->location_name}}" />
                     @endforeach
                 </div>
                 <div class="details">

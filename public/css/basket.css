@@ -35,7 +35,7 @@
     transition: all 0.25s;
 }
 .main-basket > .tooltips-basket > button:hover {
-    background-color: #dd5656;
+    background-color: var(--main-color);;
     color: #fff;
     border: 1px solid #fff;
     box-shadow: 0 0 7px 0 lightgray;
@@ -55,7 +55,7 @@
     margin-bottom: 10px;
 }
 .main-basket > .tooltips-basket > form > input:focus {
-    border: 2px solid #dd5656;
+    border: 2px solid var(--main-color);
 }
 .main-basket > .content-basket > .locations {
     position: relative;

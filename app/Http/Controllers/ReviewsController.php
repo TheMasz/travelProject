@@ -30,13 +30,24 @@ class ReviewsController extends Controller
         $reviews = $reviewsFunction($location_id)->take(3);
         return $reviews;
     }
+    function getMyReviews($sorted)
+    {
+        $reviewsFunction = App::make('getMyReviews');
+        $myReviews = $reviewsFunction($sorted)->take(6);
+        return $myReviews;
+    }
     function loadMoreReviews($location_id, $offset)
     {
         $reviewsFunction = App::make('getReviews');
         $reviews = $reviewsFunction($location_id)->skip($offset)->take(5);
         return $reviews;
     }
-
+    function loadMoreMyReviews($offset, $sorted)
+    {
+        $reviewsFunction = App::make('getMyReviews');
+        $reviews = $reviewsFunction($sorted)->skip($offset)->take(6);
+        return $reviews;
+    }
 
     function likeActions(Request $request)
     {
@@ -73,9 +84,5 @@ class ReviewsController extends Controller
         } else {
             return response()->json(['message' => 'Review not found or could not be removed'], 404);
         }
-    }
-
-    function updateReview(Request $request)
-    {
     }
 }

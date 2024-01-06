@@ -93,6 +93,6 @@
     font-size: 12px;
     text-align: center;
     border-radius: 50%;
-    background-color: #dc6666;
+    background-color: var(--main-color);
     color: #fff;
 }

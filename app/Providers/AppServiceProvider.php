@@ -14,6 +14,7 @@ use App\Models\Reviews;
 use App\Models\Zones;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 use stdClass;
 
 class AppServiceProvider extends ServiceProvider
@@ -191,8 +192,9 @@ class AppServiceProvider extends ServiceProvider
 
         app()->singleton('getLocationsByPref', function ($app) {
             $getPersonPref = $app->make('getPersonPref');
-            return function ($province_id, $member_id) use ($getPersonPref) {
-                $locations = Locations::select(
+            return function ($province_id, $member_id, $selectedPreferences) use ($getPersonPref) {
+
+                $query = Locations::select(
                     'locations.location_id',
                     'locations.location_name',
                     'locations.address',
@@ -201,8 +203,8 @@ class AppServiceProvider extends ServiceProvider
                     'locations.e_time',
                     'locations.latitude',
                     'locations.longitude',
-                    Preferences::raw('GROUP_CONCAT(preferences.preference_id SEPARATOR ",") AS PrefId'),
-                    Preferences::raw('GROUP_CONCAT(preferences.preference_name SEPARATOR ", ") AS Preferences'),
+                    Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
+                    Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
                     LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
                     'location_images.credit'
                 )
@@ -220,8 +222,23 @@ class AppServiceProvider extends ServiceProvider
                         'locations.latitude',
                         'locations.longitude',
                         'location_images.credit'
-                    )
-                    ->get();
+                    );
+
+                if (!empty($selectedPreferences)) {
+                    $query->whereIn('locations.location_id', function ($subQuery) use ($selectedPreferences) {
+                        $subQuery->select('lt.location_id')
+                            ->from('location_types as lt')
+                            ->whereIn('lt.preference_id', $selectedPreferences);
+                    });
+                }
+
+                // if (!empty($selectedPreferences)) {
+                //     $query->whereIn('preferences.preference_id', $selectedPreferences);
+                //     // dd($locations = $query->get());
+                // }
+
+                $locations = $query->get();
+
 
                 $locationMatrix = [];
                 $preferences = Preferences::get();
@@ -268,15 +285,12 @@ class AppServiceProvider extends ServiceProvider
                 // }
 
                 $sortedLocations = [];
-
                 foreach ($similarities as $similarity) {
                     $locationId = $similarity->location_id;
-                    if (isset($locations[$locationId])) {
-
-                        $index = findIndex($locations, $locationId);
-                        $sortedLocations[] = $locations[$index];
-                    }
+                    $index = findIndex($locations, $locationId);
+                    $sortedLocations[] = $locations[$index];
                 }
+
                 return $sortedLocations;
             };
         });
@@ -337,6 +351,14 @@ class AppServiceProvider extends ServiceProvider
             };
         });
 
+        app()->singleton('findPrefId', function ($app) {
+            return function ($prefName) {
+                $prefId = Preferences::where('preference_name', $prefName)
+                    ->value('preference_id');
+                return $prefId;
+            };
+        });
+
         app()->singleton('getZoneswithProvince', function ($app) {
             return function () {
                 $zones = Zones::select('zones.zone_id', 'zones.zone_name')
@@ -393,15 +415,62 @@ class AppServiceProvider extends ServiceProvider
                         'r.rating',
                         'r.created_at',
                         'm.username',
+                        'm.member_img',
                         DB::raw('COUNT(rl.review_id) AS like_count'),
                         DB::raw('IF(COUNT(rl.review_id) > 0, true, false) AS liked_by_current_member')
                     )
                     ->where('r.location_id', $location_id)
-                    ->groupBy('r.review_id', 'r.review', 'r.rating', 'r.created_at', 'r.member_id', 'm.username')
+                    ->groupBy('r.review_id', 'r.review', 'r.rating', 'r.created_at', 'r.member_id', 'm.username', 'm.member_img')
                     ->orderByRaw("CASE WHEN r.member_id = ? THEN r.created_at ELSE COUNT(rl.review_id) END DESC", [$member_id])
                     ->get();
 
                 return $reviews;
+            };
+        });
+        app()->singleton('getMyReviews', function ($app) {
+            return function ($sorted) {
+                $member_id = session('member_id');
+                $reviews = Reviews::select(
+                    'reviews.review_id',
+                    'reviews.location_id',
+                    'reviews.review',
+                    'reviews.rating',
+                    'reviews.created_at',
+                    'members.member_id',
+                    'members.username',
+                    'members.member_img',
+                    'locations.location_name',
+                    'locations.province_id'
+                )
+                    ->join('members', 'members.member_id', '=', 'reviews.member_id')
+                    ->join('locations', 'locations.location_id', '=', 'reviews.location_id')
+                    ->where('reviews.member_id', $member_id)
+                    ->orderBy('reviews.created_at', $sorted)
+                    ->get();
+                return $reviews;
+            };
+        });
+
+        app()->singleton('compareTime', function ($app) {
+            return function ($reviewTime) {
+                $createdAt = Carbon::parse($reviewTime);
+                $currentDate = Carbon::now();
+                $monthsDifference = $createdAt->diffInMonths($currentDate);
+                if ($monthsDifference > 0) {
+                    if ($monthsDifference === 1) {
+                        $formattedDate = '1 เดือนที่แล้ว';
+                    } else {
+                        $formattedDate = $monthsDifference . ' เดือนที่แล้ว';
+                    }
+                } else {
+                    $daysDifference = $createdAt->diffInDays($currentDate);
+                    if ($daysDifference === 1) {
+                        $formattedDate = '1 วันที่แล้ว';
+                    } else {
+                        $formattedDate = $daysDifference . ' วันที่แล้ว';
+                    }
+                }
+                return $formattedDate;
             };
         });
     }

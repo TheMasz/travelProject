@@ -53,13 +53,30 @@ function init() {
             .post("/api/getLocations", basket)
             .then((res) => {
                 if (res.data) {
-                    displayBasket(res, "navigative");
-                    res.data.map((data) => {
-                        map.Route.add({
-                            lon: data.longitude,
-                            lat: data.latitude,
+                    if (getBasketLength() == 0 || null) {
+                        const locations = document.querySelector("#locations");
+                        locations.innerHTML = ``;
+                        let html = `
+                            <div class='back-home'>
+                                <span class="material-icons" style='color:lightgray; font-size:64px; margin-bottom:5px'>
+                                    luggage
+                                </span>
+                                <p class='mb-2' style='color:lightgray; text-align:center; width:75%'>ยังไม่มีสถานที่ท่องเที่ยวในการเดินของคุณ 
+                                กรุณาเริ่มด้วยการเลือกสถานที่ที่คุณต้องการเพิ่มเข้าในแผนการท่องเที่ยวของคุณ คุณสามารถเริ่มการค้นหาและเพิ่มสถานที่ท่องเที่ยวได้ที่หน้าหลักของเรา</p>
+                                <a href='/' class='btn-primary mb-05'>ไปยังหน้าแรก</a>
+                                <a href='/myplans' class='btn-primary'>ไปยังแผนท่องเที่ยวของฉัน</a>
+                            </div>
+                        `;
+                        locations.insertAdjacentHTML("beforeend", html);
+                    } else {
+                        displayBasket(res, "navigative");
+                        res.data.map((data) => {
+                            map.Route.add({
+                                lon: data.longitude,
+                                lat: data.latitude,
+                            });
                         });
-                    });
+                    }
                 }
                 // console.log(res.data);
             })
@@ -73,53 +90,6 @@ function init() {
     locationNear();
 }
 
-// window.addEventListener("DOMContentLoaded", (e) => {
-//     e.preventDefault();
-//     let basket = JSON.parse(localStorage.getItem("basket")) || [];
-//     axios.post("/api/getNearLocations", basket).then((res) => {
-//         if (res.data.length != 0) {
-//             const locations = document.querySelector(".locations-near");
-//             locations.innerHTML = "";
-//             for (let i = 0; i < res.data.length; i++) {
-//                 const data = res.data[i];
-//                 // console.log(data);
-//                 let images = data.Images.split(", ");
-//                 // let popup = new longdo.Popup(
-//                 //     { lon: data.longitude, lat: data.latitude },
-//                 //     {
-//                 //         title: "Popup",
-//                 //         detail: data.location_name,
-//                 //     }
-//                 // );
-//                 // let map = new longdo.Map({
-//                 //     placeholder: document.getElementById("map"),
-//                 // });
-//                 // map.Overlays.add(popup);
-//                 let html;
-//                 html = `
-//                     <div class="card">
-//                         <div class="img"  style="flex: 0 0 30%; width: 30%">
-//                             <img src="/storage/images/${images[0]}" alt="${data.location_name}">
-//                         </div>
-//                         <div class="txt" style="flex: 0 0 70%; width: 70%">
-//                             <h3>
-//                                 <a href="/province/${data.province_id}/${data.location_id}">
-//                                     ${data.location_name}
-//                                 </a>
-//                             </h3>
-//                             <button class='btn-secondary mt-1'>เพิ่ม</button>
-//                         </div>
-//                     </div>
-//                     <hr/>
-//                     `;
-
-//                 locations.insertAdjacentHTML("beforeend", html);
-//             }
-//         } else {
-//         }
-//     });
-// });
-
 function locationNear() {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     axios.post("/api/getNearLocations", basket).then((res) => {
@@ -131,12 +101,12 @@ function locationNear() {
                 let images = data.Images.split(", ");
                 let markHtml = `
                 <div class="map_mark">
-                    <img src="/storage/images/${images[0]}" alt="${data.location_name}" />
+                    <img src="/storage/images/locations/${images[0]}" alt="${data.location_name}" />
                 </div>`;
                 let popupHtml = `
                 <div class="map_popup">
                     <div class="image">
-                        <img src="/storage/images/${images[0]}" alt="${data.location_name}" />
+                        <img src="/storage/images/locations/${images[0]}" alt="${data.location_name}" />
                     </div>
                     <div class="details">
                         <h4>${data.location_name}</h4>
@@ -169,7 +139,7 @@ function locationNear() {
                 html = `
                     <div class="card">
                         <div class="img"  style="flex: 0 0 30%; width: 30%">
-                            <img src="/storage/images/${images[0]}" alt="${data.location_name}">
+                            <img src="/storage/images/locations/${images[0]}" alt="${data.location_name}">
                         </div>
                         <div class="txt" style="flex: 0 0 70%; width: 70%">
                             <h3>

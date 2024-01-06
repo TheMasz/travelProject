@@ -53,7 +53,7 @@
                     $images = explode(', ', $location_detail->Images);
                 @endphp
                 @foreach ($images as $img)
-                    <div class="image" style="background: url({{ asset('storage/images/' . $img) }});"
+                    <div class="image" style="background: url({{ asset('storage/images/locations/' . $img) }});"
                         data-img="{{ $img }}">
                     </div>
                 @endforeach
@@ -80,7 +80,7 @@
                         <span class="material-icons">
                             place
                         </span>
-                        <p>{{ $location_detail->address }}</p>
+                        <p class="address">{{ $location_detail->address }}</p>
                     </div>
                 </div>
                 <div class="button-wrap">
@@ -100,9 +100,9 @@
                         <p>ช่วงเวลาเปิด-ปิด</p>
                         <p>{{ $location_detail->s_time }} - {{ $location_detail->e_time }} น.</p>
                     </div>
-                    <div class="categories row py-1">
+                    <div class="categories row py-1 flex-wrap">
                         @foreach (explode(',', $location_detail->Preferences) as $pref)
-                            <a href="">{{ $pref }}</a>
+                            <div>{{ $pref }}</div>
                         @endforeach
                     </div>
                 </div>
@@ -124,7 +124,17 @@
                     @foreach ($reviews as $review)
                         <div class="review">
                             <div class="user">
-                                <h4>{{ $review->username }}</h4>
+                                <div class="row align-center">
+                                    <div class="avatar avatar-sm">
+                                        @if ($review->member_img)
+                                            <img src="{{ asset('storage/images/members/' . session('member_id') . '/' . $review->member_img) }}"
+                                                alt="profile">
+                                        @else
+                                            <h4> {{ substr($review->username, 0, 1) }}</h4>
+                                        @endif
+                                    </div>
+                                    <h4>{{ $review->username }}</h4>
+                                </div>
                                 <div class="star">
                                     @for ($i = 0; $i < 5; $i++)
                                         @if ($i < $review->rating)
@@ -135,6 +145,7 @@
                                     @endfor
 
                                 </div>
+                                <p class="date">{{ app('compareTime')($review->created_at) }}</p>
                                 <p class="date"> {{ $review->created_at }}</p>
                             </div>
                             <div class="txt">
@@ -177,8 +188,9 @@
                 @endif
 
             </div>
-            <button type="button" id="loadMoreButton"
-                data-locationId="{{ $location_detail->location_id }}">ดูเพิ่มเติม</button>
+            <button type="button" class="@if (count($reviews) == 0) disable @endif" id="loadMoreButton"
+                data-locationId="{{ $location_detail->location_id }}"
+                @if (count($reviews) == 0) disabled @endif>ดูเพิ่มเติม</button>
         </div>
     </div>
     <div class="modal modal-reviews">

@@ -58,6 +58,17 @@ function clearAllPlanInBasket(e) {
     updateCartLength();
 }
 
+function removePlanInNavigative(location_id) {
+    let basket = JSON.parse(localStorage.getItem("basket")) || [];
+    let index = basket.indexOf(location_id);
+
+    if (index !== -1) {
+        basket.splice(index, 1);
+        localStorage.setItem("basket", JSON.stringify(basket));
+        updateCartLength();
+        location.reload();
+    }
+}
 function removePlanInBasket(location_id) {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     let index = basket.indexOf(location_id);
@@ -211,7 +222,6 @@ function showAlert(type, message, object) {
     }
 }
 
-
 function setBasketDistance(basket) {
     localStorage.setItem("basket", JSON.stringify(basket));
     updateCartLength();
@@ -234,7 +244,7 @@ function getLocationsId() {
     }
 }
 
-let current = {};
+var current = {};
 
 function getCurrectGeo(e) {
     e.preventDefault();
@@ -374,7 +384,7 @@ function displayBasket(res, btn) {
             html = `
             <div class="card">
                 <div class="img"  style="flex: 0 0 30%; width: 30%">
-                    <img src="/storage/images/${images[0]}" alt="${
+                    <img src="/storage/images/locations/${images[0]}" alt="${
                 data.location_name
             }">
                 </div>
@@ -386,23 +396,22 @@ function displayBasket(res, btn) {
                             ${data.location_name}
                         </a>
                     </h3>
-                    <p>${maxLength(data.detail, 100)}</p>
+                    <p>${maxLength(data.detail, 100, 1)}</p>
                 </div>
             </div>
             `;
         } else if (btn == "navigative") {
             html = `
             <div class="card">
-       
                 <div class='order' style='flex: 0 0 10%'; width:10%;'>
                     ${i + 1}
                 </div>
-                <div class="img" style='flex: 0 0 25%'; width: 25%;>
-                    <img src="/storage/images/${images[0]}" alt="${
+                <div class="img" style='flex: 0 0 20%; width: 20%;'>
+                    <img src="/storage/images/locations/${images[0]}" alt="${
                 data.location_name
             }">
                 </div>
-                <div class="txt" style='flex: 0 0 60%'; width:60%;>
+                <div class="txt" style='flex: 0 0 60%; width:60%;'>
                     <h3 style="font-size:14px;">
                         <a href="/province/${data.province_id}/${
                 data.location_id
@@ -410,6 +419,15 @@ function displayBasket(res, btn) {
                             ${data.location_name}
                         </a>
                     </h3>
+                </div>
+                <div class='btn_del' style='flex: 0 0 10%'; width:10%;'>
+                    <button onClick='removePlanInNavigative(${
+                        data.location_id
+                    })' style='margin-right: 10px;'>
+                        <span class="material-icons">
+                            delete
+                        </span>
+                    </button>
                 </div>
             </div>
             <hr/>
@@ -434,7 +452,7 @@ function displayBasket(res, btn) {
                     </button>
                 </div>
                 <div class="img">
-                    <img src="/storage/images/${images[0]}" alt="${
+                    <img src="/storage/images/locations/${images[0]}" alt="${
                 data.location_name
             }">
                 </div>
@@ -444,7 +462,7 @@ function displayBasket(res, btn) {
                     ${data.location_name}
                 </a>
             </h3>
-                    <p>${maxLength(data.detail, 100)}</p>
+                    <p>${maxLength(data.detail, 100, 1)}</p>
                 </div>
                 <div class='btn_del'>
                     <button onClick='removePlanInBasket(${data.location_id})'>
@@ -460,9 +478,13 @@ function displayBasket(res, btn) {
     }
 }
 
-function maxLength(inputString, maxLength) {
+function maxLength(inputString, maxLength, option) {
     if (inputString.length > maxLength) {
-        return inputString.slice(0, maxLength) + "...";
+        if (option == 1) {
+            return inputString.slice(0, maxLength) + "...";
+        } else if (option == 2) {
+            return inputString.slice(0, maxLength);
+        }
     } else {
         return inputString;
     }
@@ -516,4 +538,77 @@ function checkOpeningStatus(location_id) {
             }
         })
         .catch((error) => console.error("Error:", error));
+}
+
+function delAction(review_id) {
+    const modal_del = document.querySelector(".modal-type-alert");
+    const modalContent_del = document.querySelector(
+        ".modal_content-type-alert"
+    );
+    const cancelBtn = document.querySelector(".cancel_btn-type-alert");
+    const confirmBtn = document.querySelector(".confirm_btn-type-alert");
+    const txtHead = document.querySelector(".modal-type-alert .txt_head");
+
+    txtHead.innerHTML = `คุณต้องการลบรีวิวนี้หรือไม่?`;
+    modal_del.style.display = "block";
+
+    modalContent_del.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (e.target === modalContent_del || e.target === cancelBtn) {
+            modal_del.style.display = "none";
+        }
+    });
+
+    confirmBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const data = {
+            review_id: review_id,
+        };
+        axios
+            .delete("/api/removeReview", { data })
+            .then((response) => {
+                if (response.data.success) {
+                    location.reload();
+                }
+            })
+            .catch((error) => {
+                console.error("Error removing plan:", error);
+            });
+        modal_del.style.display = "none";
+    });
+}
+
+function generateStars(rating) {
+    let starsHTML = "";
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            starsHTML += '<span class="material-icons">star</span>';
+        } else {
+            starsHTML += '<span class="material-icons">star_border</span>';
+        }
+    }
+    return starsHTML;
+}
+
+function compareTime(reviewTime) {
+    const createdAt = new Date(reviewTime);
+    const currentDate = new Date();
+    const timeDifference = currentDate - createdAt;
+    const dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const monthDifference = Math.floor(dayDifference / 30);
+
+    if (monthDifference > 0) {
+        if (monthDifference === 1) {
+            return "1 เดือนที่แล้ว";
+        } else {
+            return `${monthDifference} เดือนที่แล้ว`;
+        }
+    } else {
+        if (dayDifference === 1) {
+            return "1 วันที่แล้ว";
+        } else {
+            return `${dayDifference} วันที่แล้ว`;
+        }
+    }
 }

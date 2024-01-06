@@ -6,11 +6,35 @@ use App\Models\LocationImages;
 use App\Models\Locations;
 use App\Models\LocationTypes;
 use App\Models\Preferences;
+use App\Models\Provinces;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class LocationsController extends Controller
 {
+    public function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        // Radius of the Earth in kilometers
+        $earthRadius = 6371;
+
+        // Convert latitude and longitude from degrees to radians
+        $latFrom = deg2rad($lat1);
+        $lonFrom = deg2rad($lon1);
+        $latTo = deg2rad($lat2);
+        $lonTo = deg2rad($lon2);
+
+        // Calculate the differences
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        // Calculate distance using Haversine formula
+        $distance = 2 * $earthRadius * asin(sqrt(
+            pow(sin($latDelta / 2), 2) +
+                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)
+        ));
+
+        return $distance; // Distance in kilometers
+    }
     public function getLocations(Request $request)
     {
         $receivedArray = $request->all();
@@ -85,7 +109,6 @@ class LocationsController extends Controller
         return $locationsNearest;
     }
 
-
     public function checkOpening($location_id)
     {
         // config(['app.timezone' => 'Asia/Bangkok']);
@@ -107,6 +130,35 @@ class LocationsController extends Controller
         } else {
             return response()->json(['status' => 'location_not_found'], 404);
         }
+    }
+
+
+    function filterByPreferences(Request $req, $province_id)
+    {
+        $province_id = (int)$province_id;
+        $member_id = session('member_id');
+        $province_name = Provinces::where('province_id', $province_id)->first();
+
+        $selectedPreferences = $req->input("prefsId");
+        $getLocationsByPref = App::make('getLocationsByPref');
+        $locations = $getLocationsByPref($province_id, $member_id, $selectedPreferences);
+        $countLocations = count($locations);
+        $allPrefs = Preferences::all();
+        $perPage = 8;
+        $page = request()->has('page') ? request()->query('page') : 1;
+        $paginatedLocations = array_slice($locations, ($page - 1) * $perPage, $perPage);
+
+        return view('main.province')->with([
+            'province_id' => $province_id,
+            'province_name' => $province_name['province_name'],
+            'paginatedLocations' => $paginatedLocations,
+            'member_id' => $member_id,
+            'page' => $page,
+            'perPage' => $perPage,
+            'countLocations' => $countLocations,
+            'allPrefs' => $allPrefs,
+            'selectedPreferences' => $selectedPreferences,
+        ]);
     }
 }
 

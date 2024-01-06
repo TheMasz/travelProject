@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/province.css') }}">
+
 </head>
 
 <body>
+
     <x-loading />
     <x-navbar />
     <div class="container">
@@ -22,7 +24,19 @@
                 </div>
             </div>
             <div class="filters">
-                --filters--
+                <div class="btns-pref">
+                    @foreach ($allPrefs as $pref)
+                        <button data-prefId="{{ $pref->preference_id }}"
+                            @if (isset($selectedPreferences) && in_array($pref->preference_id, $selectedPreferences)) class="active" @endif>
+                            {{ $pref->preference_name }}
+                        </button>
+                    @endforeach
+                </div>
+                <div class="btns-confirm">
+                    <button class="clear-btn">ล้างทั้งหมด</button>
+                    <button class="confirm-btn">ยืนยัน</button>
+                </div>
+
             </div>
         </div>
         <div class="main-wrap">
@@ -39,7 +53,7 @@
                                         zoom_out_map
                                     </span>
                                 </div>
-                                <img src="{{ asset('storage/images/' . $images[0]) }}"
+                                <img src="{{ asset('storage/images/locations/' . $images[0]) }}"
                                     alt="{{ $location->location_name }}">
                             </a>
                         </div>
@@ -73,6 +87,27 @@
                                 </span>
                                 เพิ่มลงทริป
                             </button>
+                            <div class="categories row">
+                                @php
+                                    $prefs = explode(', ', $location->Preferences);
+                                @endphp
+
+                                @foreach ($prefs as $pref)
+                                    @php
+                                        $isActive = false;
+                                        if (isset($selectedPreferences)) {
+                                            $findPrefId = App::make('findPrefId');
+                                            $id = $findPrefId($pref);
+                                            $isActive = in_array($id, $selectedPreferences);
+                                        }
+                                    @endphp
+
+                                    <div class="category @if ($isActive) category-active @endif">
+                                        {{ $pref }}
+                                    </div>
+                                @endforeach
+
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -150,8 +185,10 @@
 
 
     </div>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
 
-<script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/province.js') }}"></script>
+</body>
 
 </html>

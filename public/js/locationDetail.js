@@ -1,19 +1,19 @@
 const member_session = document.getElementById("member_session").value;
 const main_img = document.querySelector(".main-image .image");
 const imgs = document.querySelectorAll(".image-box .image");
-main_img.style.background = `url('/storage/images/${imgs[0].getAttribute(
+main_img.style.background = `url('/storage/images/locations/${imgs[0].getAttribute(
     "data-img"
 )}')`;
 imgs.forEach((img) => {
     img.addEventListener("click", (e) => {
         e.preventDefault();
         let attr = img.getAttribute("data-img");
-        main_img.style.background = `url('/storage/images/${attr}')`;
+        main_img.style.background = `url('/storage/images/locations/${attr}')`;
     });
     img.addEventListener("mouseover", (e) => {
         e.preventDefault();
         let attr = img.getAttribute("data-img");
-        main_img.style.background = `url('/storage/images/${attr}')`;
+        main_img.style.background = `url('/storage/images/locations/${attr}')`;
     });
 });
 
@@ -159,45 +159,6 @@ function likeActions(review_id, action) {
         });
 }
 
-function delAction(review_id) {
-    const modal_del = document.querySelector(".modal-type-alert");
-    const modalContent_del = document.querySelector(
-        ".modal_content-type-alert"
-    );
-    const cancelBtn = document.querySelector(".cancel_btn-type-alert");
-    const confirmBtn = document.querySelector(".confirm_btn-type-alert");
-    const txtHead = document.querySelector(".modal-type-alert .txt_head");
-
-    txtHead.innerHTML = `คุณต้องการลบรีวิวนี้หรือไม่?`;
-    modal_del.style.display = "block";
-
-    modalContent_del.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (e.target === modalContent_del || e.target === cancelBtn) {
-            modal_del.style.display = "none";
-        }
-    });
-
-    confirmBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const data = {
-            review_id: review_id,
-        };
-        axios
-            .delete("/api/removeReview", { data })
-            .then((response) => {
-                if (response.data.success) {
-                    location.reload();
-                }
-            })
-            .catch((error) => {
-                console.error("Error removing plan:", error);
-            });
-        modal_del.style.display = "none";
-    });
-}
-
 const loadMoreButton = document.querySelector("#loadMoreButton");
 let offset = 3;
 loadMoreButton.addEventListener("click", (e) => {
@@ -210,10 +171,10 @@ loadMoreButton.addEventListener("click", (e) => {
 
             if (reviews.length === 0 || Object.keys(data).length === 0) {
                 loadMoreButton.disabled = true;
-                loadMoreButton.classList.add('disable');
+                loadMoreButton.classList.add("disable");
             } else {
                 loadMoreButton.disabled = false;
-                loadMoreButton.classList.remove('disable');
+                loadMoreButton.classList.remove("disable");
             }
             reviews.forEach((review) => {
                 displayReviews(review);
@@ -232,13 +193,48 @@ function displayReviews(review) {
 
     const user = document.createElement("div");
     user.classList.add("user");
-    user.innerHTML = `
-                            <h4>${review.username}</h4>
-                            <div class="star">
-                                ${generateStars(review.rating)}
-                            </div>
-                            <p class="date">${review.created_at}</p>
-                        `;
+
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("row", "align-center");
+
+    const avatarDiv = document.createElement("div");
+    avatarDiv.classList.add("avatar", "avatar-sm");
+
+    const img = document.createElement("img");
+    img.setAttribute("alt", "profile");
+
+    if (review.member_img) {
+        const img = document.createElement("img");
+        img.src = `/storage/images/members/${review.member_id}/${review.member_img}`;
+        img.alt = "Profile";
+        avatarDiv.appendChild(img);
+    } else {
+        const h4 = document.createElement("h4");
+        h4.textContent = maxLength(review.username, 1, 2);
+        avatarDiv.appendChild(h4);
+    }
+
+    const h4 = document.createElement("h4");
+    h4.textContent = review.username;
+    rowDiv.appendChild(avatarDiv);
+    rowDiv.appendChild(h4);
+
+    const starDiv = document.createElement("div");
+    starDiv.classList.add("star");
+    starDiv.innerHTML = generateStars(review.rating);
+
+    const dateP1 = document.createElement("p");
+    dateP1.classList.add("date");
+    dateP1.textContent = review.created_at;
+
+    const dateP2 = document.createElement("p");
+    dateP2.classList.add("date");
+    dateP2.textContent = compareTime(review.created_at);
+
+    user.appendChild(rowDiv);
+    user.appendChild(starDiv);
+    user.appendChild(dateP1);
+    user.appendChild(dateP2);
 
     const txt = document.createElement("div");
     txt.classList.add("txt");
@@ -285,14 +281,4 @@ function displayReviews(review) {
     reviewsContainer.appendChild(reviewElement);
 }
 
-function generateStars(rating) {
-    let starsHTML = "";
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            starsHTML += '<span class="material-icons">star</span>';
-        } else {
-            starsHTML += '<span class="material-icons">star_border</span>';
-        }
-    }
-    return starsHTML;
-}
+
