@@ -132,7 +132,7 @@
                                             <img src="{{ asset('storage/images/members/' . $plan['member_id'] . '/' . app('getMemberImg')($plan['member_id'])) }}"
                                                 alt="{{ app('getUsername')($plan['member_id']) }}">
                                         @else
-                                            <h4> {{ substr($member->username, 0, 1) }}</h4>
+                                            <h4> {{ substr(app('getUsername')($plan['member_id']), 0, 1) }}</h4>
                                         @endif
                                     </div>
                                 </div>
