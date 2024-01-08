@@ -1,0 +1,103 @@
+.content-wrap {
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 0 7px 0 lightgray;
+}
+.content-wrap h3 {
+    color: #555;
+    font-family: Arial;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 10px;
+}
+.content-wrap p,
+.content-wrap li {
+    color: #555;
+    font-family: Arial;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.aboutour-section {
+    padding: 10px 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.aboutour-section > .details {
+    width: 50%;
+    flex: 0 0 50%;
+    flex-shrink: 0;
+}
+.aboutour-section > .image {
+    width: 50%;
+    flex: 0 0 50%;
+}
+.aboutour-section > .image > img,
+.features-section > .image > img {
+    width: 100%;
+}
+.features-section {
+    padding: 10px 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.features-section > .details {
+    width: 50%;
+    flex: 0 0 50%;
+    flex-shrink: 0;
+}
+.features-section > .image {
+    width: 50%;
+    flex: 0 0 50%;
+}
+.ourteam-section {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ourteam-section .card-wrap {
+    display: flex;
+    justify-content: center;
+}
+.ourteam-section .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 298px;
+    height: 330px;
+    border-radius: 20px;
+    margin: 10px 10px 10px 0;
+    background-size: cover !important;
+    background-position: center !important;
+    box-shadow: 0 0 7px 0 lightgray;
+}
+.ourteam-section .card > .detail {
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+.ourteam-section .card .tag {
+    border-radius: 10px;
+    padding: 5px 7px;
+    color: white;
+    font-weight: bold;
+    margin: 3px 3px 3px 0;
+}
+.ourteam-section .card .green {
+    background-color: #1ab700;
+}
+.ourteam-section .card .purple {
+    background-color: #7000ff;
+}
+.ourteam-section .card .red {
+    background-color: #b70000;
+}

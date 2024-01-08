@@ -115,39 +115,57 @@
             <div class="suggest-plans">
                 <div class="plans-container">
                     <h4>แผนท่องเที่ยวที่แนะนำ</h4>
-                    @foreach (app('getPlansByPref')(session('member_id')) as $plan)
-                        @php
-                            $locationIdsString = $plan['locations_id'];
-                            $locationIdsArray = explode(',', $locationIdsString);
-                            $locationIdsArray = array_map('intval', $locationIdsArray);
-                        @endphp
-                        <div class="plan">
-                            <div class="image">
-                                <img src="" alt="img">
-                            </div>
-                            <div class="details">
-                                <div class="row flex-between">
-                                    <div class="head">
-                                        <h5>{{ $plan['plan_name'] }}</h5>
-                                        <p>โดย {{ app('getUsername')($plan['member_id']) }}</p>
+                    @php
+                        $plans = app('getPlansByPref')(session('member_id'));
+                    @endphp
+                    @if (count($plans) > 0)
+                        @foreach ($plans as $plan)
+                            @php
+                                $locationIdsString = $plan['locations_id'];
+                                $locationIdsArray = explode(',', $locationIdsString);
+                                $locationIdsArray = array_map('intval', $locationIdsArray);
+                            @endphp
+                            <div class="plan">
+                                <div class="image">
+                                    <div class="avatar avatar-sm">
+                                        @if (!empty(app('getMemberImg')($plan['member_id'])))
+                                            <img src="{{ asset('storage/images/members/' . $plan['member_id'] . '/' . app('getMemberImg')($plan['member_id'])) }}"
+                                                alt="{{ app('getUsername')($plan['member_id']) }}">
+                                        @else
+                                            <h4> {{ substr($member->username, 0, 1) }}</h4>
+                                        @endif
                                     </div>
-                                    <button
-                                        onclick="usePlan('{{ str_replace(' ', '', $locationIdsString) }}', '.plans-container h4')">ใช้แผนนี้</button>
                                 </div>
-                                <div>
+                                <div class="details">
+                                    <div class="row flex-between">
+                                        <div class="head">
+                                            <h5>{{ $plan['plan_name'] }}</h5>
+                                            <p>โดย {{ app('getUsername')($plan['member_id']) }}</p>
+                                        </div>
+                                        <button
+                                            onclick="usePlan('{{ str_replace(' ', '', $locationIdsString) }}', '.plans-container h4')">ใช้แผนนี้</button>
+                                    </div>
+                                    <div>
 
-                                    <ul>
-                                        @foreach (app('getLocations')($locationIdsArray) as $location)
-                                            <li> <a
-                                                    href="/province/{{ $location->province_id }}/{{ $location->location_id }}">{{ $location->location_name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                        <ul>
+                                            @foreach (app('getLocations')($locationIdsArray) as $location)
+                                                <li> <a
+                                                        href="/province/{{ $location->province_id }}/{{ $location->location_id }}">{{ $location->location_name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
+                        @endforeach
+                    @else
+                        <div class="no-plans">
+                            <span class="material-icons" style="color: #ccc">
+                                luggage
+                            </span>
+                            <p class="font-sm">ไม่มีแผนการท่องเที่ยวที่แนะนำ</p>
                         </div>
-                    @endforeach
-
+                    @endif
                 </div>
             </div>
         </div>

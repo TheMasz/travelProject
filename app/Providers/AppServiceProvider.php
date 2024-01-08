@@ -158,6 +158,7 @@ class AppServiceProvider extends ServiceProvider
                         ->where('member_id', $user['member_id'])
                         ->groupBy('plan_name')
                         ->get();
+
                     if ($userPlans->isNotEmpty() && count($plans) < $maxPlans) {
                         foreach ($userPlans as $plan) {
                             $plans[] = [
@@ -188,7 +189,6 @@ class AppServiceProvider extends ServiceProvider
 
             return $formattedScores;
         }
-
 
         app()->singleton('getLocationsByPref', function ($app) {
             $getPersonPref = $app->make('getPersonPref');
@@ -285,15 +285,85 @@ class AppServiceProvider extends ServiceProvider
                 // }
 
                 $sortedLocations = [];
+                $weight = weightProfile($member_id);
+
+                // Store location IDs that have already been processed to avoid duplication
+                $processedLocationIds = [];
+
                 foreach ($similarities as $similarity) {
                     $locationId = $similarity->location_id;
+
+                    // Skip processing if location already added to $sortedLocations
+                    if (in_array($locationId, $processedLocationIds)) {
+                        continue;
+                    }
+
                     $index = findIndex($locations, $locationId);
-                    $sortedLocations[] = $locations[$index];
+                    $location = $locations[$index];
+
+                    $locationPreferences = LocationTypes::where('location_id', $locationId)->get();
+
+                    $similarityScore = $similarity->score;
+                    $adjustedScore = 0;
+
+                    foreach ($locationPreferences as $pref) {
+                        if (isset($weight[$pref->preference_id])) {
+                            $adjustedScore += $similarityScore * $weight[$pref->preference_id];
+                        }
+                    }
+
+                    // Update location with adjusted score
+                    $location['adjusted_score'] = $adjustedScore;
+                    $sortedLocations[] = $location;
+
+                    // Mark location ID as processed to avoid duplication
+                    $processedLocationIds[] = $locationId;
                 }
+
+                // Sort locations based on adjusted scores
+                usort($sortedLocations, function ($a, $b) {
+                    return $b['adjusted_score'] <=> $a['adjusted_score'];
+                });
 
                 return $sortedLocations;
             };
         });
+
+        function weightProfile($member_id)
+        {
+            $reviews = DB::table('reviews as r')
+                ->select('r.review_id', 'lt.preference_id', DB::raw('AVG(r.rating) as average_rating'))
+                ->join('location_types as lt', 'r.location_id', '=', 'lt.location_id')
+                ->where('r.member_id', '=', $member_id)
+                ->groupBy('r.review_id', 'lt.preference_id')
+                ->get();
+
+            $categoryScores = [];
+            $categoryCounts = [];
+
+            foreach ($reviews as $review) {
+                $rating = $review->average_rating;
+                $prefId = $review->preference_id;
+
+                if (!isset($categoryScores[$prefId])) {
+                    $categoryScores[$prefId] = $rating;
+                    $categoryCounts[$prefId] = 1;
+                } else {
+                    $categoryScores[$prefId] += $rating;
+                    $categoryCounts[$prefId]++;
+                }
+            }
+
+            $weightedProfile = [];
+            foreach ($categoryScores as $prefId => $score) {
+                $averageScore = $score / $categoryCounts[$prefId];
+                $normalizedScore = ($averageScore - 1) / (5 - 1); // Normalize score to a 0-1 scale (assuming 1-5 ratings)
+                $weightedProfile[$prefId] = $normalizedScore;
+            }
+
+            return $weightedProfile;
+        }
+
 
         function findIndex($arr, $id)
         {
@@ -388,6 +458,13 @@ class AppServiceProvider extends ServiceProvider
             };
         });
 
+        app()->singleton('getMemberImg', function ($app) {
+            return function ($member_id) {
+                $member = Members::where('member_id', $member_id)->first();
+                return $member['member_img'];
+            };
+        });
+
         app()->singleton('maxLength', function ($app) {
             return function ($string, $maxLength = 250) {
                 if (mb_strlen($string, 'UTF-8') > $maxLength) {
@@ -427,6 +504,7 @@ class AppServiceProvider extends ServiceProvider
                 return $reviews;
             };
         });
+        
         app()->singleton('getMyReviews', function ($app) {
             return function ($sorted) {
                 $member_id = session('member_id');
