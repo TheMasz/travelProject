@@ -137,7 +137,11 @@ a {
     align-items: center;
     color: #b8b8b8;
 }
-.input-wrap > input {
+.input-wrap > .row {
+    width: 100%;
+}
+.input-wrap input,
+.input-wrap select {
     width: 100%;
     border: none;
     outline: none;
@@ -482,4 +486,9 @@ a {
 } */
 .container > .cont-lt > img {
     width: 100%;
+}
+.visibilityIcon {
+    border: none;
+    background-color: transparent;
+    color: inherit;
 }

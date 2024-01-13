@@ -193,7 +193,6 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('getLocationsByPref', function ($app) {
             $getPersonPref = $app->make('getPersonPref');
             return function ($province_id, $member_id, $selectedPreferences) use ($getPersonPref) {
-
                 $query = Locations::select(
                     'locations.location_id',
                     'locations.location_name',
@@ -206,23 +205,33 @@ class AppServiceProvider extends ServiceProvider
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
                     LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
-                    'location_images.credit'
+                    'location_images.credit',
+                    'provinces.province_id',
+                    'provinces.province_name'
                 )
                     ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
                     ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
                     ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
-                    ->where('locations.province_id', $province_id)
-                    ->groupBy(
-                        'locations.location_id',
-                        'locations.location_name',
-                        'locations.address',
-                        'locations.detail',
-                        'locations.s_time',
-                        'locations.e_time',
-                        'locations.latitude',
-                        'locations.longitude',
-                        'location_images.credit'
-                    );
+                    ->join('provinces', 'locations.province_id', '=', 'provinces.province_id');
+
+                if ($province_id) {
+                    $query->where('locations.province_id', $province_id);
+                }
+
+                $query->groupBy(
+                    'locations.location_id',
+                    'locations.location_name',
+                    'locations.address',
+                    'locations.detail',
+                    'locations.s_time',
+                    'locations.e_time',
+                    'locations.latitude',
+                    'locations.longitude',
+                    'location_images.credit',
+                    'provinces.province_name',
+                    'provinces.province_id'
+                );
+
 
                 if (!empty($selectedPreferences)) {
                     $query->whereIn('locations.location_id', function ($subQuery) use ($selectedPreferences) {
@@ -504,7 +513,7 @@ class AppServiceProvider extends ServiceProvider
                 return $reviews;
             };
         });
-        
+
         app()->singleton('getMyReviews', function ($app) {
             return function ($sorted) {
                 $member_id = session('member_id');

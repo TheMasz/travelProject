@@ -32,12 +32,19 @@
                     @csrf
                     <div class="input-wrap row mb-4">
                         <span class="material-icons"> person </span>
-                        <input type="email" placeholder="Your email" name="email" required />
+                        <input type="email" placeholder="อีเมลของคุณ" name="email" required />
                     </div>
                     <div class="input-wrap row mb-4">
                         <span class="material-icons"> password </span>
-                        <input type="password" placeholder="Your password" name="password" minlength="8" maxlength="16"
-                            required />
+                        <div class="row password">
+                            <input type="password" placeholder="รหัสผ่านของคุณ" name="password" id="password"
+                                minlength="8" maxlength="16" required />
+                            <button class="visibilityIcon" type="button" onclick="togglePassword('password')">
+                                <span class="material-icons">
+                                    visibility
+                                </span>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="mb-4 btn-primary b-400">
                         เข้าสู่ระบบ
@@ -47,9 +54,28 @@
                     หากคุณยังไม่มีบัญชี?
                     <span><a class="c-pri" href="/signup">คลิก</a></span>
                 </p>
+                <a class="font-sm" href="/resetPassword">ลืมรหัสผ่าน?</a>
             </div>
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const currentType = passwordInput.type;
+            const icon = document.querySelector(`.${inputId} .visibilityIcon`);
+
+            passwordInput.type = (currentType === 'password') ? 'text' : 'password';
+
+
+            if (currentType === 'password') {
+                icon.innerHTML = `<span class="material-icons">visibility_off</span>`
+
+            } else {
+                icon.innerHTML = `<span class="material-icons">visibility</span>`
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -34,6 +34,7 @@ Route::group(['middleware' => 'member.auth'], function () {
     Route::get('/profile', [MainController::class, 'profile']);
     Route::get('/about', [MainController::class, 'about']);
 
+
     //----------Preferences--------------
     Route::post('/api/addPref', [PrefController::class, 'addPref']);
     Route::put('/api/editPref', [PrefController::class, 'editPref']);
@@ -69,9 +70,17 @@ Route::group(['middleware' => 'admin.auth'], function () {
 Route::group(['middleware' => 'login.auth'], function () {
     Route::get('/signin', [AuthController::class, 'signin']);
     Route::get('/signup', [AuthController::class, 'signup']);
+    Route::get('/resetPassword', [AuthController::class, 'resetPassword']);
+    Route::get('/resetPassword/checkQuestion/{email}', [AuthController::class, 'checkQuestion']);
+    Route::get('/resetPassword/checkQuestion/{email}/newPassword', [AuthController::class, 'newPassword']);
+
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('/checkEmail', [AuthController::class, 'checkEmail']);
+    Route::post('/checkQuiz', [AuthController::class, 'checkQuiz']);
+    Route::post('/setNewPassword', [AuthController::class, 'setNewPassword']);
 });
+
 Route::get("/logout", [AuthController::class, 'logout']);
 
 

@@ -13,16 +13,31 @@
 </head>
 
 <body>
-
     <x-loading />
     <x-navbar />
     <div class="container">
         <div class="banner-wrap">
-            <div class="banner">
+            @php
+                if (count($paginatedLocations) > 0) {
+                    $maxIndex = count($paginatedLocations) - 1;
+                    $random = rand(0, $maxIndex);
+                    $imgs = $paginatedLocations[$random]->Images;
+                    $banner = explode(', ', $imgs);
+                } else {
+                    $banner = [];
+                }
+            @endphp
+            <div class="banner"
+                style="
+            @if (!empty($banner)) background: url({{ asset('storage/images/locations/' . $banner[0]) }});
+            @else
+                background-color: #555; @endif
+        ">
                 <div class="banner-content">
                     <h1>{{ $province_name }}</h1>
                 </div>
             </div>
+
             <div class="filters">
                 <div class="btns-pref">
                     @foreach ($allPrefs as $pref)
@@ -41,76 +56,86 @@
         </div>
         <div class="main-wrap">
             <div class="locations-wrap">
-                @foreach ($paginatedLocations as $location)
-                    <div class="card">
-                        @php
-                            $images = explode(', ', $location->Images);
-                        @endphp
-                        <div class="card-image">
-                            <a href="/province/{{ $province_id }}/{{ $location->location_id }}">
-                                <div class="overlay">
-                                    <span class="material-icons">
-                                        zoom_out_map
-                                    </span>
-                                </div>
-                                <img src="{{ asset('storage/images/locations/' . $images[0]) }}"
-                                    alt="{{ $location->location_name }}">
-                            </a>
-                        </div>
-                        <div class="card-content">
-                            <div class="row align-center flex-between">
-                                <h3>
-                                    <a href="/province/{{ $province_id }}/{{ $location->location_id }}">
-                                        {{ $location->location_name }}
-                                    </a>
-                                </h3>
-                                <div class="opening-status" id="opening-status-{{ $location->location_id }}"></div>
-                                <script>
-                                    window.addEventListener('DOMContentLoaded', (e) => {
-                                        e.preventDefault();
-                                        checkOpeningStatus({{ $location->location_id }});
-                                        setInterval(() => {
+                @if (count($paginatedLocations) > 0)
+                    @foreach ($paginatedLocations as $location)
+                        <div class="card">
+                            @php
+                                $images = explode(', ', $location->Images);
+                            @endphp
+                            <div class="card-image">
+                                <a href="/province/{{ $province_id }}/{{ $location->location_id }}">
+                                    <div class="overlay">
+                                        <span class="material-icons">
+                                            zoom_out_map
+                                        </span>
+                                    </div>
+                                    <img src="{{ asset('storage/images/locations/' . $images[0]) }}"
+                                        alt="{{ $location->location_name }}">
+                                </a>
+                            </div>
+                            <div class="card-content">
+                                <div class="row align-center flex-between">
+                                    <h3>
+                                        <a href="/province/{{ $province_id }}/{{ $location->location_id }}">
+                                            {{ $location->location_name }}
+                                        </a>
+                                    </h3>
+                                    <div class="opening-status" id="opening-status-{{ $location->location_id }}"></div>
+                                    <script>
+                                        window.addEventListener('DOMContentLoaded', (e) => {
+                                            e.preventDefault();
                                             checkOpeningStatus({{ $location->location_id }});
-                                        }, 60000);
-                                    });
-                                </script>
-                            </div>
-                            <p>{{ app('maxLength')($location->detail) }}...</p>
-                            <div class="time">
-                                <p>ช่วงเวลาเปิด-ปิด</p>
-                                <p>{{ $location->s_time }} - {{ $location->e_time }} น.</p>
-                            </div>
-                            <button class="btn-secondary row align-center"
-                                onclick="addPlan({{ $location->location_id }},event)">
-                                <span class="material-icons">
-                                    luggage
-                                </span>
-                                เพิ่มลงทริป
-                            </button>
-                            <div class="categories row">
-                                @php
-                                    $prefs = explode(', ', $location->Preferences);
-                                @endphp
-
-                                @foreach ($prefs as $pref)
+                                            setInterval(() => {
+                                                checkOpeningStatus({{ $location->location_id }});
+                                            }, 60000);
+                                        });
+                                    </script>
+                                </div>
+                                <p>{{ app('maxLength')($location->detail) }}...</p>
+                                <div class="time">
+                                    <p>ช่วงเวลาเปิด-ปิด</p>
+                                    <p>{{ $location->s_time }} - {{ $location->e_time }} น.</p>
+                                </div>
+                                <button class="btn-secondary row align-center"
+                                    onclick="addPlan({{ $location->location_id }},event)">
+                                    <span class="material-icons">
+                                        luggage
+                                    </span>
+                                    เพิ่มลงทริป
+                                </button>
+                                <div class="categories row">
                                     @php
-                                        $isActive = false;
-                                        if (isset($selectedPreferences)) {
-                                            $findPrefId = App::make('findPrefId');
-                                            $id = $findPrefId($pref);
-                                            $isActive = in_array($id, $selectedPreferences);
-                                        }
+                                        $prefs = explode(', ', $location->Preferences);
                                     @endphp
 
-                                    <div class="category @if ($isActive) category-active @endif">
-                                        {{ $pref }}
-                                    </div>
-                                @endforeach
+                                    @foreach ($prefs as $pref)
+                                        @php
+                                            $isActive = false;
+                                            if (isset($selectedPreferences)) {
+                                                $findPrefId = App::make('findPrefId');
+                                                $id = $findPrefId($pref);
+                                                $isActive = in_array($id, $selectedPreferences);
+                                            }
+                                        @endphp
 
+                                        <div class="category @if ($isActive) category-active @endif">
+                                            {{ $pref }}
+                                        </div>
+                                    @endforeach
+
+                                </div>
                             </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="no-locations">
+                        <span class="material-icons md-36" style="color: gray; margin-bottom: 10px;">
+                            do_not_disturb_alt
+                        </span>
+                        <p class="font-sm">ยังไม่พร้อมใช้งานในจังหวัดนี้</p>
                     </div>
-                @endforeach
+                @endif
+
             </div>
             <div class="suggest-plans">
                 <div class="plans-container">

@@ -7,9 +7,9 @@
     width: 100%;
     border-radius: inherit;
     min-height: 250px;
-    background-image: url("https://mpics.mgronline.com/pics/Images/563000007145901.JPEG");
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     position: relative;
     color: white;
     text-align: center;
@@ -247,4 +247,16 @@
 .filters > .btns-confirm > .clear-btn:hover {
     color: white;
     background-color: red;
+}
+.no-locations {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 lightgray;
+    padding: 10px;
 }

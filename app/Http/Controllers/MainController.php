@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answers;
 use App\Models\LocationImages;
 use App\Models\Locations;
 use App\Models\Members;
@@ -24,7 +25,18 @@ class MainController extends Controller
         if ($preferencesCount == 0) {
             $mypreferences = true;
         }
-        return view('main.index')->with(['mypreferences' => $mypreferences, 'preferences' => $preferences]);
+        $getLocationsByPref = App::make('getLocationsByPref');
+        $locations = $getLocationsByPref(null, $member_id, []);
+
+        if (is_array($locations) && count($locations) > 12) {
+            $locations = array_slice($locations, 0, 12);
+        }
+
+        return view('main.index')->with([
+            'mypreferences' => $mypreferences,
+            'preferences' => $preferences,
+            'locations' => $locations
+        ]);
     }
     function province($province_id)
     {
