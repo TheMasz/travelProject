@@ -12,7 +12,7 @@
 <body style="background-color: #F5F5F5">
 
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
-        <a class="navbar-brand" href="#">ADMIN</a>
+        <a class="navbar-brand" href="">ADMIN</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -49,6 +49,14 @@
                     <a class="nav-link" href="preferences">
                         <i class="fa-solid fa-heart"></i>
                         Preferences
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="questions">
+                        <i class="fa-solid fa-circle-question"></i>
+                        Questions
+                    </a>
                 </li>
 
             </ul>
@@ -278,7 +286,7 @@
                                         <hr class="my-4" />
 
                                         <a
-                                            href="{{ route('reviews', ['location_id' => $item->location_id, 'comment_id' => $item->comment_id]) }}">
+                                            href="{{ route('reviews', ['location_id' => $item->location_id, 'review_id' => $item->review_id]) }}">
                                             <button style="margin-right: 5px;" class="btn btn-info btn-sm"
                                                 title="ดูรีวิวเพิ่มเติม" type="submit"><span><i style="color: white"
                                                         class="fa-solid fa-magnifying-glass"></i></span>
@@ -295,10 +303,10 @@
                                             type="submit"><span><i class="fa-solid fa-trash"></i></span>
                                         </button></a> --}}
 
-                                        <a href='#delete{{ $item->comment_id }}' data-toggle='modal'><button
+                                        {{-- <a href='#delete{{ $item->comment_id }}' data-toggle='modal'><button
                                                 class="btn btn-danger btn-sm" title="ลบข้อมูล"
                                                 type="submit"><span><i class="fa-solid fa-trash"></i></span>
-                                            </button></a>
+                                            </button></a> --}}
                                     </div>
                                 </div>
 
@@ -310,7 +318,7 @@
         </div>
     </div>
 
-    @foreach ($data as $item)
+    {{-- @foreach ($data as $item)
         <div class="container">
             <div class="modal fade" id="delete{{ $item->comment_id }}">
                 <div class="modal-dialog">
@@ -336,7 +344,7 @@
                 </div>
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
 
 
     <!-- jQuery library -->

@@ -13,12 +13,14 @@ use App\Models\Preferences;
 use App\Models\PersonalPreference;
 use App\Models\PlansTrip;
 use App\Models\Comments;
+use App\Models\Reviews;
+use App\Models\Questions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Carbon;
 
 
 
@@ -62,16 +64,16 @@ class AdminController extends Controller
 
         $data = DB::table('locations')
         ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
-        ->join('comments', 'locations.location_id', '=', 'comments.location_id')
-        ->join('members', 'members.member_id', '=', 'comments.member_id')
+        ->join('reviews', 'locations.location_id', '=', 'reviews.location_id')
+        ->join('members', 'members.member_id', '=', 'reviews.member_id')
         ->select(
             'locations.location_id',
             'locations.location_name',
-            DB::raw('ROUND(AVG(comments.rating), 1) as rating'),
-            DB::raw('COUNT(DISTINCT comments.comment_id) as countrat'),
+            DB::raw('ROUND(AVG(reviews.rating), 1) as rating'),
+            DB::raw('COUNT(DISTINCT reviews.review_id) as countrat'),
             DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(members.username), ",", 1) as username'),
-            DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(comments.comment_txt), ",", 1) as comment_txt'),
-            DB::raw('(SELECT GROUP_CONCAT(comment_id) FROM comments WHERE location_id = locations.location_id) as comment_id'),
+            DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(reviews.review), ",", 1) as comment_txt'),
+            DB::raw('(SELECT GROUP_CONCAT(review_id) FROM reviews WHERE location_id = locations.location_id) as review_id'),
             DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(location_images.img_path), ",", 1) as img_names')
         )
         ->groupBy('locations.location_id', 'locations.location_name')
@@ -102,13 +104,43 @@ public function store(Request $request)
         'latitude' => 'required',
         'longitude' => 'required',
         'credit' => 'required',
-        'preferences_id' => 'required|array', // เพิ่ม validation สำหรับ preferences_id
+        'preferences_id' => 'required|array',
         'img_path.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
-    
+
     // เพิ่มเงื่อนไขเพื่อตรวจสอบว่า location_name ซ้ำกับข้อมูลที่มีอยู่แล้วหรือไม่
     if (Locations::where('location_name', $request->input('location_name'))->exists()) {
         return redirect('/admin/locations')->with('error', 'ชื่อสถานที่ท่องเที่ยวซ้ำ !!');
+    }
+
+
+    $sTime = strtotime($request->input('s_time'));
+    $eTime = strtotime($request->input('e_time'));
+
+    // เพิ่มเงื่อนไขตรวจสอบ
+    if ($sTime >= $eTime) {
+        return redirect('/admin/locations')->with('error', 'เวลาเปิดของร้านต้องน้อยกว่าเวลาปิด !!');
+    }
+    
+    
+    // เพิ่มเงื่อนไขตรวจสอบ latitude และ longitude ซ้ำ
+    $existingLocationCoordinates = DB::table('locations')
+        ->where('latitude', $request->latitude)
+        ->first();
+
+        if ($existingLocationCoordinates) {
+            // return redirect()->back()->with('error', 'Location with these coordinates already exists.');
+            return redirect('/admin/locations')->with('error', 'Latitude นี้มีอยู่แล้ว !!');
+        }
+
+         // เพิ่มเงื่อนไขตรวจสอบ latitude และ longitude ซ้ำ
+    $existingLocationCoordinates1 = DB::table('locations')
+    ->where('longitude', $request->longitude)
+    ->first();
+
+    if ($existingLocationCoordinates1) {
+        // return redirect()->back()->with('error', 'Location with these coordinates already exists.');
+        return redirect('/admin/locations')->with('error', 'Longitude นี้มีอยู่แล้ว !!');
     }
     
     try {
@@ -299,19 +331,19 @@ function searchreviews(Request $request)
 
         $data = DB::table('locations')
         ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
-        ->join('comments', 'locations.location_id', '=', 'comments.location_id')
-        ->join('members', 'members.member_id', '=', 'comments.member_id')
+        ->join('reviews', 'locations.location_id', '=', 'reviews.location_id')
+        ->join('members', 'members.member_id', '=', 'reviews.member_id')
         ->when($searchTerm, function ($query) use ($searchTerm) {
             $query->where('locations.location_name', 'like', '%' . $searchTerm . '%');
         })
         ->select(
             'locations.location_id',
             'locations.location_name',
-            DB::raw('ROUND(AVG(comments.rating), 1) as rating'),
-            DB::raw('COUNT(DISTINCT comments.rating) as countrat'),
+            DB::raw('ROUND(AVG(reviews.rating), 1) as rating'),
+            DB::raw('COUNT(DISTINCT reviews.rating) as countrat'),
             DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(members.username), ",", 1) as username'),
-            DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(comments.comment_txt), ",", 1) as comment_txt'),
-            DB::raw('(SELECT GROUP_CONCAT(comment_id) FROM comments WHERE location_id = locations.location_id) as comment_id'),
+            DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(reviews.review), ",", 1) as comment_txt'),
+            DB::raw('(SELECT GROUP_CONCAT(review_id) FROM reviews WHERE location_id = locations.location_id) as review_id'),
             DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(location_images.img_path), ",", 1) as img_names')
         )
         ->groupBy('locations.location_id', 'locations.location_name')
@@ -324,13 +356,13 @@ function searchreviews(Request $request)
     return redirect('/admin/reviews');
 }
 
-function delreviews($comment_id)
+function delreviews($review_id)
 {
 
     try {
         
-        DB::transaction(function () use ($comment_id) {
-            Comments::where('comment_id', $comment_id)->delete();
+        DB::transaction(function () use ($review_id) {
+            Reviews::where('review_id', $review_id)->delete();
         });
         return redirect('/admin/reviews')->with('success', 'Delete Success');
     } catch (\Exception $e) {
@@ -440,10 +472,10 @@ public function updateusers(Request $request, $member_id)
 
 
 
-public function reviews_more($location_id, $comment_ids)
+public function reviews_more($location_id, $review_id)
 {
-    // แยกค่า comment_ids เป็นอาร์เรย์
-    $comment_ids = explode(',', $comment_ids);
+    // แยกค่า review_$review_id เป็นอาร์เรย์
+    $review_id = explode(',', $review_id);
 
     // ดึงข้อมูลสถานที่ท่องเที่ยว
     $location = Locations::find($location_id);
@@ -452,22 +484,22 @@ public function reviews_more($location_id, $comment_ids)
     $images = LocationImages::where('location_id', $location_id)->get();
 
     // ดึงข้อมูลความคิดเห็น
-    $comments = Comments::whereIn('comment_id', $comment_ids)
+    $reviews = Reviews::whereIn('review_id', $review_id)
     ->orderBy('rating', 'desc')
     ->paginate(6);
 
 
     // ดึงข้อมูลสมาชิกที่รีวิว
-    $members = Comments::leftJoin('members', 'comments.member_id', '=', 'members.member_id')
-        ->leftJoin('locations', 'comments.location_id', '=', 'locations.location_id')
-        ->select('members.username', 'comments.*', 'locations.*')
-        ->whereIn('comments.comment_id', $comment_ids)
+    $members = Reviews::leftJoin('members', 'reviews.member_id', '=', 'members.member_id')
+        ->leftJoin('locations', 'reviews.location_id', '=', 'locations.location_id')
+        ->select('members.username', 'reviews.*', 'locations.*')
+        ->whereIn('reviews.review_id', $review_id)
         ->get();
 
 
 
     // ส่งข้อมูลไปยัง view
-    return view('admin.reviews_more', compact('location', 'images', 'members', 'comments'));
+    return view('admin.reviews_more', compact('location', 'images', 'members', 'reviews'));
 }
 
 public function updatephoto(Request $request, $imgId)
@@ -590,6 +622,112 @@ public function updateLocation(Request $request, $id)
 }
 
 
+function fetchData(Request $request)
+{
+    $searchProvince = $request->input('searchProvince');
+
+    $query = DB::table('locations')
+        ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+        ->groupBy('locations.location_name','locations.detail','locations.s_time','locations.e_time','locations.location_id')
+        ->selectRaw('locations.location_id,locations.location_name,locations.detail,locations.s_time,locations.e_time,SUBSTRING_INDEX(GROUP_CONCAT(location_images.img_path), ",", 1) as img_names')
+        ->orderBy('locations.location_id', 'asc');
+
+    // ตรวจสอบว่ามีการเลือกจังหวัดหรือไม่
+    if ($searchProvince && $searchProvince != 'ทั้งหมด...') {
+        $query->where('locations.province_id', $searchProvince);
+    }
+
+    $locations = $query->paginate(6);
+    $preferences = DB::table('preferences')->paginate(12);
+
+    return view('admin.locations', compact('locations', 'preferences'));
+}
+
+function questions()
+{
+        $questions=DB::table('questions')->paginate(9);
+        return view('admin.questions',compact('questions'));
+}
+
+function insertQue(Request $request)
+{
+    try {
+        // ตรวจสอบว่า question_text ไม่ซ้ำ
+        $existingQuestion = Questions::where('question_text', $request->input('question_text'))->first();
+        if ($existingQuestion) {
+            // กรณีมีข้อมูลซ้ำ
+            return redirect('/admin/questions')->with('error', 'คำถามนี้มีอยู่แล้วในระบบ !!');
+        }
+
+        // ตรวจสอบข้อมูลอื่น ๆ ด้วย Laravel Validation
+        $request->validate([
+            'question_text' => 'required|string',
+        ]);
+
+        // เพิ่มคำถามลงในฐานข้อมูล
+        Questions::create([
+            'question_text' => $request->input('question_text'),
+        ]);
+
+        return redirect('/admin/questions')->with('success', 'เพิ่มคำถามสำเร็จแล้ว');
+    } catch (\Exception $e) {
+        // กรณีเกิดข้อผิดพลาด
+        return redirect('/admin/questions')->with('error', 'เกิดข้อผิดพลาดในการเพิ่มคำถาม !!');
+    }
+}
+
+function delQue($question_id)
+{
+
+    try {
+        
+        DB::transaction(function () use ($question_id) {
+            Questions::where('question_id', $question_id)->delete();
+        });
+        return redirect('/admin/questions')->with('success', 'Delete Success');
+    } catch (\Exception $e) {
+        // กรณีเกิดข้อผิดพลาด
+        return redirect('/admin/questions')->with('error', 'ลบข้อมูลไม่สำเร็จ !!');
+    }
+}
+
+function searchQue(Request $request)
+{
+     // ตรวจสอบว่ามีค่าที่ส่งมาและไม่ใช่ค่าว่างเปล่าหรือไม่
+     if ($request->filled('search')) {
+        $searchTerm = $request->input('search');
+        // ค้นหาข้อมูลในตาราง preference
+        $questions = Questions::where('question_text', 'like', '%' . $searchTerm . '%')->paginate(12);
+
+        return view('admin.questions', compact('questions', 'searchTerm'));
+    }
+
+    // ถ้าค่าว่างเปล่า หรือไม่มีค่าที่ส่งมาในช่องค้นหา
+    return redirect('/admin/questions');
+}
+
+function updatequestions(Request $request, $question_id)
+{
+    $request->validate([
+        'question_text' => 'required|string|max:255',
+    ]);
+
+    // ตรวจสอบว่ามี question_text ที่เหมือนกันในฐานข้อมูลหรือไม่
+    $existingPreference = Questions::where('question_text', $request->input('question_text'))
+        ->where('question_id', '!=', $question_id)
+        ->first();
+
+        if ($existingPreference) {
+            // ถ้าพบ question_text ที่ซ้ำกัน
+            return redirect('/admin/questions')->with('error', 'ชื่อประเภทความชอบนี้มีอยู่แล้ว !!');
+        }
+
+      // ไม่ต้องใช้ find ก่อน update ใน Eloquent
+      Questions::where('question_id', $question_id)
+      ->update(['question_text' => $request->input('question_text')]);
+      return redirect('/admin/questions')->with('success', 'Questions Updated Successfully');
+
+}
 
 
 

@@ -14,7 +14,7 @@
 
 <body style="background-color: #F5F5F5">
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
-        <a class="navbar-brand" href="#">ADMIN</a>
+        <a class="navbar-brand" href="">ADMIN</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -80,7 +80,7 @@
             <div class="card-body">
 
                 <div class="row">
-                    @foreach ($comments as $index => $item)
+                    @foreach ($members as $index => $item)
                         <div class="col-sm-4">
                             <div class="card" style="margin-bottom: 20px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);">
                                 <div class="card-header">
@@ -99,7 +99,7 @@
                                     </li>
                                     <br>
                                     <li class="list-inline-item">
-                                        <p class="mb-2 text-muted">Comment: {{ $item->comment_txt }}</p>
+                                        <p class="mb-2 text-muted">Comment: {{ $item->review }}</p>
                                     </li>
                                     <br>
                                     <li class="list-inline-item">
@@ -271,7 +271,7 @@
                                     @endif
                                 </div>{{-- /card-body --}}
                                 <div class="card-footer text-right">
-                                    <a href='#delete{{ $item->comment_id }}' data-toggle='modal'><button
+                                    <a href='#delete{{ $item->review_id }}' data-toggle='modal'><button
                                             class="btn btn-danger" title="ลบข้อมูล" type="submit"><span><i
                                                     class="fa-solid fa-trash"></i></span>
                                         </button></a>
@@ -281,15 +281,15 @@
                     @endforeach
 
                 </div>
-                {{ $comments->links() }}
+                {{ $reviews->links() }}
             </div>
         </div>
     </div>
 
 
-    @foreach ($comments as $index => $item)
+    @foreach ($reviews as $index => $item)
         <div class="container">
-            <div class="modal fade" id="delete{{ $item->comment_id }}">
+            <div class="modal fade" id="delete{{ $item->review_id }}">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color: #d9534f; color: white;">
@@ -300,7 +300,7 @@
                         <div class="modal-body">
                             @php
                                 // หาตำแหน่งของ comment_id ใน $members
-                                $index = array_search($item->comment_id, array_column($members->toArray(), 'comment_id'));
+                                $index = array_search($item->review_id, array_column($members->toArray(), 'review_id'));
                             @endphp
                             @if ($index !== false)
                                 <span style="color: #d9534f">คุณต้องการลบข้อมูลรีวิวของคุณ:
@@ -311,7 +311,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <a href="{{ route('delreviews', $item->comment_id) }}">
+                            <a href="{{ route('delreviews', $item->review_id) }}">
                                 <button class="btn btn-danger" title="ลบข้อมูล" type="submit">Delete</button>
                             </a>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

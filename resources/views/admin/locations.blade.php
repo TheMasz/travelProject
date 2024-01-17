@@ -31,7 +31,7 @@
 <body style="background-color: #F5F5F5">
 
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
-        <a class="navbar-brand" href="#">ADMIN</a>
+        <a class="navbar-brand" href="">ADMIN</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -67,6 +67,14 @@
                     <a class="nav-link" href="preferences">
                         <i class="fa-solid fa-heart"></i>
                         Preferences
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="questions">
+                        <i class="fa-solid fa-circle-question"></i>
+                        Questions
+                    </a>
                 </li>
 
             </ul>
@@ -123,7 +131,7 @@
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" name="location_name"
                                                 placeholder="ชื่อสถานที่ท่องเที่ยว"
-                                                onKeyPress="return KeyCode1(location_name)" required>
+                                                onKeyPress="return KeyCode(location_name)" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" name="address"
@@ -212,6 +220,31 @@
 
 
             <div class="card-body">
+
+                <form action="{{ route('admin.locations') }}" method="GET">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">จังหวัด:</div>
+                                </div>
+                                <select name="searchProvince" class="form-control">
+                                    <option selected>ทั้งหมด...</option>
+                                    <?php
+                                    $provinces = DB::table('provinces')->get();
+                                    ?>
+                                    @foreach ($provinces as $item)
+                                        <option value="{{ $item->province_id }}">{{ $item->province_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <button style="height: 100%; margin-top: 5px;" class="btn btn-primary btn-sm">ค้นหา</button>
+                    </div>
+                </form>
+
+                <hr>
                 <div class="row">
                     @foreach ($locations as $item)
                         <div class="col-sm-4" style="margin-top: 5px;">
@@ -261,7 +294,8 @@
                         </div>
 
                         <div class="modal-body">
-                            <span style="color: #000; font-size: 16px;">คุณต้องการลบข้อมูลสถานที่: <span style="color: #d9534f; font-size: 18px;">{{ $item->location_name }}</span> 
+                            <span style="color: #000; font-size: 16px;">คุณต้องการลบข้อมูลสถานที่: <span
+                                    style="color: #d9534f; font-size: 18px;">{{ $item->location_name }}</span>
                                 ใช่หรือไม่ !!</span>
                         </div>
 
@@ -281,15 +315,20 @@
 
     <script type="text/javascript">
         function KeyCode(objId) {
-            if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 97 && event.keyCode <= 122 || event
-                .keyCode >= 65 && event.keyCode <= 90) //48-57(ตัวเลข) ,65-90(Eng ตัวพิมพ์ใหญ่ ) ,97-122(Eng ตัวพิมพ์เล็ก)
-            {
+            if (
+                (event.keyCode >= 48 && event.keyCode <= 57) || // 48-57(ตัวเลข)
+                (event.keyCode >= 97 && event.keyCode <= 122) || // 97-122(Eng ตัวพิมพ์เล็ก)
+                (event.keyCode >= 65 && event.keyCode <= 90) || // 65-90(Eng ตัวพิมพ์ใหญ่)
+                (event.keyCode >= 3586 && event.keyCode <= 3675) || 
+                (event.keyCode === 32) // space bar
+            ) {
                 return true;
             } else {
                 alert("กรอกได้เฉพาะ a-z หรือ A-Z และ 0-9");
                 return false;
             }
         }
+
 
         function KeyCode1(objId) {
             if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode >= 161 && event.keyCode <= 255 || event
