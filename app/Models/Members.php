@@ -10,5 +10,4 @@ class Members extends Model
     use HasFactory;
     protected $table = 'members';
     protected $primaryKey = 'member_id';
-   
 }
