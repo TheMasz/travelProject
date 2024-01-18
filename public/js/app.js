@@ -1,14 +1,72 @@
 window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(function () {
+        document.getElementById("loading-screen").style.display = "none";
+    }, 1500);
+    let percent = 0;
+    const interval = setInterval(function () {
+        percent += Math.floor(Math.random() * 20);
+        document.getElementById("progress-bar").style.width = percent + "%";
+        if (percent >= 100) {
+            clearInterval(interval);
+        }
+    }, 200);
     updateCartLength();
 });
 
-function addPlan(location_id) {
+function buttonAnimate(btn) {
+    btn.classList.add("clicked");
+    setTimeout(() => {
+        btn.classList.remove("clicked");
+    }, 300);
+}
+
+function addPlan(location_id, e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
 
     if (!basket.includes(location_id)) {
         basket.push(location_id);
         localStorage.setItem("basket", JSON.stringify(basket));
         updateCartLength();
+        if (window.location.pathname === "/plans/navigative") {
+            location.reload();
+        }
+    }
+}
+
+function clearAllPlanInBasket(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
+    localStorage.removeItem("basket");
+    const locations = document.querySelector("#locations");
+    locations.innerHTML = ``;
+    let html = `
+        <div class='back-home'>
+            <span class="material-icons" style='color:lightgray; font-size:64px; margin-bottom:5px'>
+                luggage
+            </span>
+            <p class='mb-2' style='color:lightgray; text-align:center; width:75%'>ยังไม่มีสถานที่ท่องเที่ยวในการเดินของคุณ 
+            กรุณาเริ่มด้วยการเลือกสถานที่ที่คุณต้องการเพิ่มเข้าในแผนการท่องเที่ยวของคุณ คุณสามารถเริ่มการค้นหาและเพิ่มสถานที่ท่องเที่ยวได้ที่หน้าหลักของเรา</p>
+            <a href='/' class='btn-primary mb-05'>ไปยังหน้าแรก</a>
+            <a href='/myplans' class='btn-primary'>ไปยังแผนท่องเที่ยวของฉัน</a>
+        </div>
+    `;
+    locations.insertAdjacentHTML("beforeend", html);
+    updateCartLength();
+}
+
+function removePlanInNavigative(location_id) {
+    let basket = JSON.parse(localStorage.getItem("basket")) || [];
+    let index = basket.indexOf(location_id);
+
+    if (index !== -1) {
+        basket.splice(index, 1);
+        localStorage.setItem("basket", JSON.stringify(basket));
+        updateCartLength();
+        location.reload();
     }
 }
 function removePlanInBasket(location_id) {
@@ -48,6 +106,7 @@ function removePlanInBasket(location_id) {
             });
     }
 }
+
 function findIndexById(location_id, basket) {
     let index;
     for (let i = 0; i < basket.length; i++) {
@@ -140,7 +199,11 @@ function usePlan(locationIds, obj_class) {
         window.location.href = "/basket";
     } else {
         const obj = document.querySelector(obj_class);
-        showAlert("warning", "กระเป๋าเดินทางไม่ว่าง โปรดเคลียร์แล้วลองใหม่อีกครั้ง!", obj);
+        showAlert(
+            "warning",
+            "กระเป๋าเดินทางไม่ว่าง โปรดเคลียร์แล้วลองใหม่อีกครั้ง!",
+            obj
+        );
     }
 }
 
@@ -149,38 +212,21 @@ function showAlert(type, message, object) {
         const alertDiv = document.createElement("div");
         alertDiv.className = `message message-${type}`;
         alertDiv.textContent = message;
-        object.insertAdjacentElement('beforebegin',alertDiv);
+        object.insertAdjacentElement("beforebegin", alertDiv);
 
         setTimeout(() => {
             alertDiv.remove();
         }, 5000);
-    }else{
+    } else {
         console.error("Element with class not found.");
     }
-}
-
-function removePlan(planName) {
-    const data = {
-        plan_name: planName,
-    };
-
-    axios
-        .delete("/api/removePlan", { data })
-        .then((response) => {
-            console.log("Request successful:", response.data);
-            if (response.data.success) {
-                location.reload();
-            }
-        })
-        .catch((error) => {
-            console.error("Error removing plan:", error);
-        });
 }
 
 function setBasketDistance(basket) {
     localStorage.setItem("basket", JSON.stringify(basket));
     updateCartLength();
 }
+
 function getBasketLength() {
     let basket = JSON.parse(localStorage.getItem("basket")) || [];
     return basket.length;
@@ -198,14 +244,17 @@ function getLocationsId() {
     }
 }
 
-let current = {};
+var current = {};
 
-function getCurrectGeo() {
+function getCurrectGeo(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
                 // Use the location from the browser's geolocation API
                 current = {
                     lat: lat,
@@ -239,7 +288,10 @@ function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
 
-function calcDistance() {
+function calcDistance(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     if (current && current.lat != undefined && current.lon != undefined) {
         if (getBasketLength() == 0) {
             const wrap = document.querySelector(".location-mark");
@@ -332,7 +384,7 @@ function displayBasket(res, btn) {
             html = `
             <div class="card">
                 <div class="img"  style="flex: 0 0 30%; width: 30%">
-                    <img src="/storage/images/${images[0]}" alt="${
+                    <img src="/storage/images/locations/${images[0]}" alt="${
                 data.location_name
             }">
                 </div>
@@ -344,9 +396,41 @@ function displayBasket(res, btn) {
                             ${data.location_name}
                         </a>
                     </h3>
-                    <p>${maxLength(data.detail, 100)}</p>
+                    <p>${maxLength(data.detail, 100, 1)}</p>
                 </div>
             </div>
+            `;
+        } else if (btn == "navigative") {
+            html = `
+            <div class="card">
+                <div class='order' style='flex: 0 0 10%'; width:10%;'>
+                    ${i + 1}
+                </div>
+                <div class="img" style='flex: 0 0 20%; width: 20%;'>
+                    <img src="/storage/images/locations/${images[0]}" alt="${
+                data.location_name
+            }">
+                </div>
+                <div class="txt" style='flex: 0 0 60%; width:60%;'>
+                    <h3 style="font-size:14px;">
+                        <a href="/province/${data.province_id}/${
+                data.location_id
+            }">
+                            ${data.location_name}
+                        </a>
+                    </h3>
+                </div>
+                <div class='btn_del' style='flex: 0 0 10%'; width:10%;'>
+                    <button onClick='removePlanInNavigative(${
+                        data.location_id
+                    })' style='margin-right: 10px;'>
+                        <span class="material-icons">
+                            delete
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <hr/>
             `;
         } else {
             html = `
@@ -354,13 +438,21 @@ function displayBasket(res, btn) {
                 <div class="btns">
                     <button onClick='prevPlan(${
                         data.location_id
-                    })'>เลื่อนขึ้น</button>
+                    })' class='btn_prev' >
+                    <span class="material-icons">
+                    arrow_drop_up
+                    </span>
+                    </button>
                     <button onClick='nextPlan(${
                         data.location_id
-                    })'>เลื่อนลง</button>
+                    })' class='btn_next' >
+                    <span class="material-icons">
+                    arrow_drop_down
+                    </span>
+                    </button>
                 </div>
                 <div class="img">
-                    <img src="/storage/images/${images[0]}" alt="${
+                    <img src="/storage/images/locations/${images[0]}" alt="${
                 data.location_name
             }">
                 </div>
@@ -370,7 +462,7 @@ function displayBasket(res, btn) {
                     ${data.location_name}
                 </a>
             </h3>
-                    <p>${maxLength(data.detail, 100)}</p>
+                    <p>${maxLength(data.detail, 100, 1)}</p>
                 </div>
                 <div class='btn_del'>
                     <button onClick='removePlanInBasket(${data.location_id})'>
@@ -386,15 +478,22 @@ function displayBasket(res, btn) {
     }
 }
 
-function maxLength(inputString, maxLength) {
+function maxLength(inputString, maxLength, option) {
     if (inputString.length > maxLength) {
-        return inputString.slice(0, maxLength) + "...";
+        if (option == 1) {
+            return inputString.slice(0, maxLength) + "...";
+        } else if (option == 2) {
+            return inputString.slice(0, maxLength);
+        }
     } else {
         return inputString;
     }
 }
 
-function navigative() {
+function navigative(e) {
+    e.preventDefault();
+    const clickedButton = e.target;
+    buttonAnimate(clickedButton);
     let length = getBasketLength();
     if (current && current.lat != undefined && current.lon != undefined) {
         if (length == 0) {
@@ -420,5 +519,96 @@ function navigative() {
         setTimeout(function () {
             wrap.removeChild(div);
         }, 2000);
+    }
+}
+
+function checkOpeningStatus(location_id) {
+    fetch(`/api/checkOpening/${location_id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const statusElement = document.getElementById(
+                `opening-status-${location_id}`
+            );
+            if (data.status == "opend") {
+                statusElement.textContent = "เปิดทำการ";
+                statusElement.style.backgroundColor = "#28A745";
+            } else {
+                statusElement.textContent = "ปิดทำการ";
+                statusElement.style.backgroundColor = "#DC3545";
+            }
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function delAction(review_id) {
+    const modal_del = document.querySelector(".modal-type-alert");
+    const modalContent_del = document.querySelector(
+        ".modal_content-type-alert"
+    );
+    const cancelBtn = document.querySelector(".cancel_btn-type-alert");
+    const confirmBtn = document.querySelector(".confirm_btn-type-alert");
+    const txtHead = document.querySelector(".modal-type-alert .txt_head");
+
+    txtHead.innerHTML = `คุณต้องการลบรีวิวนี้หรือไม่?`;
+    modal_del.style.display = "block";
+
+    modalContent_del.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (e.target === modalContent_del || e.target === cancelBtn) {
+            modal_del.style.display = "none";
+        }
+    });
+
+    confirmBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const data = {
+            review_id: review_id,
+        };
+        axios
+            .delete("/api/removeReview", { data })
+            .then((response) => {
+                if (response.data.success) {
+                    location.reload();
+                }
+            })
+            .catch((error) => {
+                console.error("Error removing plan:", error);
+            });
+        modal_del.style.display = "none";
+    });
+}
+
+function generateStars(rating) {
+    let starsHTML = "";
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            starsHTML += '<span class="material-icons">star</span>';
+        } else {
+            starsHTML += '<span class="material-icons">star_border</span>';
+        }
+    }
+    return starsHTML;
+}
+
+function compareTime(reviewTime) {
+    const createdAt = new Date(reviewTime);
+    const currentDate = new Date();
+    const timeDifference = currentDate - createdAt;
+    const dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const monthDifference = Math.floor(dayDifference / 30);
+
+    if (monthDifference > 0) {
+        if (monthDifference === 1) {
+            return "1 เดือนที่แล้ว";
+        } else {
+            return `${monthDifference} เดือนที่แล้ว`;
+        }
+    } else {
+        if (dayDifference === 1) {
+            return "1 วันที่แล้ว";
+        } else {
+            return `${dayDifference} วันที่แล้ว`;
+        }
     }
 }

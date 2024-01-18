@@ -3,43 +3,73 @@
 }
 .details-wrap > .title {
     justify-items: center;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     padding: 10px 0;
 }
+
+.details-wrap > .title > .txt > .row > h1 {
+    color: #555;
+}
 .details-wrap > .title > .txt > .row {
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
     color: #8e8e8e;
     font-weight: bold;
     text-align: justify;
 }
 .details-wrap > .title > .button-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 .details-wrap > .title > .button-wrap > button {
     cursor: pointer;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
 }
-.details-wrap .categories > p {
+.details-wrap .categories > div {
     padding: 10px;
-    border: 1px solid #000;
+    border: 1px solid var(--main-color);
+    color: var(--main-color);
     border-radius: 20px;
-    margin-right: 5px;
+    margin: 5px 5px 5px 0;
 }
+
 .details-wrap > .desc-wrap > .detail {
-    flex: 0 0 70%;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 70%;
+            flex: 0 0 70%;
     width: 70%;
 }
+.details-wrap > .desc-wrap > .detail > .time {
+    padding: 10px 0;
+}
+
 .details-wrap > .desc-wrap > .map {
-    flex: 0 0 30%;
-    min-height: 250px;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 30%;
+            flex: 0 0 30%;
+    height: auto !important;
     width: 30%;
     padding: 0 10px;
 }
-.images-wrap {
-}
 
 .images-wrap > .image-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 .images-wrap > .main-image {
     position: relative;
@@ -50,7 +80,7 @@
     background-color: #292929;
     margin-bottom: 20px;
 }
-.images-wrap > .main-image>.credit{
+.images-wrap > .main-image > .credit {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -78,63 +108,250 @@
     background-size: contain !important;
     border: 1px solid lightgray;
     cursor: pointer;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    transition: -webkit-transform 0.3s ease-in-out;
+    -o-transition: transform 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
 }
 .images-wrap > .image-box > .image:hover {
-    box-shadow: 0 0 7px lightgray;
-    transform: scale(1.1); 
+    -webkit-box-shadow: 0 0 7px lightgray;
+            box-shadow: 0 0 7px lightgray;
+    -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+            transform: scale(1.1);
 }
-.comments-wrap {
+.reviews-wrap {
     padding: 20px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
 }
-.comments-wrap > button {
-    align-self: flex-end;
+.reviews-wrap > button {
+    -ms-flex-item-align: end;
+        align-self: flex-end;
     cursor: pointer;
     margin: 10px 0;
 }
-.comments-wrap > .comments {
+.reviews-wrap > .reviews {
     border: 1px solid #000;
     background-color: #fff;
     border-radius: 20px;
     padding: 10px;
 }
-.comments-wrap > .comments > .comment {
+.reviews-wrap > .reviews > .review {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
     width: 100%;
     border-bottom: 1px solid #eee;
     padding: 10px 0;
 }
-.comments-wrap > .comments > .comment > .user {
-    flex: 0 0 15%;
+.reviews-wrap > .reviews > .review > .user {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 15%;
+            flex: 0 0 15%;
     width: 15%;
 }
-.comments-wrap > .comments > .comment > .user > .date {
-    color: #8e8e8e;
+.reviews-wrap > .reviews > .review > .user > .date {
+    color: #ccc;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
-.comments-wrap > .comments > .comment > .user > .star {
+.reviews-wrap > .reviews > .review > .user > .star {
     color: red;
 }
-.comments-wrap > .comments > .comment > .txt {
-    flex: 0 0 75%;
-    width: 75%;
+.reviews-wrap > .reviews > .review > .txt {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 70%;
+            flex: 0 0 70%;
+    width: 70%;
     text-align: justify;
 }
 
-.comments-wrap > .comments > .comment > .like {
-    flex: 0 0 10%;
-    width: 10%;
+.reviews-wrap > .reviews > .review > .more {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 5%;
+            flex: 0 0 5%;
+    width: 5%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
-.comments-wrap > .comments > .comment > .like button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.reviews-wrap > .reviews > .review > .more > .del-review {
+    color: red;
     border: none;
     background-color: transparent;
     cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    -webkit-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    transition: all 0.25s;
+}
+.reviews-wrap > .reviews > .review > .more > .del-review:hover {
+    color: white;
+    background-color: red;
+}
+.reviews-wrap > .reviews > .review > .like_section {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 10%;
+            flex: 0 0 10%;
+    width: 10%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.reviews-wrap > .reviews > .review > .like_section button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.reviews-wrap > .reviews > .no-reviews {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    color: #ccc;
+}
+#loadMoreButton {
+    -ms-flex-item-align: center;
+        align-self: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    -webkit-box-shadow: 0 0 7px 0 lightgray;
+            box-shadow: 0 0 7px 0 lightgray;
+    background-color: var(--main-color);
+    color: #fff;
+}
+.disable {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+@media screen and (max-width: 480px) {
+}
+@media screen and (max-width: 768px) {
+    .details-wrap > .title {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
+    .details-wrap > .title > .txt {
+        -webkit-box-flex: 0 !important;
+            -ms-flex: 0 0 100% !important;
+                flex: 0 0 100% !important;
+        width: 100% !important;
+    }
+    .details-wrap > .title > .button-wrap {
+        -webkit-box-flex: 0 !important;
+            -ms-flex: 0 0 100% !important;
+                flex: 0 0 100% !important;
+        width: 100% !important;
+        margin-top: 10px;
+    }
+    .details-wrap > .title > .button-wrap > button {
+        width: 100%;
+    }
+    .title > .txt > div:nth-child(1) {
+        -webkit-box-orient: vertical !important;
+        -webkit-box-direction: reverse !important;
+            -ms-flex-direction: column-reverse !important;
+                flex-direction: column-reverse !important;
+        -webkit-box-align: start !important;
+            -ms-flex-align: start !important;
+                align-items: flex-start !important;
+        padding: 0 5px;
+    }
+    .desc-wrap {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
+    .desc-wrap > .detail {
+        width: 100% !important;
+        -webkit-box-flex: 0 !important;
+            -ms-flex: 0 0 100% !important;
+                flex: 0 0 100% !important;
+    }
+    .desc-wrap > .map {
+        position: relative !important;
+        width: 100% !important;
+        -webkit-box-flex: 0 !important;
+            -ms-flex: 0 0 100% !important;
+                flex: 0 0 100% !important;
+        height: 400px !important;
+    }
+    .desc-wrap > .map > * {
+        height: 400px !important;
+    }
+    .reviews-wrap > .reviews > .review {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
+    .reviews-wrap > .reviews > .review > * {
+        -webkit-box-flex: 0 !important;
+            -ms-flex: 0 0 100% !important;
+                flex: 0 0 100% !important;
+        width: 100% !important;
+        float: left;
+    }
+    .reviews-wrap > .reviews > .review > .txt{
+        margin: 10px 0;
+    }
+    .reviews-wrap > .reviews > .review > .like_section,
+    .reviews-wrap > .reviews > .review > .more {
+        -webkit-box-pack: end;
+            -ms-flex-pack: end;
+                justify-content: flex-end;
+        -webkit-box-align: end;
+            -ms-flex-align: end;
+                align-items: flex-end;
+    }
 }

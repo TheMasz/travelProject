@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <x-loading />
     <x-navbar />
     <div class="container">
         <div class="plans-wrap">
@@ -30,7 +31,7 @@
                     @php
                     $images = explode(',',$location->Images);
                     @endphp
-                    <img src="{{ asset('storage/images/' . $images[0]) }}" alt="{{$location->location_name}}" />
+                    <img src="{{ asset('storage/images/locations/' . $images[0]) }}" alt="{{$location->location_name}}" />
                     @endforeach
                 </div>
                 <div class="details">
@@ -73,8 +74,7 @@
     <x-confirm />
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/myplans.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
 </body>
 
 </html>

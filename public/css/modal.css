@@ -1,12 +1,12 @@
 .modal {
     /* display: none; */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -21,11 +21,15 @@
     text-align: center;
 }
 .modal-type-alert .bottom {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: flex-end;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
 }
-.modal-type-alert .bottom > .cancel_btn,
-.modal-type-alert .bottom > .confirm_btn {
+.cancel_btn,
+.confirm_btn {
     margin-left: 10px;
     padding: 10px;
     border: none;
@@ -34,8 +38,8 @@
     cursor: pointer;
     font-weight: bold;
 }
-.modal_content-type-alert > .content_wrap{
-    width: 30% !important;
+.modal_content-type-alert > .content_wrap {
+    width: 30% ;
     overflow: hidden !important;
 }
 .modal > .modal_content {
@@ -47,7 +51,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
     width: 50%;
     background-color: white;
     border-radius: 20px;
@@ -62,9 +68,292 @@
     margin-bottom: 5px;
 }
 .modal > .modal_content > .content_wrap > form > .bottom {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: flex-end;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
 }
 .modal > .modal_content > .content_wrap ul {
     list-style-type: none;
+}
+.modal > .modal_content > .content_wrap textarea {
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+}
+
+.modal-reviews {
+    display: none;
+}
+.modal-reviews h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.modal-reviews .rating {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    grid-gap: 0.5rem;
+    font-size: 2rem;
+    color: #ffbd13;
+    margin-bottom: 2rem;
+}
+.modal-reviews .rating .star {
+    cursor: pointer;
+    -webkit-transition: -webkit-transform 0.5s ease-in-out;
+    transition: -webkit-transform 0.5s ease-in-out;
+    -o-transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
+    font-size: 48px !important;
+}
+
+.modal-reviews .rating .star.active {
+    -webkit-animation: animate 0.5s calc(var(--i) * 0.1s) ease-in-out forwards;
+            animation: animate 0.5s calc(var(--i) * 0.1s) ease-in-out forwards;
+}
+
+@-webkit-keyframes animate {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+}
+
+.modal-reviews .rating .star:hover {
+    -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+            transform: scale(1.1);
+}
+.modal-reviews textarea {
+    width: 100%;
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    resize: none;
+    margin-bottom: 0.5rem;
+}
+.modal-reviews .btn-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    grid-gap: 0.5rem;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+}
+.modal-reviews .btn-group .btn {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.modal-profile {
+    display: none;
+}
+.modal-profile .content_wrap {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+}
+.modal-profile .content_wrap > .menu {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 30%;
+            flex: 0 0 30%;
+    width: 30%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    border-right: 1px solid var(--gray-color);
+    padding: 0 5px;
+}
+.modal-profile .content_wrap > .menu > button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    border-radius: 10px;
+}
+.modal-profile .content_wrap > .menu > button:hover {
+    background-color: #007dcb;
+    color: white;
+}
+.modal-profile .content_wrap > .overlay {
+    display: none;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 70%;
+            flex: 0 0 70%;
+    width: 70%;
+    padding: 0 10px;
+}
+
+.modal-profile .content_wrap > .overlay .input_wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 10px;
+    -webkit-box-align: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline;
+}
+.modal-profile .avatar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    border-radius: 50%;
+    background-color: #cdcdcd;
+    margin-right: 5px;
+}
+.modal-profile .avatar > h4 {
+    text-transform: uppercase;
+}
+.modal-profile .avatar > img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+.modal-profile .ch_pic_pf {
+    position: relative;
+    color: #0068ac;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.modal-profile .ch_pic_pf:hover {
+    color: #007dcb;
+}
+.modal-profile .ch_pic_pf > input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer !important;
+}
+.modal-profile .content_wrap > .overlay .input_wrap > p {
+    width: 100px;
+}
+.modal-profile .content_wrap > .overlay .input_wrap > input {
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+}
+.overlay.show {
+    display: block !important;
+}
+
+.cancel_btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.modal-profile .content_wrap::-webkit-scrollbar,
+#preferencesContent::-webkit-scrollbar {
+    width: 2px;
+}
+
+.modal-profile .btn-active {
+    background-color: #0064a4 !important;
+    color: white;
+}
+
+@media screen and (max-width: 992px) {
+    .content_wrap {
+        width: 70% !important;
+    }
+}
+@media screen and (max-width: 768px) {
+    .content_wrap {
+        width: 80% !important;
+    }
+}
+@media screen and (max-width: 480px) {
+    .content_wrap {
+        width: 90% !important;
+    }
+    .content_wrap > .overlay .input_wrap{
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
 }

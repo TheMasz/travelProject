@@ -10,4 +10,5 @@ class PersonalPreference extends Model
     use HasFactory;
     protected $table = 'personal_preference';
     public $timestamps = false;
+    
 }

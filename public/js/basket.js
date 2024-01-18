@@ -30,10 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-document.getElementById('planForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+document.getElementById('planForm').addEventListener('submit', function(e) {
+    e.preventDefault(); 
     const formData = new FormData(this);
-    const csrfToken = formData.get('_token'); 
 
     axios.post('/api/addPlan', formData, {
             headers: {
