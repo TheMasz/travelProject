@@ -39,6 +39,7 @@ Route::group(['middleware' => 'member.auth'], function () {
     Route::post('/api/addPref', [PrefController::class, 'addPref']);
     Route::put('/api/editPref', [PrefController::class, 'editPref']);
 
+
     //----------Locations--------------
     Route::post('/api/getLocations', [LocationsController::class, 'getLocations']);
     Route::post('/api/getNearLocations', [LocationsController::class, 'getNearLocations']);
@@ -48,6 +49,7 @@ Route::group(['middleware' => 'member.auth'], function () {
     //----------Plans--------------
     Route::post('/api/addPlan', [PlanController::class, 'addPlan']);
     Route::delete('/api/removePlan', [PlanController::class, 'removePlan']);
+    Route::get('/api/clearSessionPref', [PrefController::class, 'clearSessionPref']);
 
     //Reviews
     Route::post('/api/postReview', [ReviewsController::class, 'postReview']);

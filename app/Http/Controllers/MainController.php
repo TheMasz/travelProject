@@ -38,13 +38,18 @@ class MainController extends Controller
             'locations' => $locations
         ]);
     }
+
     function province($province_id)
     {
         $province_id = (int)$province_id;
         $member_id = session('member_id');
         $province_name = Provinces::where('province_id', $province_id)->first();
         $getLocationsByPref = App::make('getLocationsByPref');
-        $locations = $getLocationsByPref($province_id, $member_id, []);
+
+        $selectedPreferences = session('selectedPreferences', []);
+        // dd($selectedPreferences);
+
+        $locations = $getLocationsByPref($province_id, $member_id, $selectedPreferences);
         $countLocations = count($locations);
         $allPrefs = Preferences::all();
 
@@ -60,9 +65,11 @@ class MainController extends Controller
                 'perPage' => $perPage,
                 'countLocations' => $countLocations,
                 'allPrefs' => $allPrefs,
+                'selectedPreferences' => $selectedPreferences,
             ]
         );
     }
+
     function basket()
     {
         return view('main.basket');

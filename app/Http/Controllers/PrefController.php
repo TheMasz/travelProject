@@ -61,4 +61,8 @@ class PrefController extends Controller
         }
         return response()->json(['success' => true, 'message' => 'บันทึกข้อมูลเรียบร้อย']);
     }
+    function clearSessionPref()
+    {
+        session()->forget('selectedPreferences');
+    }
 }

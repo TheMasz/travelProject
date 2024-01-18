@@ -29,7 +29,7 @@
         <x-firstPref :preferences="$preferences" />
     @endif
     <div class="container">
-        <section class="splide">
+        <section class="splide ">
             <h4>แนะนำสถานที่ท่องเที่ยวที่คุณอาจสนใจ</h4>
             <div class="splide__track">
                 <ul class="splide__list">

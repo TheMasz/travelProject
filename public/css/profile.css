@@ -1,8 +1,12 @@
 .myprofile {
     padding: 20px 0;
     border-bottom: 1px solid var(--gray-color);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .myprofile .details h4,
@@ -17,21 +21,31 @@
     padding: 0 10px;
 }
 .myreviews > .reviews {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 .myreviews > .reviews > .review_card {
     background-color: white;
     border-radius: 20px;
-    box-shadow: 0 0 7px 0 lightgray;
+    -webkit-box-shadow: 0 0 7px 0 lightgray;
+            box-shadow: 0 0 7px 0 lightgray;
     padding: 10px;
     margin: 10px;
 }
 .myreviews > .filter {
     margin: 10px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: flex-end;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
 }
 .myreviews > .filter > label{
     margin-right: 5px;
@@ -40,7 +54,8 @@
     border-radius: 5px;
     cursor: pointer;
     background-color: rgb(250, 250, 250);
-    box-shadow: 2px 4px 8px #c5c5c5;
+    -webkit-box-shadow: 2px 4px 8px #c5c5c5;
+            box-shadow: 2px 4px 8px #c5c5c5;
     padding: 5px;
 }
 
@@ -56,6 +71,8 @@
     text-align: justify;
 }
 .review_card .location {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     margin-right: 10px;
 }
@@ -84,6 +101,8 @@
     outline: none;
     float: right;
     cursor: pointer;
+    -webkit-transition: all 0.25s;
+    -o-transition: all 0.25s;
     transition: all 0.25s;
 }
 .del-review:hover {
@@ -100,10 +119,19 @@
     cursor: not-allowed !important;
 }
 .no-reviews{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     color: #ccc;
     padding: 20px 0;
     border-radius: 20px;

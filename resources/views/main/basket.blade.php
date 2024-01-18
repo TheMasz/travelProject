@@ -15,7 +15,6 @@
 <body>
     <x-loading />
     <x-navbar />
-    <!-- <div id="map"></div> -->
     <div class="container">
         <div class="main-basket">
             <div class="content-basket">

@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="navigative">
-                <div id="map" style="height:95vh"></div>
+                <div id="map"></div>
                 <div id="result"></div>
             </div>
 

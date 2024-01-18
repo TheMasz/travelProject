@@ -11,7 +11,7 @@
 
 <body>
     <div class="bg-gray min-h-100">
-        <div class="container row align-center min-h-100">
+        <div class="container row align-center min-h-100 auth-section">
             <div class="cont-lt w-50">
                 <img src="/images/image1.png" alt="Image by pikisuperstar on Freepik">
             </div>

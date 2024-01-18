@@ -37,7 +37,6 @@
                     <h1>{{ $province_name }}</h1>
                 </div>
             </div>
-
             <div class="filters">
                 <div class="btns-pref">
                     @foreach ($allPrefs as $pref)
@@ -96,34 +95,39 @@
                                     <p>ช่วงเวลาเปิด-ปิด</p>
                                     <p>{{ $location->s_time }} - {{ $location->e_time }} น.</p>
                                 </div>
-                                <button class="btn-secondary row align-center"
-                                    onclick="addPlan({{ $location->location_id }},event)">
-                                    <span class="material-icons">
-                                        luggage
-                                    </span>
-                                    เพิ่มลงทริป
-                                </button>
-                                <div class="categories row">
-                                    @php
-                                        $prefs = explode(', ', $location->Preferences);
-                                    @endphp
 
-                                    @foreach ($prefs as $pref)
+                                <div class="row align-center flex-between">
+                                    <div class="categories row">
                                         @php
-                                            $isActive = false;
-                                            if (isset($selectedPreferences)) {
-                                                $findPrefId = App::make('findPrefId');
-                                                $id = $findPrefId($pref);
-                                                $isActive = in_array($id, $selectedPreferences);
-                                            }
+                                            $prefs = explode(', ', $location->Preferences);
                                         @endphp
 
-                                        <div class="category @if ($isActive) category-active @endif">
-                                            {{ $pref }}
-                                        </div>
-                                    @endforeach
+                                        @foreach ($prefs as $pref)
+                                            @php
+                                                $isActive = false;
+                                                if (isset($selectedPreferences)) {
+                                                    $findPrefId = App::make('findPrefId');
+                                                    $id = $findPrefId($pref);
+                                                    $isActive = in_array($id, $selectedPreferences);
+                                                }
+                                            @endphp
 
+                                            <div
+                                                class="category @if ($isActive) category-active @endif">
+                                                {{ $pref }}
+                                            </div>
+                                        @endforeach
+
+                                    </div>
+                                    <button class="btn-secondary row align-center"
+                                        onclick="addPlan({{ $location->location_id }},event)">
+                                        <span class="material-icons">
+                                            luggage
+                                        </span>
+                                        เพิ่มลงทริป
+                                    </button>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
@@ -194,38 +198,38 @@
                 </div>
             </div>
         </div>
-        <div class="pagination-wrap">
-            <div class="pagination">
-                @if ($page > 1)
-                    <a href="?page={{ $page - 1 }}" class="pn_btn">
-                        <span class="material-icons">
-                            arrow_back_ios
-                        </span>
-                    </a>
-                @endif
-
-                @for ($i = 1; $i <= ceil($countLocations / $perPage); $i++)
-                    @if ($i == 1 || $i == $page || $i == ceil($countLocations / $perPage))
-                        <a href="?page={{ $i }}"
-                            @if ($i == $page) class="active" @endif>{{ $i }}</a>
-                    @elseif(abs($i - $page) < 3)
-                        <a href="?page={{ $i }}">{{ $i }}</a>
-                    @elseif(abs($i - $page) == 3)
-                        <span>...</span>
+        @if ($countLocations !== 0)
+            <div class="pagination-wrap">
+                <div class="pagination">
+                    @if ($page > 1)
+                        <a href="?page={{ $page - 1 }}" class="pn_btn">
+                            <span class="material-icons">
+                                arrow_back_ios
+                            </span>
+                        </a>
                     @endif
-                @endfor
 
-                @if ($page < ceil($countLocations / $perPage))
-                    <a href="?page={{ $page + 1 }}" class="pn_btn">
-                        <span class="material-icons">
-                            arrow_forward_ios
-                        </span>
-                    </a>
-                @endif
+                    @for ($i = 1; $i <= ceil($countLocations / $perPage); $i++)
+                        @if ($i == 1 || $i == $page || $i == ceil($countLocations / $perPage))
+                            <a href="?page={{ $i }}"
+                                @if ($i == $page) class="active" @endif>{{ $i }}</a>
+                        @elseif(abs($i - $page) < 3)
+                            <a href="?page={{ $i }}">{{ $i }}</a>
+                        @elseif(abs($i - $page) == 3)
+                            <span>...</span>
+                        @endif
+                    @endfor
+
+                    @if ($page < ceil($countLocations / $perPage))
+                        <a href="?page={{ $page + 1 }}" class="pn_btn">
+                            <span class="material-icons">
+                                arrow_forward_ios
+                            </span>
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
-
-
+        @endif
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>

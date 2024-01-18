@@ -167,11 +167,45 @@
     width: 70%;
     padding: 0 5px;
 }
-.back-home{
+.back-home {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 10px;
+}
+
+.card > .order {
+    width: 100%;
+    border-radius: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .main-navigative {
+        flex-direction: column;
+        height: auto;
+    }
+    .main-navigative > .basket-wrap {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+    .main-navigative > .navigative {
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 30px 0;
+    }
+
+    .main-navigative > .navigative > #map {
+        height: 500px !important;
+    }
+    .active {
+        width: 100% !important;
+    }
+    .main-navigative > .basket-wrap > .suggest {
+        height: auto;
+    }
+    .main-navigative > .basket-wrap > .suggest > .toggle {
+        right: 5px;
+    }
 }

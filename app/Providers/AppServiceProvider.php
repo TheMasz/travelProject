@@ -117,7 +117,6 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
 
                 $num_of_pref = Preferences::all()->count();
-
                 $userMatrix = [];
                 $anotherMatrix = [];
 
@@ -129,16 +128,14 @@ class AppServiceProvider extends ServiceProvider
                     $member_id = $user->member_id;
                     $scores = explode(',', $user->scores);
                     $scores = array_map('intval', $scores);
-
-
-                    while (count($scores) < $num_of_pref) {
-                        $scores[] = 0;
-                    }
-
                     $anotherMatrix[] = [$member_id, $scores];
                 }
 
                 $formattedAnotherMatrix = extractScores($anotherMatrix);
+
+                // dd($userMatrix);
+                // dd($anotherMatrix);
+                // dd($formattedAnotherMatrix);
 
                 $similarities = [];
                 foreach ($anotherMatrix as $index => $data) {
@@ -148,6 +145,8 @@ class AppServiceProvider extends ServiceProvider
                 }
                 $similarities = collect($similarities);
                 $similarities = $similarities->sortByDesc('similarity')->values()->all();
+
+                // dd($similarities);
 
                 //find plans
                 $plans = [];
@@ -180,10 +179,8 @@ class AppServiceProvider extends ServiceProvider
         function extractScores($matrix)
         {
             $formattedScores = [];
-
             foreach ($matrix as $data) {
                 $scores = $data[1];
-
                 $formattedScores[] = $scores;
             }
 
@@ -232,8 +229,8 @@ class AppServiceProvider extends ServiceProvider
                     'provinces.province_id'
                 );
 
-
                 if (!empty($selectedPreferences)) {
+                    session(['selectedPreferences' => $selectedPreferences]);
                     $query->whereIn('locations.location_id', function ($subQuery) use ($selectedPreferences) {
                         $subQuery->select('lt.location_id')
                             ->from('location_types as lt')
@@ -241,14 +238,7 @@ class AppServiceProvider extends ServiceProvider
                     });
                 }
 
-                // if (!empty($selectedPreferences)) {
-                //     $query->whereIn('preferences.preference_id', $selectedPreferences);
-                //     // dd($locations = $query->get());
-                // }
-
                 $locations = $query->get();
-
-
                 $locationMatrix = [];
                 $preferences = Preferences::get();
 
@@ -267,73 +257,58 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 $userMatrix = [];
-                $users = $getPersonPref($member_id);
-
-                foreach ($users as $user) {
+                $userWithPersonalPref = $getPersonPref($member_id);
+                foreach ($userWithPersonalPref as $user) {
                     $userMatrix[] = $user['score'];
                 }
 
                 $similarities = [];
-
                 foreach ($locationMatrix as $locationId => $location) {
-                    // dd($location,$userMatrix);
                     $similarity = cosineSimilarity($location, $userMatrix);
                     $similarityObject = new stdClass();
                     $similarityObject->location_id = $locationId;
                     $similarityObject->score = $similarity;
-
                     $similarities[] = $similarityObject;
                 }
 
                 $similarities = collect($similarities);
                 $similarities = $similarities->sortByDesc('score')->values()->all();
 
-
-                // foreach ($similarities as $similarity) {
-                //     echo "Location ID: " . $similarity->location_id . ", Similarity Score: " . $similarity->score . "<br>";
+                // foreach ($similarities as $similar) {
+                //     echo "locationID: " . $similar->location_id . " similarity score: " . $similar->score . "</br>";
                 // }
 
                 $sortedLocations = [];
                 $weight = weightProfile($member_id);
-
-                // Store location IDs that have already been processed to avoid duplication
                 $processedLocationIds = [];
-
                 foreach ($similarities as $similarity) {
                     $locationId = $similarity->location_id;
-
-                    // Skip processing if location already added to $sortedLocations
                     if (in_array($locationId, $processedLocationIds)) {
                         continue;
                     }
 
                     $index = findIndex($locations, $locationId);
                     $location = $locations[$index];
-
                     $locationPreferences = LocationTypes::where('location_id', $locationId)->get();
-
                     $similarityScore = $similarity->score;
                     $adjustedScore = 0;
+                    $useOriginalScore = true;
 
                     foreach ($locationPreferences as $pref) {
                         if (isset($weight[$pref->preference_id])) {
                             $adjustedScore += $similarityScore * $weight[$pref->preference_id];
+                            $useOriginalScore = false;
                         }
                     }
 
-                    // Update location with adjusted score
-                    $location['adjusted_score'] = $adjustedScore;
+                    $location['adjusted_score'] = $useOriginalScore ? $similarityScore : $adjustedScore;
                     $sortedLocations[] = $location;
-
-                    // Mark location ID as processed to avoid duplication
                     $processedLocationIds[] = $locationId;
                 }
 
-                // Sort locations based on adjusted scores
                 usort($sortedLocations, function ($a, $b) {
                     return $b['adjusted_score'] <=> $a['adjusted_score'];
                 });
-
                 return $sortedLocations;
             };
         });
@@ -366,7 +341,7 @@ class AppServiceProvider extends ServiceProvider
             $weightedProfile = [];
             foreach ($categoryScores as $prefId => $score) {
                 $averageScore = $score / $categoryCounts[$prefId];
-                $normalizedScore = ($averageScore - 1) / (5 - 1); // Normalize score to a 0-1 scale (assuming 1-5 ratings)
+                $normalizedScore = ($averageScore - 1) / (5 - 1);
                 $weightedProfile[$prefId] = $normalizedScore;
             }
 

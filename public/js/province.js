@@ -1,6 +1,9 @@
 window.addEventListener("DOMContentLoaded", () => {
     const btns_pref = document.querySelectorAll(".btns-pref button");
-    let prefsId = [];
+
+    let prefsId =
+        JSON.parse(sessionStorage.getItem("selectedPreferences")) || [];
+
     btns_pref.forEach((btn) => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -14,6 +17,12 @@ window.addEventListener("DOMContentLoaded", () => {
                 prefsId.push(prefId);
             }
 
+            // Store updated preferences in session storage
+            sessionStorage.setItem(
+                "selectedPreferences",
+                JSON.stringify(prefsId)
+            );
+
             console.log(prefsId);
         });
     });
@@ -21,12 +30,25 @@ window.addEventListener("DOMContentLoaded", () => {
     const clearBtn = document.querySelector(".clear-btn");
     const confirmBtn = document.querySelector(".confirm-btn");
 
-    clearBtn.addEventListener("click", () => {
+    clearBtn.addEventListener("click", async () => {
         prefsId = [];
-        btns_pref.forEach((btn) => {
-            btn.classList.remove("active");
-        });
-        console.log(prefsId);
+        btns_pref.forEach((btn) => btn.classList.remove("active"));
+        sessionStorage.removeItem("selectedPreferences");
+        await fetch("/api/clearSessionPref", {
+            method: "GET",
+        }).catch((error) => console.error(error));
+        const provinceId = window.location.pathname.split("/").pop();
+        try {
+            const response = await axios.post(`/api/${provinceId}/filter`, {
+                prefsId: prefsId.sort((a, b) => a - b),
+            });
+            document.open();
+            document.write(response.data);
+            document.close();
+            history.replaceState({}, document.title, window.location.pathname);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     confirmBtn.addEventListener("click", (e) => {
