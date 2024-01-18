@@ -100,7 +100,7 @@
                                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                                         <img class="card-img-top rounded mx-auto d-block"
                                             style="height: 200px; padding: 10px;"
-                                            src="{{ asset('storage/images/' . $item->img_names) }}">
+                                            src="{{ asset('storage/images/locations/' . $item->img_names) }}">
                                         <a href="#!">
                                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
                                             </div>

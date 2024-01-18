@@ -42,31 +42,22 @@
     <div class="container">
         <h3 style="text-align: center; margin-top: 20px;">{{ $location->location_name }}</h3>
         <div class="images-wrap">
-
             <div class="main-image">
-
                 <div class="image"></div>
-                @foreach ($images as $img1)
-                    <div class="credit">credit: {{ $img1->credit }}</div>
-                @endforeach
+                <div class="credit">credit: {{ $images[0]->credit }}</div>
             </div>
             <div class="image-box">
-                @php
-                    $count = 0; // นับจำนวนรูปภาพ
-                @endphp
+
                 @foreach ($images as $img)
-                    @if ($count % 7 == 0 && $count > 0)
-            </div>
-            <div class="image-box">
-                @endif
-                <div class="image" style="background: url({{ asset('storage/images/' . $img->img_path) }});"
-                    data-img="{{ $img->img_path }}">
-                </div>
-                @php
-                    $count++;
-                @endphp
+                    <div class="image"
+                        style="background: url({{ asset('storage/images/locations/' . $img->img_path) }});"
+                        data-img="{{ $img->img_path }}">
+
+                    </div>
                 @endforeach
             </div>
+
+
 
         </div>
     </div>

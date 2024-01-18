@@ -59,41 +59,25 @@
     <div class="container">
         <h3 style="text-align: center; margin-top: 20px;">{{ $location->location_name }}</h3>
         <div class="images-wrap">
-
             <div class="main-image">
-
                 <div class="image"></div>
-                @foreach ($images as $img1)
-                    <div class="credit">credit: {{ $img1->credit }}</div>
-                @endforeach
+                <div class="credit">credit: {{ $images[0]->credit }}</div>
             </div>
             <div class="image-box">
-                @php
-                    $count = 0; // นับจำนวนรูปภาพ
-                @endphp
                 @foreach ($images as $img)
-                    @if ($count % 7 == 0 && $count > 0)
-            </div>
-            <div class="image-box">
-                @endif
-                <div class="image" style="background: url({{ asset('storage/images/' . $img->img_path) }});"
-                    data-img="{{ $img->img_path }}">
-
-                    <div class="card-footer text-right"
-                        style="backdrop-filter: blur(10px); height: 45px; margin-top: 90%; margin-bottom: 5px;">
-                        <a href='#editphoto{{ $img->img_id }}' data-toggle='modal'>
-                            <button class="btn btn-warning btn-sm"><i style="color: white;"
-                                    class="fa-solid fa-pen"></i></button>
-                        </a>
+                    <div class="image"
+                        style="background: url({{ asset('storage/images/locations/' . $img->img_path) }});"
+                        data-img="{{ $img->img_path }}">
+                        <div class="card-footer text-right"
+                            style="backdrop-filter: blur(10px); height: 45px; margin-top: 90%; margin-bottom: 5px;">
+                            <a href='#editphoto{{ $img->img_id }}' data-toggle='modal'>
+                                <button class="btn btn-warning btn-sm"><i style="color: white;"
+                                        class="fa-solid fa-pen"></i></button>
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                @php
-                    $count++;
-                @endphp
                 @endforeach
             </div>
-
         </div>
     </div>
 
@@ -183,7 +167,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    
+
                                 </div>
                                 <div class="col-sm-6" style="margin-top: 10px;">
                                     <input value="{{ $location->latitude }}" type="number" step="0.0000000001"
@@ -261,7 +245,8 @@
 
                                 <div class="col-sm-6" style="margin-left: 110px; margin-bottom: 40px;">
                                     <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
-                                        height="120px;" src="{{ asset('storage/images/' . $img->img_path) }}"></>
+                                        height="120px;"
+                                        src="{{ asset('storage/images/locations/' . $img->img_path) }}"></>
                                 </div>
 
                                 <div class="col-sm-12" style="margin-top: 10px;">
