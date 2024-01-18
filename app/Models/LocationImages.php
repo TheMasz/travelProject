@@ -8,5 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class LocationImages extends Model
 {
     use HasFactory;
-    protected $table = 'location_images';
+    protected $primaryKey = 'img_id';
+    protected $fillable = ['img_id','img_path','location_id','credit'];
+    public $timestamps = false;
+    
+
+
+
 }

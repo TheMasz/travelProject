@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/da55352c9a.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/locationDetail.css') }}">
 
-    <title>Dashboard</title>
+    <title>รายละเอียดรีวิวเพิ่มเติม</title>
 </head>
 
 <body style="background-color: #F5F5F5">
-
     <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 10px">
         <a class="navbar-brand" href="">ADMIN</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -23,41 +23,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="dashboard">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="locations">
-                        <i class="fa fa-home"></i>
-                        Locations
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="users">
-                        <i class="fa-solid fa-users"></i>
-                        User
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="reviews">
-                        <i class="fa-solid fa-comment"></i>
-                        Review
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="preferences">
-                        <i class="fa-solid fa-heart"></i>
-                        Preferences
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="questions">
-                        <i class="fa-solid fa-circle-question"></i>
-                        Questions
+                    <a class="nav-link" href="/admin/reviews">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        Reviews
                     </a>
                 </li>
 
@@ -71,396 +39,293 @@
         </div>
     </nav>
 
-
     <div class="container">
-        <h3>Dashboard</h3>
-        <hr>
-        <div class="row" style="text-align: center">
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #2E8B57;">
-                    <div class="card-header" style="background-color: #2E8B57;">
-                        <span style="color: white;">จำนวนสมาชิกในระบบ</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #2E8B57;">
-                                    <i class="fa-solid fa-users"></i>
-                                </span>
-                            </div>
-                            <div class="col-sm-7" style="margin-top: 5px;">
+        <h3 style="text-align: center; margin-top: 20px;">{{ $location->location_name }}</h3>
+        <div class="images-wrap">
 
-                                <?php
-                                $numberOfUsers = DB::table('members')
-                                    ->where('status', 'user')
-                                    ->count();
-                                ?>
+            <div class="main-image">
 
-                                <h4 style="color: #2E8B57"><?php echo $numberOfUsers; ?> คน</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="image"></div>
+                @foreach ($images as $img1)
+                    <div class="credit">credit: {{ $img1->credit }}</div>
+                @endforeach
             </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);  border-color: #FFD700;">
-                    <div class="card-header" style="background-color: #FFD700;">
-                        <span style="color: white;">จำนวนสถานที่ท่องเที่ยวในระบบ</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #FFD700;">
-                                    <i class="fa-solid fa-home"></i>
-                                </span>
-
-                            </div>
-                            <div class="col-sm-7" style=" margin-top: 5px">
-                                <?php
-                                $numberOfLocations = DB::table('locations')->count();
-                                ?>
-
-                                <h4 style="color: #FFD700"><?php echo $numberOfLocations; ?> สถานที่</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="image-box">
+                @php
+                    $count = 0; // นับจำนวนรูปภาพ
+                @endphp
+                @foreach ($images as $img)
+                    @if ($count % 7 == 0 && $count > 0)
             </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #32CD32;">
-                    <div class="card-header" style="background-color: #32CD32;">
-                        <span style="color: white;">จำนวนรีวิวสถานที่ท่องเที่ยว</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <span
-                                    style="font-size: 24px; color: #32CD32;">
-                                    <i class="fa-solid fa-comment"></i>
-                                </span>
-                            </div>
-                            <div class="col-sm-6" style=" margin-top: 5px">
-                                <?php
-                                $numberOfReviews = DB::table('reviews')->count();
-                                ?>
-
-                                <h4 style="color: #32CD32"><?php echo $numberOfReviews; ?> รีวิว</h4>
-                            </div>
-                        </div>
-                    </div>
+            <div class="image-box">
+                @endif
+                <div class="image" style="background: url({{ asset('storage/images/' . $img->img_path) }});"
+                    data-img="{{ $img->img_path }}">
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #FFA07A;">
-                    <div class="card-header" style="background-color: #FFA07A;">
-                        <span style="color: white;">จำนวนประเภทความชอบ</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #FFA07A;">
-                                    <i class="fa-solid fa-heart"></i>
-                                </span>
-                            </div>
-                            <div class="col-sm-7" style=" margin-top: 5px">
-                                <?php
-                                $numberOfPrefer = DB::table('preferences')->count();
-                                ?>
-
-                                <h4 style="color: #FFA07A"><?php echo $numberOfPrefer; ?> ประเภท</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @php
+                    $count++;
+                @endphp
+                @endforeach
             </div>
 
         </div>
-        <br>
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="card">
-                    <div class="card-body">
-                        <canvas id="chartLine"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-header bg-danger" style="color: white;">
-                        Top Reviews
-                    </div>
-                    <div class="card-body">
-
-
-                        <?php
-                        $topReviewedLocations = DB::table('locations')
-                            ->select('locations.location_id', 'locations.location_name', DB::raw('COUNT(reviews.review_id) as total_reviews'), DB::raw('AVG(reviews.rating) as average_rating'))
-                            ->join('reviews', 'locations.location_id', '=', 'reviews.location_id')
-                            ->groupBy('locations.location_id', 'locations.location_name')
-                            ->orderByDesc('total_reviews')
-                            ->get();
-                        
-                        ?>
-                        @foreach ($topReviewedLocations as $item)
-                            <div class="row">
-                                <div class="col-sm-9" style="font-size: 13px;">
-                                    <b>{{ Str::limit($item->location_name, 20) }}</b>
-                                </div>
-                                <div class="col-sm-3" style="font-size: 12px;">
-                                    <b>{{ $item->total_reviews }} รีวิว</b>
-                                </div>
-                                <div class="col-sm-7" style="font-size: 13px;">
-                                    Rating
-                                </div>
-                                <div class="col-sm-5" style="font-size: 12px;">
-                                    @if ($item->average_rating <= 1)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 1.5 && $item->average_rating <= 1.9)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 2 && $item->average_rating <= 2.4)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 2.5 && $item->average_rating <= 2.9)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 3 && $item->average_rating <= 3.4)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 3.5 && $item->average_rating <= 3.9)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 4 && $item->average_rating <= 4.4)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 4.5 && $item->average_rating <= 4.9)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-                                        </li>
-                                    @endif
-
-                                    @if ($item->average_rating >= 5)
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                        <li class="list-inline-item me-0">
-                                            <i class="fas fa-star text-warning fa-xs"></i>
-                                        </li>
-                                    @endif
-                                </div>
-                            </div>
-                            <hr>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 
-    <?php
-    $membersData = DB::table('members')
-        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
-    
-    ?>
+    <div class="container" style="margin-bottom: 10px">
+        <div class="card" box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);">
+            <div class="card-header bg-dark" style="color: white;">
+                รายละเอียดการรีวิวต่างๆ
+            </div>
+            <div class="card-body">
 
-    <script>
-        // Line Chart Data
-        // Line Chart Data
-        var chartLine_Data = {
-            labels: <?php echo json_encode(
-                array_map(function ($data) {
-                    return date('M', mktime(0, 0, 0, $data->month, 1));
-                }, $membersData->toArray()),
-            ); ?>,
-            datasets: [{
-                label: '# New Members',
-                fill: false,
-                data: <?php echo json_encode($membersData->pluck('count')->toArray()); ?>,
-                backgroundColor: ['red', 'blue', 'yellow', 'green', 'purple', 'orange'],
-                borderColor: 'black',
-                borderWidth: 1,
-                pointRadius: 5,
-            }]
-        };
+                <div class="row">
+                    @foreach ($members as $index => $item)
+                        <div class="col-sm-4">
+                            <div class="card" style="margin-bottom: 20px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);">
+                                <div class="card-header">
+                                    รายละเอียดผู้รีวิวสถานที่ท่องเที่ยว
+                                </div>
+                                <div class="card-body">
+                                    <li class="list-inline-item">
+                                        @php
+                                            // หาตำแหน่งของ comment_id ใน $members
+                                            $index = array_search($item->comment_id, array_column($members->toArray(), 'comment_id'));
+                                        @endphp
+                                        @if ($index !== false)
+                                            {{-- ในกรณีที่พบ comment_id --}}
+                                            <p class="mb-2 text-muted">ผู้รีวิว: {{ $members[$index]->username }}</p>
+                                        @endif
+                                    </li>
+                                    <br>
+                                    <li class="list-inline-item">
+                                        <p class="mb-2 text-muted">Comment: {{ $item->review }}</p>
+                                    </li>
+                                    <br>
+                                    <li class="list-inline-item">
+                                        <p class="mb-2 text-muted">Date: {{ $item->created_at }}</p>
+                                    </li>
+                                    <br>
 
-        // Find max and min values
-        var maxCount = Math.max(...chartLine_Data.datasets[0].data);
-        var minCount = Math.min(...chartLine_Data.datasets[0].data);
+                                    @if ($item->rating == 1)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
 
-        // Find corresponding months
-        var maxMonth = chartLine_Data.labels[chartLine_Data.datasets[0].data.indexOf(maxCount)];
-        var minMonth = chartLine_Data.labels[chartLine_Data.datasets[0].data.indexOf(minCount)];
+                                    @if ($item->rating == 1.5)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
 
-        // Line Chart
-        var chartLine = document.getElementById('chartLine').getContext('2d');
-        var chartLine_options = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Month with Most and Least Registrations: ' + maxMonth + ' (Most) / ' + minMonth + ' (Least)',
-                    position: 'top',
-                    font: {
-                        size: 16
-                    }
-                }
-            }
-        };
+                                    @if ($item->rating == 2)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
 
-        if (chartLine) {
-            new Chart(chartLine, {
-                type: 'line',
-                data: chartLine_Data,
-                options: chartLine_options,
-            });
-        }
-    </script>
+                                    @if ($item->rating == 2.5)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
+
+                                    @if ($item->rating == 3)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
+
+                                    @if ($item->rating == 3.5)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
+
+                                    @if ($item->rating == 4)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fa-regular text-warning fa-star fa-xs"></i>
+                                        </li>
+                                    @endif
+
+                                    @if ($item->rating == 4.5)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
+                                        </li>
+                                    @endif
+
+                                    @if ($item->rating == 5)
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="fas fa-star text-warning fa-xs"></i>
+                                        </li>
+                                    @endif
+                                </div>{{-- /card-body --}}
+                                <div class="card-footer text-right">
+                                    <a href='#delete{{ $item->review_id }}' data-toggle='modal'><button
+                                            class="btn btn-danger" title="ลบข้อมูล" type="submit"><span><i
+                                                    class="fa-solid fa-trash"></i></span>
+                                        </button></a>
+                                </div>
+                            </div>
+                        </div> {{-- /col-sm-4 --}}
+                    @endforeach
+
+                </div>
+                {{ $reviews->links() }}
+            </div>
+        </div>
+    </div>
+
+
+    @foreach ($reviews as $index => $item)
+        <div class="container">
+            <div class="modal fade" id="delete{{ $item->review_id }}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #d9534f; color: white;">
+                            ลบข้อมูล
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            @php
+                                // หาตำแหน่งของ comment_id ใน $members
+                                $index = array_search($item->review_id, array_column($members->toArray(), 'review_id'));
+                            @endphp
+                            @if ($index !== false)
+                                <span style="color: #d9534f">คุณต้องการลบข้อมูลรีวิวของคุณ:
+                                    {{ $members[$index]->username }}
+                                    สถานที่: {{ $location->location_name }} ใช่หรือไม่ ?</span>
+                            @endif
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="{{ route('delreviews', $item->review_id) }}">
+                                <button class="btn btn-danger" title="ลบข้อมูล" type="submit">Delete</button>
+                            </a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
 
 
+    <script src="{{ asset('js/locationDetail.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <!-- Popper JS -->
