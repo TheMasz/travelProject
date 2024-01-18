@@ -665,9 +665,9 @@ function insertQue(Request $request)
         ]);
 
         // เพิ่มคำถามลงในฐานข้อมูล
-        Questions::create([
-            'question_text' => $request->input('question_text'),
-        ]);
+         $question = new Questions();
+         $question->question_text = $request->input('question_text');
+         $question->save();
 
         return redirect('/admin/questions')->with('success', 'เพิ่มคำถามสำเร็จแล้ว');
     } catch (\Exception $e) {
