@@ -1,4 +1,4 @@
-// const member_session = document.getElementById("member_session").value;
+const member_session = document.getElementById("member_session").value;
 const main_img = document.querySelector(".main-image .image");
 const imgs = document.querySelectorAll(".image-box .image");
 main_img.style.background = `url('/storage/images/locations/${imgs[0].getAttribute(
