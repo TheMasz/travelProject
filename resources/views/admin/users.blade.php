@@ -132,21 +132,27 @@
                         <tbody>
                             @foreach ($users as $item)
                                 <tr>
-                                    <td><img style="width: 100px;" height="60px;"
-                                            src="{{ asset('storage/images_users/' . $item->member_img) }}"></td>
+                                    @if (isset($item->member_img))
+                                        <td><img style="width: 100px;" height="60px;"
+                                                src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
+                                        </td>
+                                    @else
+                                        <td>ไม่มีรูปภาพโปรไฟล์</td>
+                                    @endif
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->username }}</td>
                                     <td>{{ Str::limit($item->password, 10) }}</td>
                                     <td>{{ $item->status }}</td>
-                                    <td><a href='#edit{{ $item->member_id }}' data-toggle='modal'><button style="margin-right: 5px;" class="btn btn-warning btn-sm"
-                                        title="แก้ไขข้อมูลผู้ใช้งาน" type="submit"><span><i style="color: white;"
-                                                class="fa-solid fa-pen"></i></span>
-                                    </button></a>
+                                    <td><a href='#edit{{ $item->member_id }}' data-toggle='modal'><button
+                                                style="margin-right: 5px;" class="btn btn-warning btn-sm"
+                                                title="แก้ไขข้อมูลผู้ใช้งาน" type="submit"><span><i
+                                                        style="color: white;" class="fa-solid fa-pen"></i></span>
+                                            </button></a>
 
-                                            <a href='#delete{{ $item->member_id }}' data-toggle='modal'><button
-                                                    class="btn btn-danger btn-sm" title="ลบข้อมูล"
-                                                    type="submit"><span><i class="fa-solid fa-trash"></i></span>
-                                                </button></a>
+                                        <a href='#delete{{ $item->member_id }}' data-toggle='modal'><button
+                                                class="btn btn-danger btn-sm" title="ลบข้อมูล" type="submit"><span><i
+                                                        class="fa-solid fa-trash"></i></span>
+                                            </button></a>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -204,8 +210,15 @@
                                     <div class="col-sm-12" style="margin-top: 20px;">
 
                                         <div class="col-sm-6" style="margin-left: 110px; margin-bottom: 40px;">
-                                                <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);" height="120px;"
-                                                 src="{{ asset('storage/images_users/' . $item->member_img) }}"></>
+                                            @if (isset($item->member_img))
+                                                <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
+                                                    height="120px;"
+                                                    src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
+                                                </>
+                                            @else
+                                                <p style="text-align: center">ไม่มีรูปภาพโปรไฟล์</p>
+                                            @endif
+
                                         </div>
 
                                         <div class="input-group mb-2">
@@ -233,18 +246,23 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Status:</div>
                                             </div>
-                                                
+
                                             <select name="status" class="form-control">
                                                 <?php
-                                                    $statuses = DB::table('members')->select('status')->distinct()->orderBy('status')->get();
+                                                $statuses = DB::table('members')
+                                                    ->select('status')
+                                                    ->distinct()
+                                                    ->orderBy('status')
+                                                    ->get();
                                                 ?>
                                                 @foreach ($statuses as $status)
-                                                    <option value="{{ $status->status }}">{{ $status->status }}</option>
+                                                    <option value="{{ $status->status }}">{{ $status->status }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-                                            
+
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <input type="hidden" name="member_id" value="{{ $item->member_id }}">

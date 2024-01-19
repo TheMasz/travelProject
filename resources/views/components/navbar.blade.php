@@ -74,7 +74,7 @@
 
             const navbarTop = navbar.offsetTop;
             window.addEventListener('scroll', () => {
-                if (window.pageYOffset > navbarTop + 500) {
+                if (window.pageYOffset > navbarTop + 1000) {
                     navbar.classList.add('fixed');
                 } else {
                     navbar.classList.remove('fixed');

@@ -59,41 +59,25 @@
     <div class="container">
         <h3 style="text-align: center; margin-top: 20px;">{{ $location->location_name }}</h3>
         <div class="images-wrap">
-
             <div class="main-image">
-
                 <div class="image"></div>
-                @foreach ($images as $img1)
-                    <div class="credit">credit: {{ $img1->credit }}</div>
-                @endforeach
+                <div class="credit">credit: {{ $images[0]->credit }}</div>
             </div>
             <div class="image-box">
-                @php
-                    $count = 0; // นับจำนวนรูปภาพ
-                @endphp
                 @foreach ($images as $img)
-                    @if ($count % 7 == 0 && $count > 0)
-            </div>
-            <div class="image-box">
-                @endif
-                <div class="image" style="background: url({{ asset('storage/images/' . $img->img_path) }});"
-                    data-img="{{ $img->img_path }}">
-
-                    <div class="card-footer text-right"
-                        style="backdrop-filter: blur(10px); height: 45px; margin-top: 90%; margin-bottom: 5px;">
-                        <a href='#editphoto{{ $img->img_id }}' data-toggle='modal'>
-                            <button class="btn btn-warning btn-sm"><i style="color: white;"
-                                    class="fa-solid fa-pen"></i></button>
-                        </a>
+                    <div class="image"
+                        style="background: url({{ asset('storage/images/locations/' . $img->img_path) }});"
+                        data-img="{{ $img->img_path }}">
+                        <div class="card-footer text-right"
+                            style="backdrop-filter: blur(10px); height: 45px; margin-top: 90%; margin-bottom: 5px;">
+                            <a href='#editphoto{{ $img->img_id }}' data-toggle='modal'>
+                                <button class="btn btn-warning btn-sm"><i style="color: white;"
+                                        class="fa-solid fa-pen"></i></button>
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                @php
-                    $count++;
-                @endphp
                 @endforeach
             </div>
-
         </div>
     </div>
 
@@ -109,6 +93,17 @@
                 <p class="card-text">เวลาเปิด-ปิด: {{ $location->s_time }} - {{ $location->e_time }} น.</p>
                 <p class="card-text">ละติจูด: {{ $location->latitude }}</p>
                 <p class="card-text">ลองจิจูด: {{ $location->longitude }}</p>
+                <div class="row">
+                    @php
+                        $prefs = explode(', ', $location->Preferences);
+                    @endphp
+
+                    @foreach ($prefs as $pref)
+                        <div class="category">
+                            {{ $pref }}
+                        </div>
+                    @endforeach
+                </div>
             </div>
             <div class="card-footer text-right">
                 <a href='#editdata{{ $location->location_id }}' data-toggle='modal'><button class="btn btn-warning"
@@ -183,7 +178,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    
+
                                 </div>
                                 <div class="col-sm-6" style="margin-top: 10px;">
                                     <input value="{{ $location->latitude }}" type="number" step="0.0000000001"
@@ -198,6 +193,24 @@
                                     @foreach ($images->unique('credit') as $img1)
                                         <input type="text" class="form-control" name="credit"
                                             placeholder="Credit: Photo" value="{{ $img1->credit }}" required>
+                                    @endforeach
+                                </div>
+                                <?php
+                                $preference = DB::table('preferences')->get();
+                                ?>
+                                <div class="col-sm-12" style="margin-top: 10px;">
+                                    <span style="font-size: 16px;">ประเภทสถานที่ท่องเที่ยว</span><br>
+                                    @foreach ($preference as $item)
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label
+                                                class="btn btn-outline-primary {{ in_array($item->preference_name, $prefs) ? 'active' : '' }}"
+                                                style="margin: 10px;">
+                                                <input type="checkbox" name="preferences_id[]"
+                                                    value="{{ $item->preference_id }}"
+                                                    {{ in_array($item->preference_name, $prefs) ? 'checked' : '' }}>
+                                                {{ $item->preference_name }}
+                                            </label>
+                                        </div>
                                     @endforeach
                                 </div>
 
@@ -261,7 +274,8 @@
 
                                 <div class="col-sm-6" style="margin-left: 110px; margin-bottom: 40px;">
                                     <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
-                                        height="120px;" src="{{ asset('storage/images/' . $img->img_path) }}"></>
+                                        height="120px;"
+                                        src="{{ asset('storage/images/locations/' . $img->img_path) }}"></>
                                 </div>
 
                                 <div class="col-sm-12" style="margin-top: 10px;">
@@ -307,7 +321,7 @@
 
 
 
-    <script src="{{ asset('js/locationDetail.js') }}"></script>
+    <script src="{{ asset('js/showImages.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>

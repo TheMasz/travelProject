@@ -69,7 +69,7 @@
                         Preferences
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="questions">
                         <i class="fa-solid fa-circle-question"></i>
@@ -252,7 +252,7 @@
 
                                 <img class="card-img-top rounded mx-auto d-block"
                                     style="height: 200px; padding: 10px;"
-                                    src="{{ asset('storage/images/' . $item->img_names) }}">
+                                    src="{{ asset('storage/images/locations/' . $item->img_names) }}">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ Str::limit($item->location_name, 30) }}</h5>
                                     <p class="card-text">{{ Str::limit($item->detail, 110) }}</p>
@@ -319,7 +319,7 @@
                 (event.keyCode >= 48 && event.keyCode <= 57) || // 48-57(ตัวเลข)
                 (event.keyCode >= 97 && event.keyCode <= 122) || // 97-122(Eng ตัวพิมพ์เล็ก)
                 (event.keyCode >= 65 && event.keyCode <= 90) || // 65-90(Eng ตัวพิมพ์ใหญ่)
-                (event.keyCode >= 3586 && event.keyCode <= 3675) || 
+                (event.keyCode >= 3586 && event.keyCode <= 3675) ||
                 (event.keyCode === 32) // space bar
             ) {
                 return true;

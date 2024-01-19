@@ -51,7 +51,7 @@
                         Preferences
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" href="questions">
                         <i class="fa-solid fa-circle-question"></i>
@@ -100,7 +100,7 @@
                                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                                         <img class="card-img-top rounded mx-auto d-block"
                                             style="height: 200px; padding: 10px;"
-                                            src="{{ asset('storage/images/' . $item->img_names) }}">
+                                            src="{{ asset('storage/images/locations/' . $item->img_names) }}">
                                         <a href="#!">
                                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
                                             </div>
@@ -109,7 +109,6 @@
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold"><a>{{ $item->location_name }}</a></h5>
                                         <ul class="list-unstyled list-inline mb-0">
-
                                             @if ($item->rating <= 1)
                                                 <li class="list-inline-item me-0">
                                                     <i class="fas fa-star text-warning fa-xs"></i>
@@ -285,8 +284,7 @@
                                         </p>
                                         <hr class="my-4" />
 
-                                        <a
-                                            href="{{ route('reviews', ['location_id' => $item->location_id, 'review_id' => $item->review_id]) }}">
+                                        <a href="{{ route('reviews', ['location_id' => $item->location_id]) }}">
                                             <button style="margin-right: 5px;" class="btn btn-info btn-sm"
                                                 title="ดูรีวิวเพิ่มเติม" type="submit"><span><i style="color: white"
                                                         class="fa-solid fa-magnifying-glass"></i></span>
