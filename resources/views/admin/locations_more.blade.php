@@ -93,6 +93,17 @@
                 <p class="card-text">เวลาเปิด-ปิด: {{ $location->s_time }} - {{ $location->e_time }} น.</p>
                 <p class="card-text">ละติจูด: {{ $location->latitude }}</p>
                 <p class="card-text">ลองจิจูด: {{ $location->longitude }}</p>
+                <div class="row">
+                    @php
+                        $prefs = explode(', ', $location->Preferences);
+                    @endphp
+
+                    @foreach ($prefs as $pref)
+                        <div class="category">
+                            {{ $pref }}
+                        </div>
+                    @endforeach
+                </div>
             </div>
             <div class="card-footer text-right">
                 <a href='#editdata{{ $location->location_id }}' data-toggle='modal'><button class="btn btn-warning"
@@ -182,6 +193,24 @@
                                     @foreach ($images->unique('credit') as $img1)
                                         <input type="text" class="form-control" name="credit"
                                             placeholder="Credit: Photo" value="{{ $img1->credit }}" required>
+                                    @endforeach
+                                </div>
+                                <?php
+                                $preference = DB::table('preferences')->get();
+                                ?>
+                                <div class="col-sm-12" style="margin-top: 10px;">
+                                    <span style="font-size: 16px;">ประเภทสถานที่ท่องเที่ยว</span><br>
+                                    @foreach ($preference as $item)
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label
+                                                class="btn btn-outline-primary {{ in_array($item->preference_name, $prefs) ? 'active' : '' }}"
+                                                style="margin: 10px;">
+                                                <input type="checkbox" name="preferences_id[]"
+                                                    value="{{ $item->preference_id }}"
+                                                    {{ in_array($item->preference_name, $prefs) ? 'checked' : '' }}>
+                                                {{ $item->preference_name }}
+                                            </label>
+                                        </div>
                                     @endforeach
                                 </div>
 
@@ -292,7 +321,7 @@
 
 
 
-    <script src="{{ asset('js/locationDetail.js') }}"></script>
+    <script src="{{ asset('js/showImages.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>

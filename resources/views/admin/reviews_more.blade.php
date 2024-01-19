@@ -315,7 +315,7 @@
 
 
 
-    <script src="{{ asset('js/locationDetail.js') }}"></script>
+    <script src="{{ asset('js/showImages.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
