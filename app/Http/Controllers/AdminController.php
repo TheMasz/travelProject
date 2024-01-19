@@ -469,28 +469,28 @@ class AdminController extends Controller
 
 
 
-    public function reviews_more($location_id, $review_id)
+    public function reviews_more($location_id)
     {
-        // แยกค่า review_$review_id เป็นอาร์เรย์
-        $review_id = explode(',', $review_id);
 
-        // ดึงข้อมูลสถานที่ท่องเที่ยว
+        $reviewIds = Reviews::where('location_id', $location_id)->pluck('review_id');
+
+        // // ดึงข้อมูลสถานที่ท่องเที่ยว
         $location = Locations::find($location_id);
 
-        // ดึงข้อมูลรูปภาพสถานที่ท่องเที่ยว
+        // // ดึงข้อมูลรูปภาพสถานที่ท่องเที่ยว
         $images = LocationImages::where('location_id', $location_id)->get();
 
-        // ดึงข้อมูลความคิดเห็น
-        $reviews = Reviews::whereIn('review_id', $review_id)
+        // // ดึงข้อมูลความคิดเห็น
+        $reviews = Reviews::whereIn('review_id', $reviewIds)
             ->orderBy('rating', 'desc')
             ->paginate(6);
 
 
-        // ดึงข้อมูลสมาชิกที่รีวิว
+        // // ดึงข้อมูลสมาชิกที่รีวิว
         $members = Reviews::leftJoin('members', 'reviews.member_id', '=', 'members.member_id')
             ->leftJoin('locations', 'reviews.location_id', '=', 'locations.location_id')
             ->select('members.username', 'reviews.*', 'locations.*')
-            ->whereIn('reviews.review_id', $review_id)
+            ->whereIn('reviews.review_id', $reviewIds)
             ->get();
 
 
