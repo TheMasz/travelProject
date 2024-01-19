@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Preferences extends Model
 {
     use HasFactory;
-    protected $table = 'preferences';
+    protected $primaryKey = 'preference_id';
+    protected $fillable = ['preference_name'];
+    public $timestamps = false;
+    
 }
+
+
