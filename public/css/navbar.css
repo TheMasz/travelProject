@@ -4,7 +4,10 @@
     display: -ms-flexbox;
     display: flex;
 }
-
+.logo img{
+    width: 64px;
+    height: 64px;
+}
 .navbar {
     position: relative;
     background-color: white;
