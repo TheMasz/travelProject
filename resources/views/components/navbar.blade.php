@@ -3,7 +3,7 @@
         <nav class="nav row">
             <div class="lt">
                 <ul class="nav-list">
-                    <li>
+                    <li class="logo">
                         <a href="/">
                             <img  src="/images/logo.png" alt="Logo">
                         </a>
