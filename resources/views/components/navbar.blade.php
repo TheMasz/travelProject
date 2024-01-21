@@ -5,7 +5,7 @@
                 <ul class="nav-list">
                     <li>
                         <a href="/">
-                            <h1>Logo</h1>
+                            <img  src="/images/logo.png" alt="Logo">
                         </a>
                     </li>
                     <li><a href="/">หน้าหลัก</a></li>
