@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <title>โปรไฟล์ของฉัน</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
@@ -99,7 +106,8 @@
                         forum
                     </span>
                     <p>คุณยังไม่เคยแชร์ประสบการท่องเที่ยวเลย</p>
-                    <p class="font-sm">--- ลองเริ่มต้นแชร์ประสบการณ์ท่องเที่ยวเพื่อประสบการณ์แนะนำสถานที่ที่ดียิ่งขึ้น ---</p>
+                    <p class="font-sm">--- ลองเริ่มต้นแชร์ประสบการณ์ท่องเที่ยวเพื่อประสบการณ์แนะนำสถานที่ที่ดียิ่งขึ้น
+                        ---</p>
                 </div>
             @endif
 
@@ -154,7 +162,8 @@
                             <button type="submit" class="btn-primary" style="float: right">บันทึก</button>
                         </form>
                     </div>
-                    <div class="overlay-content py-1" style="overflow-y: scroll; height:100%" id="preferencesContent">
+                    <div class="overlay-content py-1" style="overflow-y: scroll; height:100%"
+                        id="preferencesContent">
 
                         <form id="formPref" method="POST" action="/api/editPref" enctype="multipart/form-data">
                             @csrf
