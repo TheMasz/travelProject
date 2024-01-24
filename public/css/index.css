@@ -34,6 +34,7 @@ a {
 }
 .container {
     margin: 0 auto;
+    padding-bottom: 10px;
 }
 @media screen and (min-width: 576px) {
     .container {
