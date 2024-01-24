@@ -246,42 +246,47 @@ function getLocationsId() {
 
 var current = {};
 
-function getCurrectGeo(e) {
+async function getCurrectGeo(e) {
     e.preventDefault();
     const clickedButton = e.target;
     buttonAnimate(clickedButton);
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                let lat = position.coords.latitude;
-                let lon = position.coords.longitude;
-                // Use the location from the browser's geolocation API
-                current = {
-                    lat: lat,
-                    lon: lon,
-                };
 
-                // Perform actions that depend on the location data here
-                const txt = document.querySelector("#current-geo");
-                txt.innerHTML = "lat: " + lat + "<br/>" + " lon: " + lon;
-            },
-            function (error) {
-                // Handle geolocation error here
-                console.error("Geolocation error:", error);
-                const wrap = document.querySelector(".location-mark");
-                const div = document.createElement("div");
-                div.classList.add("message", "message-warning");
-                div.textContent = "ไม่สามารถระบุตำแหน่งได้! ลองใหม่อีกครั้ง";
-                wrap.insertBefore(div, wrap.firstChild);
-                setTimeout(function () {
-                    wrap.removeChild(div);
-                }, 2000);
-            }
-        );
-    } else {
-        // Handle no geolocation support here
-        console.error("Geolocation is not supported.");
+    try {
+        if ("geolocation" in navigator) {
+            const position = await getCurrentPosition();
+            updateLocation(position);
+        } else {
+            throw new Error("Geolocation is not supported.");
+        }
+    } catch (error) {
+        handleGeolocationError(error);
     }
+}
+
+function getCurrentPosition() {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+}
+
+function updateLocation(position) {
+    const { latitude: lat, longitude: lon } = position.coords;
+    console.log("Received coordinates:", lat, lon);
+    current = { lat, lon };
+    const txt = document.querySelector("#current-geo");
+    txt.innerHTML = `lat: ${lat}<br/>lon: ${lon}`;
+}
+
+function handleGeolocationError(error) {
+    console.error("Geolocation error:", error);
+    const wrap = document.querySelector(".location-mark");
+    const div = document.createElement("div");
+    div.classList.add("message", "message-warning");
+    div.textContent = "ไม่สามารถระบุตำแหน่งได้! ลองใหม่อีกครั้ง";
+    wrap.insertBefore(div, wrap.firstChild);
+    setTimeout(() => {
+        wrap.removeChild(div);
+    }, 2000);
 }
 
 function toRadians(degrees) {
