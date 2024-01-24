@@ -18,9 +18,9 @@ class MembersController extends Controller
         $old_password = $request->input('old_password');
         $new_password = $request->input('new_password');
 
-        if ($request->hasFile('profile_pic')) {
+            if ($request->hasFile('profile_pic')) {
             $profile_pic = $request->file('profile_pic');
-            $allowedFileTypes = ['jpeg', 'jpg', 'png', 'gif']; // Define allowed file types
+            $allowedFileTypes = ['jpeg', 'jpg', 'png', 'gif'];
 
             if ($profile_pic->isValid() && in_array(strtolower($profile_pic->getClientOriginalExtension()), $allowedFileTypes)) {
                 $directoryPath = 'images/members/' . $member_id;
@@ -35,7 +35,9 @@ class MembersController extends Controller
 
                 $fileName = $member_id . '.' . $profile_pic->getClientOriginalExtension();
                 $profile_pic->storeAs('public/images/members/' . $member_id, $fileName);
-                $member->member_img = $fileName;
+
+                $member->member_img = $fileName . '?t=' . time();
+
                 $member->save();
             } else {
                 return response()->json(['warning' => true, 'message' => 'ประเภทรูปภาพไม่ถูกต้อง รองรับ JPEG, JPG, PNG, GIF']);
