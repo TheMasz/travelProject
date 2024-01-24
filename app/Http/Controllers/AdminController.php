@@ -210,7 +210,7 @@ class AdminController extends Controller
                 // // ลบข้อมูลในตาราง locations ที่มี location_id เท่ากับ $locationId
                 Locations::where('location_id', $location_id)->delete();
 
-                Storage::deleteDirectory("public/images/{$location_id}");
+                Storage::deleteDirectory("public/images/locations/{$location_id}");
             });
 
             return redirect('/admin/locations')->with('success', 'Delete Success');
