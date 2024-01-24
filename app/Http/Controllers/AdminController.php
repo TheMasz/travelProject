@@ -176,7 +176,7 @@ class AdminController extends Controller
                     foreach ($request->file('img_path') as $image) {
                         // ทำการบันทึกรูปลงใน storage
                         $imgPath = $latestLocationId . '/' . $image->getClientOriginalName();
-                        $image->storeAs("public/images", $imgPath);
+                        $image->storeAs("public/images/locations/", $imgPath);
 
                         // Insert ข้อมูลลงในตาราง location_images
                         LocationImages::create([
@@ -522,7 +522,7 @@ class AdminController extends Controller
                 $oldImage = LocationImages::where('img_id', $imgId)->first();
                 if ($oldImage) {
                     // ใช้ Storage::delete เพื่อลบไฟล์จาก storage
-                    Storage::delete('public/images/' . $oldImage->img_path);
+                    Storage::delete('public/images/locations/' . $oldImage->img_path);
                     $oldImage->delete();
                 }
 
@@ -535,7 +535,7 @@ class AdminController extends Controller
                 ]);
 
                 // อัปโหลดไฟล์รูป
-                $image->storeAs("public/images", $imgPath);
+                $image->storeAs("public/images/locations/", $imgPath);
 
                 return redirect()->back()->with('success', 'Image Updated Successfully.');
             } else {
