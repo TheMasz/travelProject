@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\DaysOpening;
 use App\Models\LocationImages;
 use App\Models\Locations;
 use App\Models\Members;
@@ -41,11 +42,13 @@ class AppServiceProvider extends ServiceProvider
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
                     LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
+                    DaysOpening::raw('GROUP_CONCAT(DISTINCT daysopening.day_id SEPARATOR ", ") AS DaysId'),
                     'location_images.credit'
                 )
                     ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
                     ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
                     ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+                    ->leftjoin('daysopening', 'locations.location_id', '=', 'daysopening.location_id')
                     ->where('locations.location_id', $location_id)
                     ->groupBy(
                         'locations.location_id',
@@ -203,13 +206,16 @@ class AppServiceProvider extends ServiceProvider
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_id SEPARATOR ",") AS PrefId'),
                     Preferences::raw('GROUP_CONCAT(DISTINCT preferences.preference_name SEPARATOR ", ") AS Preferences'),
                     LocationImages::raw('GROUP_CONCAT(DISTINCT location_images.img_path SEPARATOR ", ") AS Images'),
+                    DaysOpening::raw('GROUP_CONCAT(DISTINCT daysopening.day_id SEPARATOR ", ") AS DaysId'),
                     'location_images.credit',
                     'provinces.province_id',
-                    'provinces.province_name'
+                    'provinces.province_name',
+                    
                 )
                     ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
                     ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
                     ->join('location_images', 'locations.location_id', '=', 'location_images.location_id')
+                    ->leftjoin('daysopening', 'locations.location_id', '=', 'daysopening.location_id')
                     ->join('provinces', 'locations.province_id', '=', 'provinces.province_id');
 
                 if ($province_id) {

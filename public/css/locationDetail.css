@@ -280,6 +280,19 @@
     -ms-flex-negative: 0;
     flex-shrink: 0;
 }
+.day {
+    margin: 5px 5px 5px 0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #dc6666;
+    color: #dc6666;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+.day-active {
+    background-color: #dc6666;
+    color: white;
+}
 @media screen and (max-width: 768px) {
     .details-wrap > .title {
         -webkit-box-orient: vertical;

@@ -534,7 +534,7 @@ function checkOpeningStatus(location_id) {
             const statusElement = document.getElementById(
                 `opening-status-${location_id}`
             );
-            if (data.status == "opend") {
+            if (data.status == "opened") {
                 statusElement.textContent = "เปิดทำการ";
                 statusElement.style.backgroundColor = "#28A745";
             } else {

@@ -107,6 +107,17 @@
                         <p>ช่วงเวลาเปิด-ปิด</p>
                         <p>{{ $location_detail->s_time }} - {{ $location_detail->e_time }} น.</p>
                     </div>
+                    <div class="row flex-wrap">
+                        @php
+                            $dayIds = explode(', ', $location_detail->DaysId);
+                            $days = DB::table('days')->get();
+                        @endphp
+                        @foreach ($days as $day)
+                            <div class="day @if (in_array($day->day_id, $dayIds)) day-active @endif">
+                                {{ $day->day_name }}
+                            </div>
+                        @endforeach
+                    </div>
                     <div class="categories row py-1 flex-wrap">
                         @foreach (explode(',', $location_detail->Preferences) as $pref)
                             <div>{{ $pref }}</div>

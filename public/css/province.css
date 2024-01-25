@@ -1,7 +1,7 @@
 .banner-wrap {
     border-radius: 10px;
     -webkit-box-shadow: 0 0 7px 0 lightgray;
-            box-shadow: 0 0 7px 0 lightgray;
+    box-shadow: 0 0 7px 0 lightgray;
     margin-bottom: 20px;
 }
 .banner {
@@ -27,14 +27,14 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     height: 100%;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.3);
@@ -59,21 +59,21 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
     width: 100%;
 }
 .main-wrap > .locations-wrap {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 80%;
-            flex: 0 0 80%;
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
     width: 80%;
     padding: 0 10px;
 }
 .main-wrap > .suggest-plans {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-            flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
     width: 20%;
     padding: 10px 0;
 }
@@ -86,28 +86,28 @@
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
     background-color: white;
     padding: 10px;
     border-radius: 10px;
     margin: 10px 0;
     -webkit-box-shadow: 0 0 7px 0 lightgray;
-            box-shadow: 0 0 7px 0 lightgray;
+    box-shadow: 0 0 7px 0 lightgray;
     -webkit-transition: all 0.25s;
     -o-transition: all 0.25s;
     transition: all 0.25s;
 }
 .main-wrap > .locations-wrap > .card > .card-image {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 30%;
-            flex: 0 0 30%;
+    -ms-flex: 0 0 30%;
+    flex: 0 0 30%;
     width: 30%;
 }
 .main-wrap > .locations-wrap > .card > .card-content {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 70%;
-            flex: 0 0 70%;
+    -ms-flex: 0 0 70%;
+    flex: 0 0 70%;
     width: 70%;
     padding: 0 10px;
 }
@@ -134,33 +134,36 @@
     -o-transition: all 0.25s;
     transition: all 0.25s;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     color: #fff;
 }
 .main-wrap > .locations-wrap > .card > .card-image > a > img {
     -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     width: 100%;
     max-height: 200px;
     border-radius: 5px;
 }
-.main-wrap > .locations-wrap > .card > .card-content  button {
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
+.main-wrap > .locations-wrap > .card > .card-content button {
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
 }
 .main-wrap > .locations-wrap > .card > .card-content > * {
     margin-bottom: 10px;
+}
+.time{
+    margin: unset !important;
 }
 .main-wrap > .locations-wrap > .card > .card-content a:hover {
     text-decoration: underline;
 }
 .main-wrap > .locations-wrap > .card .categories {
     -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 .main-wrap > .locations-wrap > .card .category {
     margin: 5px 5px 5px 0;
@@ -169,7 +172,7 @@
     border: 1px solid var(--main-color);
     color: var(--main-color);
     -ms-flex-negative: 0;
-        flex-shrink: 0;
+    flex-shrink: 0;
 }
 .main-wrap > .locations-wrap > .card .category-active {
     background-color: var(--main-color);
@@ -180,7 +183,7 @@
     border-radius: 10px;
     padding: 10px;
     -webkit-box-shadow: 0 0 7px 0 lightgray;
-            box-shadow: 0 0 7px 0 lightgray;
+    box-shadow: 0 0 7px 0 lightgray;
 }
 .main-wrap > .suggest-plans > .plans-container > .no-plans {
     padding: 10px 0;
@@ -197,8 +200,8 @@
 }
 .main-wrap > .suggest-plans > .plans-container > .plan > .image {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-            flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
     width: 20%;
 }
 .main-wrap > .suggest-plans > .plans-container > .plan > .image > img {
@@ -208,8 +211,8 @@
 }
 .main-wrap > .suggest-plans > .plans-container > .plan > .details {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 80%;
-            flex: 0 0 80%;
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
     width: 80%;
 }
 .main-wrap > .suggest-plans > .plans-container > .plan > .details .head {
@@ -270,8 +273,8 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
     padding-top: 10px;
 }
 .filters > .btns-confirm > .clear-btn {
@@ -313,39 +316,52 @@
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     width: 100%;
     background-color: white;
     border-radius: 10px;
     -webkit-box-shadow: 0 0 7px 0 lightgray;
-            box-shadow: 0 0 7px 0 lightgray;
+    box-shadow: 0 0 7px 0 lightgray;
     padding: 10px;
+}
+.day {
+    margin: 5px 5px 5px 0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #dc6666;
+    color: #dc6666;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+.day-active {
+    background-color: #dc6666;
+    color: white;
 }
 
 @media screen and (max-width: 768px) {
     .main-wrap {
         -webkit-box-orient: vertical;
         -webkit-box-direction: reverse;
-            -ms-flex-direction: column-reverse;
-                flex-direction: column-reverse;
+        -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse;
     }
     .main-wrap > .locations-wrap {
         -webkit-box-flex: 0;
-            -ms-flex: 0 0 100%;
-                flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
         width: 100%;
     }
     .main-wrap > .suggest-plans {
         -webkit-box-flex: 0;
-            -ms-flex: 0 0 100%;
-                flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
         width: 100%;
     }
 }
@@ -353,19 +369,19 @@
     .main-wrap > .locations-wrap > .card {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
     }
     .main-wrap > .locations-wrap > .card > .card-image {
         -webkit-box-flex: 0;
-            -ms-flex: 0 0 100%;
-                flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
         width: 100%;
     }
     .main-wrap > .locations-wrap > .card > .card-content {
         -webkit-box-flex: 0;
-            -ms-flex: 0 0 100%;
-                flex: 0 0 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
         width: 100%;
         padding: 5px;
     }
