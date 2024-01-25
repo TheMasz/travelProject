@@ -13,6 +13,7 @@ use App\Models\Preferences;
 use App\Models\PersonalPreference;
 use App\Models\PlansTrip;
 use App\Models\Comments;
+use App\Models\DaysOpening;
 use App\Models\Reviews;
 use App\Models\Questions;
 use Illuminate\Http\Request;
@@ -560,7 +561,8 @@ class AdminController extends Controller
             'latitude' => 'required',
             'longitude' => 'required',
             'credit' => 'required',
-            'preferences_id' => 'required'
+            'preferences_id' => 'required',
+            'days_id' => 'required',
         ]);
 
         // เพิ่มเงื่อนไขตรวจสอบ location_name ซ้ำ
@@ -616,16 +618,31 @@ class AdminController extends Controller
         DB::table('location_images')->where('location_id', $id)->update($data1);
 
         $preference_ids = $request->preferences_id;
-        $existingRecords = LocationTypes::where('location_id', $id)->pluck('preference_id')->toArray();
-        $idsToRemove = array_diff($existingRecords, $preference_ids);
+        $existingTypes = LocationTypes::where('location_id', $id)->pluck('preference_id')->toArray();
+        $idsToRemove = array_diff($existingTypes, $preference_ids);
         LocationTypes::where('location_id', $id)->whereIn('preference_id', $idsToRemove)->delete();
         foreach ($preference_ids as $prefId) {
             // Check if the record already exists before adding
-            if (!in_array($prefId, $existingRecords)) {
+            if (!in_array($prefId, $existingTypes)) {
                 // Record doesn't exist, add it
                 LocationTypes::create([
                     'location_id' => $id,
                     'preference_id' => $prefId,
+                ]);
+            }
+        }
+
+        $day_ids = $request->days_id;
+        $existingDays = DaysOpening::where('location_id', $id)->pluck('day_id')->toArray();
+        $idsToRemove = array_diff($existingDays, $day_ids);
+        DaysOpening::where('location_id', $id)->whereIn('day_id', $idsToRemove)->delete();
+        foreach ($day_ids as $dayId) {
+            // Check if the record already exists before adding
+            if (!in_array($dayId, $existingDays)) {
+                // Record doesn't exist, add it
+                DaysOpening::create([
+                    'location_id' => $id,
+                    'day_id' => $dayId,
                 ]);
             }
         }

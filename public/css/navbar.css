@@ -16,7 +16,6 @@
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
-    padding: 10px 0;
     margin-bottom: 30px;
 }
 .navbar.fixed {

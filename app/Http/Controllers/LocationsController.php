@@ -9,6 +9,7 @@ use App\Models\Preferences;
 use App\Models\Provinces;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class LocationsController extends Controller
 {
@@ -113,19 +114,28 @@ class LocationsController extends Controller
     {
         // config(['app.timezone' => 'Asia/Bangkok']);
         // date_default_timezone_set(config('app.timezone'));
-        $location = Locations::select('location_id', 's_time', 'e_time')
-            ->where('location_id', $location_id)
+        $location = Locations::select('locations.location_id', 's_time', 'e_time')
+            ->selectRaw('GROUP_CONCAT(DISTINCT daysopening.day_id SEPARATOR ", ") AS DaysId')
+            ->leftJoin('daysopening', 'locations.location_id', '=', 'daysopening.location_id')
+            ->where('locations.location_id', $location_id)
+            ->groupBy('locations.location_id', 's_time', 'e_time')
             ->first();
+
+        $days = DB::table('days')->get();
 
         if ($location) {
             $open = $location->s_time;
             $close = $location->e_time;
             $currentDateTime = now()->format('H:i:s');
 
-            if ($currentDateTime >= $open && $currentDateTime < $close) {
-                return response()->json(['status' => 'opend', 'time' => $currentDateTime]);
+            $currentDay = now()->format('N'); // 1 (Monday) through 7 (Sunday)
+
+            $openDays = explode(', ', $location->DaysId);
+
+            if (in_array($currentDay, $openDays) && $currentDateTime >= $open && $currentDateTime < $close) {
+                return response()->json(['status' => 'opened', 'time' => $currentDateTime, 'day' => $currentDay]);
             } else {
-                return response()->json(['status' => 'closed', 'time' => $currentDateTime]);
+                return response()->json(['status' => 'closed', 'time' => $currentDateTime, 'day' => $currentDay]);
             }
         } else {
             return response()->json(['status' => 'location_not_found'], 404);

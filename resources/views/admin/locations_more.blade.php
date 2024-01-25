@@ -97,9 +97,21 @@
             <div class="card-body">
                 <p class="card-text">ที่อยู่: {{ $location->address }}</p>
                 <p class="card-text">รายละเอียด: {{ $location->detail }}</p>
-                <p class="card-text">เวลาเปิด-ปิด: {{ $location->s_time }} - {{ $location->e_time }} น.</p>
                 <p class="card-text">ละติจูด: {{ $location->latitude }}</p>
                 <p class="card-text">ลองจิจูด: {{ $location->longitude }}</p>
+                <p class="card-text">เวลาเปิด-ปิด: {{ $location->s_time }} - {{ $location->e_time }} น.</p>
+                <div class="row flex-wrap">
+                    @php
+                        $dayIds = explode(', ', $location->DaysId);
+                        $days = DB::table('days')->get();
+                    @endphp
+                    @foreach ($days as $day)
+                        <div class="day @if (in_array($day->day_id, $dayIds)) day-active @endif">
+                            {{ $day->day_name }}
+                        </div>
+                    @endforeach
+
+                </div>
                 <div class="row">
                     @php
                         $prefs = explode(', ', $location->Preferences);
@@ -154,24 +166,6 @@
                                 <div class="col-sm-6" style="margin-top: 10px;">
                                     <textarea name="detail" class="form-control"placeholder="รายละเอียดสถานที่ท่องเที่ยว" required>{{ $location->detail }}</textarea>
                                 </div>
-                                <div class="col-sm-6" style="margin-top: 20px;">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">เวลาเปิด</div>
-                                        </div>
-                                        <input value="{{ $location->s_time }}" type="time" class="form-control"
-                                            name="s_time" required>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" style="margin-top: 10px;">
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">เวลาปิด</div>
-                                        </div>
-                                        <input type="time" value="{{ $location->e_time }}" class="form-control"
-                                            name="e_time" required>
-                                    </div>
-                                </div>
                                 <div class="col-sm-6" style="margin-top: 10px;">
                                     <select class="custom-select mr-sm-2" name="province_id">
                                         <option selected>จังหวัด...</option>
@@ -187,6 +181,26 @@
                                     </select>
 
                                 </div>
+
+                                <div class="col-sm-6" style="margin-top: 10px">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">เวลาเปิด</div>
+                                        </div>
+                                        <input value="{{ $location->s_time }}" type="time" class="form-control"
+                                            name="s_time" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="margin-top: 10px">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">เวลาปิด</div>
+                                        </div>
+                                        <input type="time" value="{{ $location->e_time }}" class="form-control"
+                                            name="e_time" required>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-6" style="margin-top: 10px;">
                                     <input value="{{ $location->latitude }}" type="number" step="0.0000000001"
                                         class="form-control" name="latitude" placeholder="Latitude" required>
@@ -200,6 +214,20 @@
                                     @foreach ($images->unique('credit') as $img1)
                                         <input type="text" class="form-control" name="credit"
                                             placeholder="Credit: Photo" value="{{ $img1->credit }}" required>
+                                    @endforeach
+                                </div>
+                                <div class="col-sm-12" style="margin-top: 10px;">
+                                    <span style="font-size: 16px;">วันที่เปิดทำการ</span><br>
+                                    @foreach ($days as $day)
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label
+                                                class="btn btn-outline-primary  @if (in_array($day->day_id, $dayIds)) active @endif"
+                                                style="margin: 10px;">
+                                                <input type="checkbox" name="days_id[]" value="{{ $day->day_id }}"
+                                                    {{ in_array($day->day_id, $dayIds) ? 'checked' : '' }}>
+                                                {{ $day->day_name }}
+                                            </label>
+                                        </div>
                                     @endforeach
                                 </div>
                                 <?php
