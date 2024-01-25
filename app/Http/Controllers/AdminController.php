@@ -109,6 +109,7 @@ class AdminController extends Controller
             'credit' => 'required',
             'preferences_id' => 'required|array',
             'img_path.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'days_id' => 'required|array'
         ]);
 
         // เพิ่มเงื่อนไขเพื่อตรวจสอบว่า location_name ซ้ำกับข้อมูลที่มีอยู่แล้วหรือไม่
@@ -146,6 +147,9 @@ class AdminController extends Controller
             return redirect('/admin/locations')->with('error', 'Longitude นี้มีอยู่แล้ว !!');
         }
 
+
+
+
         try {
             // ในกรณีที่มีการใส่ไฟล์รูปภาพ
             if ($request->hasFile('img_path') && is_array($request->file('img_path'))) {
@@ -172,6 +176,14 @@ class AdminController extends Controller
                             'preference_id' => $preferenceId,
                             // เพิ่ม fields ตามต้องการ
                         ]);
+                    }
+
+                    $day_ids = $request->days_id;
+                    foreach ($day_ids as $day_id) {
+                        $opening = new DaysOpening();
+                        $opening->location_id = $latestLocationId;
+                        $opening->day_id = $day_id;
+                        $opening->save();
                     }
 
                     foreach ($request->file('img_path') as $image) {
