@@ -147,7 +147,19 @@
                                         <div class="col-sm-6" style="margin-top: 10px;">
                                             <textarea name="detail" class="form-control" placeholder="รายละเอียดสถานที่ท่องเที่ยว" required></textarea>
                                         </div>
-                                        <div class="col-sm-6" style="margin-top: 20px;">
+                                        <div class="col-sm-6" style="margin-top: 10px;">
+                                            <select class="custom-select mr-sm-2" name="province_id">
+                                                <option selected>จังหวัด...</option>
+                                                <?php
+                                                $provinces = DB::table('provinces')->get();
+                                                ?>
+                                                @foreach ($provinces as $item)
+                                                    <option value="{{ $item->province_id }}">{{ $item->province_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6" style="margin-top: 10px;">
                                             <div class="input-group mb-2">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">เวลาเปิด</div>
@@ -162,18 +174,6 @@
                                                 </div>
                                                 <input type="time" class="form-control" name="e_time" required>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6" style="margin-top: 10px;">
-                                            <select class="custom-select mr-sm-2" name="province_id">
-                                                <option selected>จังหวัด...</option>
-                                                <?php
-                                                $provinces = DB::table('provinces')->get();
-                                                ?>
-                                                @foreach ($provinces as $item)
-                                                    <option value="{{ $item->province_id }}">{{ $item->province_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
                                         </div>
                                         <div class="col-sm-6" style="margin-top: 10px;">
                                             <input type="number" step="0.0000000001" class="form-control"
@@ -192,6 +192,21 @@
                                         <div class="col-sm-6" style="margin-top: 10px;">
                                             <input type="text" class="form-control" name="credit"
                                                 placeholder="Credit:Photo" required>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top: 10px;">
+                                            <span style="font-size: 16px;">วันที่เปิดทำการ</span><br>
+                                            @php
+                                                $days = DB::table('days')->get();
+                                            @endphp
+                                            @foreach ($days as $day)
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                    <label class="btn btn-outline-primary " style="margin: 10px;">
+                                                        <input type="checkbox" name="days_id[]"
+                                                            value="{{ $day->day_id }}">
+                                                        {{ $day->day_name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
                                         </div>
                                         <?php
                                         $preference = DB::table('preferences')->get();
