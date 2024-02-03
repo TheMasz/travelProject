@@ -527,22 +527,74 @@ function navigative(e) {
     }
 }
 
-function checkOpeningStatus(location_id) {
-    fetch(`/api/checkOpening/${location_id}`)
-        .then((response) => response.json())
-        .then((data) => {
-            const statusElement = document.getElementById(
-                `opening-status-${location_id}`
-            );
-            if (data.status == "opened") {
-                statusElement.textContent = "เปิดทำการ";
-                statusElement.style.backgroundColor = "#28A745";
-            } else {
-                statusElement.textContent = "ปิดทำการ";
-                statusElement.style.backgroundColor = "#DC3545";
-            }
-        })
-        .catch((error) => console.error("Error:", error));
+// async function getOpenCloseDayTime(location_id) {
+//     try {
+//         const response = await fetch(`/api/checkOpening/${location_id}`);
+//         const data = await response.json();
+//         const opentime = data.open;
+//         const closetime = data.close;
+//         const openDay = data.openDay;
+//         return { opentime, closetime, openDay };
+//     } catch (error) {
+//         console.error("Error:", error);
+//         throw error;
+//     }
+//     //fetch(`/api/checkOpening/${location_id}`);
+//     // .then((response) => response.json())
+//     // .then((data) => {
+
+//     //     const statusElement = document.getElementById(
+//     //         `opening-status-${location_id}`
+//     //     );
+//     //     if (data.status == "opened") {
+//     //         statusElement.textContent = "เปิดทำการ";
+//     //         statusElement.style.backgroundColor = "#28A745";
+//     //     } else {
+//     //         statusElement.textContent = "ปิดทำการ";
+//     //         statusElement.style.backgroundColor = "#DC3545";
+//     //     }
+//     // })
+//     // .catch((error) => console.error("Error:", error));
+// }
+
+function checkOpeningStatus(opentime, closetime, openDay, location_id) {
+    if (!opentime || !closetime) {
+        throw new Error("Invalid opening or closing time.");
+    }
+
+    const currentDateTime = new Date();
+    const currentHour = currentDateTime.getHours();
+    const currentMinute = currentDateTime.getMinutes();
+    const currentDay = currentDateTime.getDay();
+    const openHour = parseInt(opentime.split(":")[0]);
+    const openMinute = parseInt(opentime.split(":")[1]);
+    const closeHour = parseInt(closetime.split(":")[0]);
+    const closeMinute = parseInt(closetime.split(":")[1]);
+
+    const isOpen =
+        openDay.includes(currentDay + 1) &&
+        (currentHour > openHour ||
+            (currentHour === openHour && currentMinute >= openMinute)) &&
+        (currentHour < closeHour ||
+            (currentHour === closeHour && currentMinute < closeMinute));
+
+    if (isOpen) {
+        console.log("Location is OPEN");
+        updateStatusUI(location_id, "opened");
+    } else {
+        console.log("Location is CLOSED");
+        updateStatusUI(location_id, "closed");
+    }
+}
+
+function updateStatusUI(location_id, status) {
+    const statusElement = document.getElementById(
+        `opening-status-${location_id}`
+    );
+    const isOpened = status === "opened";
+
+    statusElement.textContent = isOpened ? "เปิดทำการ" : "ปิดทำการ";
+    statusElement.style.backgroundColor = isOpened ? "#28A745" : "#DC3545";
 }
 
 function delAction(review_id) {

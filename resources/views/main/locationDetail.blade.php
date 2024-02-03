@@ -72,14 +72,30 @@
                     <div class="row align-center">
                         <h1>{{ $location_detail->location_name }}</h1>
                         <div class="opening-status mx-1" id="opening-status-{{ $location_detail->location_id }}"></div>
+                        @php
+                            $openDays = array_map('intval', explode(', ', $location_detail->DaysId));
+                        @endphp
                         <script>
                             window.addEventListener('DOMContentLoaded', (e) => {
                                 e.preventDefault();
-                                checkOpeningStatus({{ $location_detail->location_id }});
+                                const openDays = @json($openDays);
+                                // Initial check
+                                checkOpeningStatus('{{ $location_detail->s_time }}', '{{ $location_detail->e_time }}', openDays,
+                                    {{ $location_detail->location_id }});
+                                // Everyminute check
                                 setInterval(() => {
-                                    checkOpeningStatus({{ $location_detail->location_id }});
+                                    checkOpeningStatus('{{ $location_detail->s_time }}', '{{ $location_detail->e_time }}',
+                                        openDays,
+                                        {{ $location_detail->location_id }});
                                 }, 60000);
                             });
+                            // window.addEventListener('DOMContentLoaded', (e) => {
+                            //     e.preventDefault();
+                            //     checkOpeningStatus({{ $location_detail->location_id }});
+                            //     setInterval(() => {
+                            //         checkOpeningStatus({{ $location_detail->location_id }});
+                            //     }, 60000);
+                            // });
                         </script>
                     </div>
 

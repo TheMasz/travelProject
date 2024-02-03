@@ -43,7 +43,7 @@ Route::group(['middleware' => 'member.auth'], function () {
     //----------Locations--------------
     Route::post('/api/getLocations', [LocationsController::class, 'getLocations']);
     Route::post('/api/getNearLocations', [LocationsController::class, 'getNearLocations']);
-    Route::get('/api/checkOpening/{location_id}', [LocationsController::class, 'checkOpening']);
+    // Route::get('/api/checkOpening/{location_id}', [LocationsController::class, 'checkOpening']);
     Route::post('/api/{province_id}/filter', [LocationsController::class, 'filterByPreferences']);
 
     //----------Plans--------------

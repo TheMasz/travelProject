@@ -86,14 +86,61 @@
                                         </a>
                                     </h3>
                                     <div class="opening-status" id="opening-status-{{ $location->location_id }}"></div>
+                                    @php
+                                        $openDays = array_map('intval', explode(', ', $location->DaysId));
+                                    @endphp
                                     <script>
                                         window.addEventListener('DOMContentLoaded', (e) => {
                                             e.preventDefault();
-                                            checkOpeningStatus({{ $location->location_id }});
+                                            const openDays = @json($openDays);
+                                            // Initial check
+                                            checkOpeningStatus('{{ $location->s_time }}', '{{ $location->e_time }}', openDays,
+                                                {{ $location->location_id }});
+                                            // Everyminute check
                                             setInterval(() => {
-                                                checkOpeningStatus({{ $location->location_id }});
+                                                checkOpeningStatus('{{ $location->s_time }}', '{{ $location->e_time }}', openDays,
+                                                    {{ $location->location_id }});
                                             }, 60000);
                                         });
+                                        // window.addEventListener('DOMContentLoaded', async (e) => {
+                                        //     e.preventDefault();
+                                        //     let opentime, closetime, openDay;
+
+                                        //     try {
+                                        //         // Assign values to the variables declared outside the try block
+                                        //         ({
+                                        //             opentime,
+                                        //             closetime,
+                                        //             openDay
+                                        //         } = await getOpenCloseDayTime({{ $location->location_id }}));
+
+                                        //         // Initial check
+                                        //         checkOpeningStatus({
+                                        //             opentime,
+                                        //             closetime,
+                                        //             openDay
+                                        //         }, {{ $location->location_id }});
+
+                                        //     } catch (error) {
+                                        //         console.error("Error:", error);
+                                        //     }
+
+                                        //     setInterval(() => {
+                                        //         checkOpeningStatus({
+                                        //             opentime,
+                                        //             closetime,
+                                        //             openDay
+                                        //         }, {{ $location->location_id }});
+                                        //     }, 60000);
+                                        // });
+
+                                        // window.addEventListener('DOMContentLoaded', (e) => {
+                                        //     e.preventDefault();
+                                        //     checkOpeningStatus({{ $location->location_id }});
+                                        //     setInterval(() => {
+                                        //         checkOpeningStatus({{ $location->location_id }});
+                                        //     }, 60000);
+                                        // });
                                     </script>
                                 </div>
                                 <p>{{ app('maxLength')($location->detail) }}...</p>
