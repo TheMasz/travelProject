@@ -306,20 +306,18 @@ class AdminController extends Controller
         }
     }
 
-    function delpreferences($preference_id)
+    public function delpreferences(Request $request, $preference_id)
     {
-
         try {
-
             DB::transaction(function () use ($preference_id) {
                 Preferences::where('preference_id', $preference_id)->delete();
             });
             return redirect('/admin/preferences')->with('success', 'Delete Success');
         } catch (\Exception $e) {
-            // กรณีเกิดข้อผิดพลาด
             return redirect('/admin/preferences')->with('error', 'ลบข้อมูลไม่สำเร็จ !!');
         }
     }
+
 
     function searchpre(Request $request)
     {

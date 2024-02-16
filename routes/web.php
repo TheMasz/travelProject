@@ -78,15 +78,16 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('admin/searchusers', [AdminController::class, 'searchusers'])->name('search.users');
     Route::post('admin/insertlocations', [AdminController::class, 'store'])->name('insertlocations');
     Route::post('admin/insertpreference', [AdminController::class, 'insertpreference'])->name('insertpreference');
-    Route::get('admin/delpreferences{preference_id}', [AdminController::class, 'delpreferences'])->name('delpreferences');
+    Route::delete('admin/preferences/{preference}', [AdminController::class, 'delpreferences'])->name('delpreferences');
+    // Route::get('admin/delpreferences{preference_id}', [AdminController::class, 'delpreferences'])->name('delpreferences');
     Route::get('admin/searchpre', [AdminController::class, 'searchpre'])->name('search.pre');
     Route::get('admin/searchreviews', [AdminController::class, 'searchreviews'])->name('search.reviews');
     Route::get('admin/delreviews{review_id}', [AdminController::class, 'delreviews'])->name('delreviews');
     // Route::get('admin/editpreferences{preference_id}', [AdminController::class, 'edit'])->name('edit-preference');
     Route::put('admin/updatepreferences/{preference_id}', [AdminController::class, 'updatepreference'])->name('update-preference');
     Route::put('admin/updateusers/{member_id}', [AdminController::class, 'updateusers'])->name('update-users');
-    Route::get('admin/locations/{location_id}', [AdminController::class, 'locationsMore'])->name('locations'); 
-    Route::get('admin/reviews/{location_id}', [AdminController::class, 'reviews_more'])->name('reviews'); 
+    Route::get('admin/locations/{location_id}', [AdminController::class, 'locationsMore'])->name('locations');
+    Route::get('admin/reviews/{location_id}', [AdminController::class, 'reviews_more'])->name('reviews');
     // Route::post('admin/updatephoto/{img_id}', [AdminController::class, 'updatephoto'])->name('updatephoto');
     Route::put('admin/updatephoto/{img_id}', [AdminController::class, 'updatephoto'])->name('updatephoto');
     Route::put('admin/updateLocation/{location_id}', [AdminController::class, 'updateLocation'])->name('updateLocation');
@@ -95,8 +96,6 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('admin/delQue{question_id}', [AdminController::class, 'delQue'])->name('delQue');
     Route::get('admin/searchQue', [AdminController::class, 'searchQue'])->name('searchQue');
     Route::put('admin/updatequestions/{question_id}', [AdminController::class, 'updatequestions'])->name('updateQue');
-
-
 });
 
 Route::group(['middleware' => 'login.auth'], function () {

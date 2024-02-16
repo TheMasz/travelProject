@@ -82,119 +82,108 @@
     <div class="container">
         <h3>Dashboard</h3>
         <hr>
-        <div class="row" style="text-align: center">
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #2E8B57;">
-                    <div class="card-header" style="background-color: #2E8B57;">
-                        <span style="color: white;">จำนวนสมาชิกในระบบ</span>
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <div class="card shadow" style="border-color: #2E8B57;">
+                    <div class="card-header bg-success text-white">
+                        <span>จำนวนสมาชิกในระบบ</span>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #2E8B57;">
-                                    <i class="fa-solid fa-users"></i>
+                                <span class="text-success" style="font-size: 24px;">
+                                    <i class="fas fa-users"></i>
                                 </span>
                             </div>
-                            <div class="col-sm-7" style="margin-top: 5px;">
+                            <div class="col-sm-7 mt-2">
 
                                 <?php
-                                $numberOfUsers = DB::table('members')
-                                    ->where('status', 'user')
-                                    ->count();
+                                $numberOfUsers = DB::table('members')->where('status', 'user')->count();
                                 ?>
-
-                                <h4 style="color: #2E8B57"><?php echo $numberOfUsers; ?> คน</h4>
+                                <h4 class="text-success"><?php echo $numberOfUsers; ?> คน</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);  border-color: #FFD700;">
-                    <div class="card-header" style="background-color: #FFD700;">
-                        <span style="color: white;">จำนวนสถานที่ท่องเที่ยวในระบบ</span>
+            <div class="col-md-3 mb-3">
+                <div class="card shadow" style="border-color: #d7b700;">
+                    <div class="card-header bg-warning text-white">
+                        <span>จำนวนสถานที่ท่องเที่ยวในระบบ</span>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #FFD700;">
-                                    <i class="fa-solid fa-home"></i>
+                                <span class="text-warning" style="font-size: 24px;">
+                                    <i class="fas fa-home"></i>
                                 </span>
-
                             </div>
-                            <div class="col-sm-7" style=" margin-top: 5px">
+                            <div class="col-sm-7 mt-2">
                                 <?php
                                 $numberOfLocations = DB::table('locations')->count();
                                 ?>
-
-                                <h4 style="color: #FFD700"><?php echo $numberOfLocations; ?> สถานที่</h4>
+                                <h4 class="text-warning"><?php echo $numberOfLocations; ?> สถานที่</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #32CD32;">
-                    <div class="card-header" style="background-color: #32CD32;">
-                        <span style="color: white;">จำนวนรีวิวสถานที่ท่องเที่ยว</span>
+            <div class="col-md-3 mb-3">
+                <div class="card shadow" style="border-color: #32CD32;">
+                    <div class="card-header bg-success text-white">
+                        <span>จำนวนรีวิวสถานที่ท่องเที่ยว</span>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
-                                <span
-                                    style="font-size: 24px; color: #32CD32;">
-                                    <i class="fa-solid fa-comment"></i>
+                                <span class="text-success" style="font-size: 24px;">
+                                    <i class="fas fa-comment"></i>
                                 </span>
                             </div>
-                            <div class="col-sm-6" style=" margin-top: 5px">
+                            <div class="col-sm-6 mt-2">
                                 <?php
                                 $numberOfReviews = DB::table('reviews')->count();
                                 ?>
-
-                                <h4 style="color: #32CD32"><?php echo $numberOfReviews; ?> รีวิว</h4>
+                                <h4 class="text-success"><?php echo $numberOfReviews; ?> รีวิว</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="card" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); border-color: #FFA07A;">
-                    <div class="card-header" style="background-color: #FFA07A;">
-                        <span style="color: white;">จำนวนประเภทความชอบ</span>
+            <div class="col-md-3 mb-3">
+                <div class="card shadow" style="border-color: #FFA07A;">
+                    <div class="card-header bg-danger text-white">
+                        <span>จำนวนประเภทความชอบ</span>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-5">
-                                <span
-                                    style="font-size: 24px; color: #FFA07A;">
-                                    <i class="fa-solid fa-heart"></i>
+                                <span class="text-danger" style="font-size: 24px;">
+                                    <i class="fas fa-heart"></i>
                                 </span>
                             </div>
-                            <div class="col-sm-7" style=" margin-top: 5px">
+                            <div class="col-sm-7 mt-2">
                                 <?php
                                 $numberOfPrefer = DB::table('preferences')->count();
                                 ?>
-
-                                <h4 style="color: #FFA07A"><?php echo $numberOfPrefer; ?> ประเภท</h4>
+                                <h4 class="text-danger"><?php echo $numberOfPrefer; ?> ประเภท</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
         <br>
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-md-8 mb-3">
                 <div class="card">
                     <div class="card-body">
                         <canvas id="chartLine"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-header bg-danger" style="color: white;">
                         Top Reviews
@@ -203,12 +192,7 @@
 
 
                         <?php
-                        $topReviewedLocations = DB::table('locations')
-                            ->select('locations.location_id', 'locations.location_name', DB::raw('COUNT(reviews.review_id) as total_reviews'), DB::raw('AVG(reviews.rating) as average_rating'))
-                            ->join('reviews', 'locations.location_id', '=', 'reviews.location_id')
-                            ->groupBy('locations.location_id', 'locations.location_name')
-                            ->orderByDesc('total_reviews')
-                            ->get();
+                        $topReviewedLocations = DB::table('locations')->select('locations.location_id', 'locations.location_name', DB::raw('COUNT(reviews.review_id) as total_reviews'), DB::raw('AVG(reviews.rating) as average_rating'))->join('reviews', 'locations.location_id', '=', 'reviews.location_id')->groupBy('locations.location_id', 'locations.location_name')->orderByDesc('total_reviews')->get();
                         
                         ?>
                         @foreach ($topReviewedLocations as $item)
@@ -398,12 +382,7 @@
 
 
     <?php
-    $membersData = DB::table('members')
-        ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
-        ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
+    $membersData = DB::table('members')->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))->orderBy('year')->orderBy('month')->get();
     
     ?>
 

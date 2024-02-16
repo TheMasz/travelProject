@@ -151,6 +151,9 @@ class AppServiceProvider extends ServiceProvider
                 $similarities = $similarities->sortByDesc('similarity')->values()->all();
 
                 // dd($similarities);
+                // foreach ($similarities as $similar) {
+                //     echo "memberID: " . $similar['member_id'] . " similarity score: " . $similar['similarity'] . "</br>";
+                // }
 
                 //find plans
                 $plans = [];
@@ -210,7 +213,7 @@ class AppServiceProvider extends ServiceProvider
                     'location_images.credit',
                     'provinces.province_id',
                     'provinces.province_name',
-                    
+
                 )
                     ->join('location_types', 'locations.location_id', '=', 'location_types.location_id')
                     ->join('preferences', 'location_types.preference_id', '=', 'preferences.preference_id')
@@ -287,6 +290,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $sortedLocations = [];
                 $weight = weightProfile($member_id);
+                // dd($weight);
                 $processedLocationIds = [];
                 foreach ($similarities as $similarity) {
                     $locationId = $similarity->location_id;
