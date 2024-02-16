@@ -222,15 +222,16 @@
                                     <div class="col-sm-12" style="margin-top: 20px;">
 
                                         <div class="col-sm-6" style="margin-left: 110px; margin-bottom: 40px;">
-                                            @if (isset($item->member_img))
+                                               @if (isset($item->member_img))
                                                 <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
                                                     height="120px;"
                                                     src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
-                                                </>
+                                         
                                             @else
-                                                    <img style="width: 100px;" height="60px;"
-                                                src="{{ asset('/images/no-image.png') }}" />
-                                       
+                                            <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
+                                                    height="120px;"
+                                                    src="{{ asset('/images/no-image.png') }}" />
+                                           
                                             @endif
 
                                         </div>
