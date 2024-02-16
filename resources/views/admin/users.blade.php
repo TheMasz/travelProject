@@ -145,16 +145,20 @@
                                                 src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
                                         </td>
                                     @else
-                                        <td>ไม่มีรูปภาพโปรไฟล์</td>
+                                        <td><img style="width: 100px;" height="60px;"
+                                                src="{{ asset('/images/no-image.png') }}" />
+                                        </td>
                                     @endif
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->username }}</td>
                                     <td>{{ Str::limit($item->password, 10) }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td><a href='#edit{{ $item->member_id }}' data-toggle='modal'><button
-                                                style="margin-right: 5px;" class="btn btn-warning btn-sm"
-                                                title="แก้ไขข้อมูลผู้ใช้งาน" type="submit"><span><i
-                                                        style="color: white;" class="fa-solid fa-pen"></i></span>
+                                                style="margin-right:
+                                                5px;"
+                                                class="btn btn-warning btn-sm" title="แก้ไขข้อมูลผู้ใช้งาน"
+                                                type="submit"><span><i style="color: white;"
+                                                        class="fa-solid fa-pen"></i></span>
                                             </button></a>
 
                                         <a href='#delete{{ $item->member_id }}' data-toggle='modal'><button
@@ -257,11 +261,7 @@
 
                                             <select name="status" class="form-control">
                                                 <?php
-                                                $statuses = DB::table('members')
-                                                    ->select('status')
-                                                    ->distinct()
-                                                    ->orderBy('status')
-                                                    ->get();
+                                                $statuses = DB::table('members')->select('status')->distinct()->orderBy('status')->get();
                                                 ?>
                                                 @foreach ($statuses as $status)
                                                     <option value="{{ $status->status }}">{{ $status->status }}
