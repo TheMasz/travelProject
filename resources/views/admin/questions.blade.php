@@ -122,7 +122,7 @@
                 <div class="container">
                     <div class="row">
                         @foreach ($questions as $item)
-                        <div class="col-sm-4" style="margin-top: 10px;">
+                        <div class="col-md-4" style="margin-top: 10px;">
                             <div class="card" style="box-shadow: 0 0 20px rgba(186 ,85 ,211);">
                                 <div class="card-header" style="background-color: #9370DB; text-align: center;">
                                     <span style="color: white;">คำถามรักษาความปลอดภัย</span>

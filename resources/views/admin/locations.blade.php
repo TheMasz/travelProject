@@ -269,7 +269,7 @@
                 <hr>
                 <div class="row">
                     @foreach ($locations as $item)
-                        <div class="col-sm-4" style="margin-top: 5px;">
+                        <div class="col-md-4" style="margin-top: 5px;">
                             <div class="card">
 
                                 <img class="card-img-top rounded mx-auto d-block"

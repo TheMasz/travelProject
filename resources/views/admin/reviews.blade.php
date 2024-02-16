@@ -102,7 +102,7 @@
             <div class="card-body">
                 <div class="row" style="margin-top: -20px">
                     @foreach ($data as $item)
-                        <div class="col-sm-4">
+                        <div class="col-md-4">
                             <section class="mx-auto my-5" style="max-width: 25rem;">
                                 <div class="card">
                                     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
