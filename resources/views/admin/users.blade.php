@@ -228,7 +228,9 @@
                                                     src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
                                                 </>
                                             @else
-                                                <p style="text-align: center">ไม่มีรูปภาพโปรไฟล์</p>
+                                                    <img style="width: 100px;" height="60px;"
+                                                src="{{ asset('/images/no-image.png') }}" />
+                                       
                                             @endif
 
                                         </div>
