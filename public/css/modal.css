@@ -58,7 +58,7 @@
     background-color: white;
     border-radius: 20px;
     padding: 20px;
-    max-height: 90vh;
+    height: 90vh;
     overflow-y: scroll;
 }
 .modal > .modal_content > .content_wrap > form > .top {
@@ -207,9 +207,12 @@
     width: 100%;
 }
 .modal-profile .content_wrap > .menu {
+    position: sticky;
+    top: 0;
+    left: 0;
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 30%;
-            flex: 0 0 30%;
+        -ms-flex: 0 1 30%;
+            flex: 0 1 30%;
     width: 30%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -237,12 +240,18 @@
     color: white;
 }
 .modal-profile .content_wrap > .overlay {
+    position: sticky;
+    top: 0;
+    
     display: none;
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 70%;
-            flex: 0 0 70%;
+        -ms-flex: 0 1 70%;
+            flex: 0 1 70%;
     width: 70%;
     padding: 0 10px;
+}
+.modal-profile .content_wrap > .overlay > .overlay-content{
+    display: none;
 }
 
 .modal-profile .content_wrap > .overlay .input_wrap {

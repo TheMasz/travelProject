@@ -18,14 +18,25 @@ modalContent.addEventListener("click", (e) => {
 confirmBtn.addEventListener("click", (e) => {
     e.preventDefault();
     let planName = confirmBtn.getAttribute("data-planName");
-    const data = {
-        plan_name: planName,
-    };
+    // const data = {
+    //     plan_name: planName,
+    // };
+
+    // axios
+    //     .get("/api/removePlan", {
+    //         data,
+    //     })
+    //     .then((response) => {
+    //         if (response.data.success) {
+    //             location.reload();
+    //         }
+    //     })
+    //     .catch((error) => {
+    //         console.error("Error removing plan:", error);
+    //     });
 
     axios
-        .delete("/api/removePlan", {
-            data,
-        })
+        .get(`/api/removePlan/${planName}`)
         .then((response) => {
             if (response.data.success) {
                 location.reload();
@@ -34,7 +45,6 @@ confirmBtn.addEventListener("click", (e) => {
         .catch((error) => {
             console.error("Error removing plan:", error);
         });
-
     closeModal();
 });
 

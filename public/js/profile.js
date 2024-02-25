@@ -12,6 +12,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
     const editProfileBtn = document.getElementById("editProfileBtn");
     const editPreferencesBtn = document.getElementById("editPreferencesBtn");
 
+
     function closeModal() {
         modal.style.display = "none";
     }
@@ -121,7 +122,6 @@ document
                 console.error(err);
             });
     });
-
 
 loadMoreButton.addEventListener("click", (e) => {
     e.preventDefault();

@@ -8,7 +8,6 @@ use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PrefController;
 use App\Http\Controllers\ReviewsController;
-use App\Models\Locations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +47,8 @@ Route::group(['middleware' => 'member.auth'], function () {
 
     //----------Plans--------------
     Route::post('/api/addPlan', [PlanController::class, 'addPlan']);
-    Route::delete('/api/removePlan', [PlanController::class, 'removePlan']);
+    // Route::delete('/api/removePlan', [PlanController::class, 'removePlan']);
+    Route::get('/api/removePlan/{planName}', [PlanController::class, 'removePlan']);
     Route::get('/api/clearSessionPref', [PrefController::class, 'clearSessionPref']);
 
     //Reviews
@@ -58,7 +58,8 @@ Route::group(['middleware' => 'member.auth'], function () {
     Route::get('/api/loadMoreReviews/{location_id}/{offset}', [ReviewsController::class, 'loadMoreReviews']);
     Route::get('/api/loadMoreMyReviews/{offset}/{sorted}', [ReviewsController::class, 'loadMoreMyReviews']);
     Route::post('/api/likeActions', [ReviewsController::class, 'likeActions']);
-    Route::delete('/api/removeReview', [ReviewsController::class, 'removeReview']);
+    // Route::delete('/api/removeReview', [ReviewsController::class, 'removeReview']);
+    Route::get('/api/removeReview/{review_id}', [ReviewsController::class, 'removeReview']);
 
     //----------Members--------------
     Route::put('/api/editProfile', [MembersController::class, 'editProfile']);
@@ -78,8 +79,8 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('admin/searchusers', [AdminController::class, 'searchusers'])->name('search.users');
     Route::post('admin/insertlocations', [AdminController::class, 'store'])->name('insertlocations');
     Route::post('admin/insertpreference', [AdminController::class, 'insertpreference'])->name('insertpreference');
-    Route::delete('admin/preferences/{preference}', [AdminController::class, 'delpreferences'])->name('delpreferences');
-    // Route::get('admin/delpreferences{preference_id}', [AdminController::class, 'delpreferences'])->name('delpreferences');
+    // Route::delete('admin/preferences/{preference}', [AdminController::class, 'delpreferences'])->name('delpreferences');
+    Route::get('admin/delpreferences/{preference_id}', [AdminController::class, 'delpreferences'])->name('delpreferences');
     Route::get('admin/searchpre', [AdminController::class, 'searchpre'])->name('search.pre');
     Route::get('admin/searchreviews', [AdminController::class, 'searchreviews'])->name('search.reviews');
     Route::get('admin/delreviews{review_id}', [AdminController::class, 'delreviews'])->name('delreviews');
@@ -114,6 +115,27 @@ Route::group(['middleware' => 'login.auth'], function () {
 
 Route::get("/logout", [AuthController::class, 'logout']);
 
+// for server 
+// Route::get('/storage/images/locations/{location_id}/{filename}', function ($location_id, $filename) {
+//     $path = storage_path('app/public/images/locations/' . $location_id . '/' . $filename);
+
+//     if (!File::exists($path)) {
+//         abort(404);
+//     }
+
+//     return Response::file($path);
+// });
+
+
+// Route::get('/storage/images/members/{member_id}/{filename}', function ($member_id, $filename) {
+//     $path = storage_path('app/public/images/members/' . $member_id . '/' . $filename);
+
+//     if (!File::exists($path)) {
+//         abort(404);
+//     }
+
+//     return Response::file($path);
+// });
 
 Route::get('/testdatabase', function () {
     $result = DB::table('members')->get();

@@ -18,6 +18,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
 </head>
 
 <body>
@@ -117,13 +118,14 @@
 
     <div class="modal modal-profile">
         <div class="modal_content modal_content-profile">
-            <div class="content_wrap" style="overflow-y: hidden">
+            <div class="content_wrap" style="overflow: hidden">
                 <button class="cancel_btn">ปิด</button>
                 <div class="menu">
                     <button id="editProfileBtn">แก้ไขโปรไฟล์</button>
                     <button id="editPreferencesBtn">แก้ไขความชอบ</button>
                 </div>
-                <div class="overlay" id="overlay">
+                <div class="overlay" id="overlay"  >
+                    {{-- change profile --}}
                     <div class="overlay-content" id="profileContent">
                         <form id="formMember" method="POST" action="/api/editProfile" enctype="multipart/form-data">
                             @csrf
@@ -162,9 +164,9 @@
                             <button type="submit" class="btn-primary" style="float: right">บันทึก</button>
                         </form>
                     </div>
-                    <div class="overlay-content py-1" style="overflow-y: scroll; height:100%"
-                        id="preferencesContent">
-
+                    {{-- change prefs --}}
+                    <div class="overlay-content py-1" style="overflow: auto; height: 100%" 
+                    id="preferencesContent">
                         <form id="formPref" method="POST" action="/api/editPref" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
