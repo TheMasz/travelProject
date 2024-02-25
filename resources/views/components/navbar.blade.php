@@ -32,12 +32,6 @@
                                 </span>
                                 แผนการท่องเที่ยว
                             </a>
-                            <a class="dropdown-item" href="/settings">
-                                <span class="material-icons">
-                                    settings
-                                </span>
-                                การตั้งค่า
-                            </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout">
                                 <span class="material-icons">

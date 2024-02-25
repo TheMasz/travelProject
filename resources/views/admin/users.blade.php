@@ -226,9 +226,12 @@
                                                 <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
                                                     height="120px;"
                                                     src="{{ asset('storage/images/members/' . $item->member_id . '/' . $item->member_img) }}">
-                                                </>
+                                         
                                             @else
-                                                <p style="text-align: center">ไม่มีรูปภาพโปรไฟล์</p>
+                                            <img style="width: 200px;  box-shadow: 0 0 20px rgba(0, 0, 0, 0.50);"
+                                                    height="120px;"
+                                                    src="{{ asset('/images/no-image.png') }}" />
+                                           
                                             @endif
 
                                         </div>

@@ -74,9 +74,9 @@ class ReviewsController extends Controller
         }
     }
 
-    function removeReview(Request $request)
+    function removeReview(Request $request, $review_id)
     {
-        $review_id = $request->input('review_id');
+        // $review_id = $request->input('review_id');
         $deleted = Reviews::where('review_id', $review_id)->delete();
 
         if ($deleted) {

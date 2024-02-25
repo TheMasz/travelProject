@@ -203,9 +203,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <form action="{{ route('delpreferences', $item->preference_id) }}" method="POST">
+                            <form action="{{ route('delpreferences', $item->preference_id) }}" method="get">
                                 @csrf
-                                @method('DELETE')
                                 <button class="btn btn-danger" title="ลบข้อมูล" type="submit">Delete</button>
                             </form>
                             <button type="button" class="btn btn-default"

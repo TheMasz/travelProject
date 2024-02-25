@@ -619,11 +619,23 @@ function delAction(review_id) {
     confirmBtn.addEventListener("click", (e) => {
         e.preventDefault();
 
-        const data = {
-            review_id: review_id,
-        };
+        // const data = {
+        //     review_id: review_id,
+        // };
+        // axios
+        //     .delete("/api/removeReview", {
+        //         data,
+        //     })
+        //     .then((response) => {
+        //         if (response.data.success) {
+        //             location.reload();
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error("Error removing plan:", error);
+        //     });
         axios
-            .delete("/api/removeReview", { data })
+            .get(`/api/removeReview/${review_id}`)
             .then((response) => {
                 if (response.data.success) {
                     location.reload();

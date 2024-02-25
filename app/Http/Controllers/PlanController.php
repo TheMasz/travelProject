@@ -23,9 +23,9 @@ class PlanController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function removePlan(Request $request)
+    public function removePlan(Request $request,$planName)
     {
-        $planName = $request->input('plan_name');
+        // $planName = $request->input('plan_name');
         $deleted = PlansTrip::where('plan_name', $planName)->delete();
 
         if ($deleted) {

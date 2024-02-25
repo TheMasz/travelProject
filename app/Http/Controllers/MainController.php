@@ -109,8 +109,20 @@ class MainController extends Controller
             ->get();
         $reviewsFunction = App::make('getMyReviews');
         $myReviews = $reviewsFunction('desc')->take(6);
-        $countPlans = PlansTrip::count();
-        $countReviews = Reviews::count();
+
+        $myplans_query = DB::table('plans_trip')
+            ->select(DB::raw('COUNT(DISTINCT plan_name) as record_count'))
+            ->where('member_id', $member_id)
+            ->first();
+            
+        $myreviews_query = DB::table('reviews')
+            ->select(DB::raw('COUNT(*) as record_count'))
+            ->where('member_id', '=', $member_id)->first();
+
+
+        $countPlans = $myplans_query->record_count;
+        $countReviews = $myreviews_query->record_count;
+
         $member = Members::where('member_id', $member_id)
             ->select('email', 'username', 'member_img')
             ->first();
