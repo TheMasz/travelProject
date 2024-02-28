@@ -25,8 +25,8 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
 }
 .cancel_btn,
 .confirm_btn {
@@ -39,7 +39,7 @@
     font-weight: bold;
 }
 .modal_content-type-alert > .content_wrap {
-    width: 30% ;
+    width: 30%;
     overflow: hidden !important;
 }
 .modal > .modal_content {
@@ -52,13 +52,13 @@
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     width: 50%;
     background-color: white;
     border-radius: 20px;
     padding: 20px;
-    height: 90vh;
+    max-height: 90vh;
     overflow-y: scroll;
 }
 .modal > .modal_content > .content_wrap > form > .top {
@@ -72,8 +72,8 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
 }
 .modal > .modal_content > .content_wrap ul {
     list-style-type: none;
@@ -98,11 +98,11 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     grid-gap: 0.5rem;
     font-size: 2rem;
     color: #ffbd13;
@@ -120,24 +120,24 @@
 
 .modal-reviews .rating .star.active {
     -webkit-animation: animate 0.5s calc(var(--i) * 0.1s) ease-in-out forwards;
-            animation: animate 0.5s calc(var(--i) * 0.1s) ease-in-out forwards;
+    animation: animate 0.5s calc(var(--i) * 0.1s) ease-in-out forwards;
 }
 
 @-webkit-keyframes animate {
     0% {
         opacity: 0;
         -webkit-transform: scale(1);
-                transform: scale(1);
+        transform: scale(1);
     }
     50% {
         opacity: 1;
         -webkit-transform: scale(1.2);
-                transform: scale(1.2);
+        transform: scale(1.2);
     }
     100% {
         opacity: 1;
         -webkit-transform: scale(1);
-                transform: scale(1);
+        transform: scale(1);
     }
 }
 
@@ -145,24 +145,24 @@
     0% {
         opacity: 0;
         -webkit-transform: scale(1);
-                transform: scale(1);
+        transform: scale(1);
     }
     50% {
         opacity: 1;
         -webkit-transform: scale(1.2);
-                transform: scale(1.2);
+        transform: scale(1.2);
     }
     100% {
         opacity: 1;
         -webkit-transform: scale(1);
-                transform: scale(1);
+        transform: scale(1);
     }
 }
 
 .modal-reviews .rating .star:hover {
     -webkit-transform: scale(1.1);
-        -ms-transform: scale(1.1);
-            transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
 }
 .modal-reviews textarea {
     width: 100%;
@@ -180,11 +180,11 @@
     display: flex;
     grid-gap: 0.5rem;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
 }
 .modal-reviews .btn-group .btn {
     padding: 0.75rem 1rem;
@@ -211,16 +211,16 @@
     top: 0;
     left: 0;
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 30%;
-            flex: 0 1 30%;
+    -ms-flex: 0 1 30%;
+    flex: 0 1 30%;
     width: 30%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     border-right: 1px solid var(--gray-color);
     padding: 0 5px;
 }
@@ -242,15 +242,15 @@
 .modal-profile .content_wrap > .overlay {
     position: sticky;
     top: 0;
-    
+
     display: none;
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 70%;
-            flex: 0 1 70%;
+    -ms-flex: 0 1 70%;
+    flex: 0 1 70%;
     width: 70%;
     padding: 0 10px;
 }
-.modal-profile .content_wrap > .overlay > .overlay-content{
+.modal-profile .content_wrap > .overlay > .overlay-content {
     display: none;
 }
 
@@ -260,21 +260,21 @@
     display: flex;
     margin-bottom: 10px;
     -webkit-box-align: baseline;
-        -ms-flex-align: baseline;
-            align-items: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
 }
 .modal-profile .avatar {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
     -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
     -ms-flex-negative: 0;
-        flex-shrink: 0;
+    flex-shrink: 0;
     min-width: 32px;
     max-width: 32px;
     min-height: 32px;
@@ -321,9 +321,9 @@
 }
 .modal-profile .content_wrap > .overlay .input_wrap > input {
     -ms-flex-negative: 0;
-        flex-shrink: 0;
+    flex-shrink: 0;
     -ms-flex-preferred-size: 0;
-        flex-basis: 0;
+    flex-basis: 0;
 }
 .overlay.show {
     display: block !important;
@@ -359,10 +359,10 @@
     .content_wrap {
         width: 90% !important;
     }
-    .content_wrap > .overlay .input_wrap{
+    .content_wrap > .overlay .input_wrap {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
     }
 }
