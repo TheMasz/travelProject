@@ -5,27 +5,27 @@ function init() {
     let lat = urlParams.get("lat");
     let lon = urlParams.get("lon");
 
-    // if ("geolocation" in navigator) {
-    //     navigator.geolocation.watchPosition(function(position) {
-    //         lat = position.coords.latitude;
-    //         lon = position.coords.longitude;
+    if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(function(position) {
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
 
-    //         // Use the lat and lon values as needed
-    //         console.log("Latitude: " + lat + ", Longitude: " + lon);
+            // Use the lat and lon values as needed
+            console.log("Latitude: " + lat + ", Longitude: " + lon);
 
-    //         // Initialize the map and add markers inside the geolocation success callback
-    //         initializeMap(lat, lon);
-    //     }, function(error) {
-    //         console.log(error.message);
-    //     }, {
-    //         enableHighAccuracy: true, // Request high accuracy
-    //         maximumAge: 0, // Do not use cached data
-    //         timeout: 5000 // Set a timeout for the request
-    //     });
-    // } else {
-    //     console.log("Geolocation is not available in this browser.");
-    //     // You might want to handle this case, e.g., by using default coordinates.
-    // }
+            // Initialize the map and add markers inside the geolocation success callback
+            initializeMap(lat, lon);
+        }, function(error) {
+            console.log(error.message);
+        }, {
+            enableHighAccuracy: true, // Request high accuracy
+            maximumAge: 0, // Do not use cached data
+            timeout: 5000 // Set a timeout for the request
+        });
+    } else {
+        console.log("Geolocation is not available in this browser.");
+        // You might want to handle this case, e.g., by using default coordinates.
+    }
     function initializeMap(lat, lon) {
         const mapPlaceholder = document.getElementById("map");
         map = new longdo.Map({
