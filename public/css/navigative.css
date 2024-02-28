@@ -181,6 +181,11 @@
     border-radius: 0;
 }
 
+@media screen and (max-width: 480px) {
+    #result {
+        display: none;
+    }
+}
 @media screen and (max-width: 768px) {
     .main-navigative {
         flex-direction: column;
