@@ -26,6 +26,28 @@ function init() {
     //     console.log("Geolocation is not available in this browser.");
     //     // You might want to handle this case, e.g., by using default coordinates.
     // }
+    const resetPos = document.getElementById("resetPos");
+    resetPos.addEventListener("click", (e) => {
+        e.preventDefault();
+        buttonAnimate(e.target);
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    initializeMap(lat, lon);
+                },
+                function (error) {
+                    console.error("Error getting location:", error.message);
+                },
+                {
+                    enableHighAccuracy: true,
+                }
+            );
+        } else {
+            console.log("Geolocation is not available in this browser.");
+        }
+    });
     function initializeMap(lat, lon) {
         const mapPlaceholder = document.getElementById("map");
         map = new longdo.Map({

@@ -24,8 +24,16 @@
     <x-loading />
     <x-navbar />
     <div class="container">
+        <button class="btn-secondary" id="resetPos"
+            style="position: fixed; bottom:2px; right:2px; height:64px; width:64px;border-radius:50%; cursor:pointer"><span
+                class="material-icons">
+                my_location
+            </span>
+            <p style="font-size: 6px; text-align: center;">ตำแหน่งไม่ตรง?</p>
+        </button>
         <div class="main-navigative">
             <div class="basket-wrap">
+
                 <div class="basket" id="locations">
                     <!-- return location -->
                 </div>
