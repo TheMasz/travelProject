@@ -3,8 +3,10 @@ This project is a recommendation system for travel destinations, developed as a 
 1. User Preference Path: In this path, users provide ratings (1-5) for different categories of locations based on their preferences. The system then calculates the user's preference for each location and suggests destinations accordingly. Additionally, users can leave reviews and ratings for destinations they have visited to improve the recommendation accuracy.<br>
 2. Similar User Path: In this path, the system identifies users with similar preferences and travel histories. It then suggests travel plans and destinations based on the preferences and experiences of similar users.<br>
 The project is built using Laravel Blade for the frontend, SQL for database management, and CSS for styling.
+
 **Description**
 This project aims to provide personalized travel recommendations to users based on their preferences and interests. By utilizing cosine similarity, the system compares user profiles with destination attributes to suggest the most suitable travel destinations.
+
 **Features**
 **User Preference Path:**
 - User Authentication: Users can sign up, log in, and log out.
@@ -28,6 +30,7 @@ This project aims to provide personalized travel recommendations to users based 
 **Map Functionality:**
 - Interactive Map: The system includes an interactive map using Longdo Map, allowing users to visualize recommended destinations and explore nearby attractions.
 - Geolocation: Users can view their current location on the map and discover nearby travel destinations (near 5km.).
+
 **How to Run**
 1. Install Dependencies: Run the following command in the root directory to install project dependencies: `composer install`
 2. Copy Environment File: Copy the .env.example file and rename it to .env: `cp .env.example .env`
