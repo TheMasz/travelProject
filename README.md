@@ -5,7 +5,7 @@ This project is a recommendation system for travel destinations, developed as a 
 The project is built using Laravel Blade for the frontend, SQL for database management, and CSS for styling.
 
 **Description**<br>
-This project aims to provide personalized travel recommendations to users based on their preferences and interests. By utilizing cosine similarity, the system compares user profiles with destination attributes to suggest the most suitable travel destinations.
+This project aims to provide personalized travel recommendations to users based on their preferences and interests. By utilizing cosine similarity, the system compares user profiles with destination attributes to suggest the most suitable travel destinations. The core functions include recommending travel destinations and tourist attractions based on user preferences and interests, suggesting travel plans by comparing similar user profiles to provide tailored recommendations, assisting users in creating travel itineraries with step-by-step guidance on how to reach various destinations (non-realtime navigation), and recommending travel destinations within a 5km radius of a chosen location. Additionally, the recommendation system can be improved through user reviews of tourist attractions, allowing users to rate and provide feedback on their experiences.
 
 **Features**
 **User Preference Path:**
